@@ -175,47 +175,59 @@ elif selected == "🔄 Konversi Satuan":
         "Mol ↔ Partikel",
         "Volume Gas (STP)",
         "Tekanan",
-        "Suhu",
-        "Konsentrasi Larutan"
+        "Suhu"
     ])
 
-    if kategori == "Tekanan":
-        with st.form(key="tekanan_form"):
-            nilai = st.number_input("Masukkan Nilai Tekanan")
-            satuan_awal = st.selectbox("Dari", ["atm", "Pa", "kPa", "mmHg", "Torr", "bar"])
-            satuan_akhir = st.selectbox("Ke", ["atm", "Pa", "kPa", "mmHg", "Torr", "bar"])
-            hitung = st.form_submit_button("Hitung Konversi")
+    # Mol <-> Gram
+    if kategori == "Mol ↔ Gram":
+        with st.form(key="mol_gram_form"):
+            mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
+            molar_mass = st.number_input("Massa molar (g/mol)", min_value=0.0, value=18.0)
+            hitung = st.form_submit_button("Hitung Massa")
             if hitung:
-                # Konversi ke atm dulu
-                atm_value = nilai
-                if satuan_awal == "Pa":
-                    atm_value = nilai / 101325
-                elif satuan_awal == "kPa":
-                    atm_value = nilai / 101.325
-                elif satuan_awal == "mmHg" or satuan_awal == "Torr":
-                    atm_value = nilai / 760
-                elif satuan_awal == "bar":
-                    atm_value = nilai / 1.01325
-                # Konversi dari atm ke target
-                if satuan_akhir == "atm":
-                    result = atm_value
-                elif satuan_akhir == "Pa":
-                    result = atm_value * 101325
-                elif satuan_akhir == "kPa":
-                    result = atm_value * 101.325
-                elif satuan_akhir == "mmHg" or satuan_akhir == "Torr":
-                    result = atm_value * 760
-                elif satuan_akhir == "bar":
-                    result = atm_value * 1.01325
-                st.success(f"{result:.4f} {satuan_akhir}")
+                mass = mol * molar_mass
+                st.success(f"Massa: {mass:.4f} gram")
 
-    elif kategori == "Konsentrasi Larutan":
-        with st.form(key="kons_larutan_form"):
-            nilai = st.number_input("Masukkan Nilai Konsentrasi")
-            satuan_awal = st.selectbox("Dari", ["M (mol/L)", "m (mol/kg)", "N (eq/L)", "% massa", "ppm"])
-            satuan_akhir = st.selectbox("Ke", ["M (mol/L)", "m (mol/kg)", "N (eq/L)", "% massa", "ppm"])
-            hitung = st.form_submit_button("Hitung Konversi")
+    # Mol <-> Partikel
+    elif kategori == "Mol ↔ Partikel":
+        with st.form(key="mol_partikel_form"):
+            mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
+            NA = 6.022e23
+            hitung = st.form_submit_button("Hitung Partikel")
             if hitung:
-                # Sederhana: saat ini hanya memetakan nilai yang sama
-                # (konversi kompleks memerlukan massa jenis, massa molar, dll.)
-                st.success(f"{nilai:.4f} {satuan_akhir} (Konversi hanya estimasi sederhana)")
+                partikel = mol * NA
+                st.success(f"Jumlah Partikel: {partikel:.2e}")
+
+    # Volume Gas STP
+    elif kategori == "Volume Gas (STP)":
+        with st.form(key="volume_stp_form"):
+            mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
+            hitung = st.form_submit_button("Hitung Volume")
+            if hitung:
+                volume = mol * 22.4
+                st.success(f"Volume Gas: {volume:.2f} L (STP)")
+
+    # Suhu
+    elif kategori == "Suhu":
+        with st.form(key="suhu_form"):
+            temp_value = st.number_input("Masukkan Suhu", value=25.0)
+            from_unit = st.selectbox("Dari", ["C", "K", "F"])
+            to_unit = st.selectbox("Ke", ["C", "K", "F"])
+            hitung = st.form_submit_button("Konversi Suhu")
+            if hitung:
+                result = None
+                if from_unit == to_unit:
+                    result = temp_value
+                elif from_unit == "C" and to_unit == "K":
+                    result = temp_value + 273.15
+                elif from_unit == "C" and to_unit == "F":
+                    result = temp_value * 9/5 + 32
+                elif from_unit == "K" and to_unit == "C":
+                    result = temp_value - 273.15
+                elif from_unit == "K" and to_unit == "F":
+                    result = (temp_value - 273.15) * 9/5 + 32
+                elif from_unit == "F" and to_unit == "C":
+                    result = (temp_value - 32) * 5/9
+                elif from_unit == "F" and to_unit == "K":
+                    result = (temp_value - 32) * 5/9 + 273.15
+                st.success(f"Hasil Konversi: {result:.2f}°{to_unit}")
