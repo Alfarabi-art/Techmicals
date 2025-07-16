@@ -68,11 +68,20 @@ with st.sidebar:
 
 # --- KONTEN HALAMAN SESUAI MENU ---
 if selected == "🏠 Home":
-    st.title("🏠 Selamat Datang di Kalkulator Kimia Plus")
-    st.write("✨ Aplikasi interaktif untuk menghitung reaksi kimia, stoikiometri, konsentrasi, pH, dan banyak lagi.")
+    st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
+    st.write("""
+        Hai! 👋 Selamat datang di *Techmicals*, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
+        Mau setarakan reaksi? Hitung mol? Cari massa molar? Semua bisa kamu lakukan di sini, cepat dan praktis.  
+        🚀 Yuk mulai bereksperimen tanpa ribet!
+    """)
     st.image(
         "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
         use_container_width=True
+    )
+    if st.button("⚗ Mulai Hitung Sekarang"):
+        # Pindahkan user ke menu Reaksi Kimia
+        st.experimental_set_query_params(menu="⚗ Reaksi Kimia")
+        st.experimental_rerun()
     )
 
 elif selected == "⚗ Reaksi Kimia":
