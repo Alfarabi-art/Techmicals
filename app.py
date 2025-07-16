@@ -6,36 +6,60 @@ import re
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Techmicals",
+    page_title="TECHMICALS",
     page_icon="⚗",
     layout="wide"
 )
 
-# --- FIX: MEMAKSA LIGHT MODE ---
+# --- FIX: TEMA MODERN DAN LIGHT MODE ---
 st.markdown("""
     <style>
-    /* Memaksa background terang dan teks gelap */
-    body, .main, .block-container, .stApp {
-        background-color: #f5f5f5 !important;
+    /* Import Google Font */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    /* Font global */
+    html, body, [class*="css"] {
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    /* Background aplikasi */
+    .stApp {
+        background: linear-gradient(135deg, #e0f7fa, #ffffff) !important;
         color: #000000 !important;
     }
-    /* Memperbaiki sidebar */
-    .css-1lcbmhc, .css-6qob1r {
-        background-color: #ffffff !important;
+
+    /* Sidebar transparan dengan efek glass */
+    [data-testid="stSidebar"] {
+        background: rgba(255, 255, 255, 0.7) !important;
+        backdrop-filter: blur(8px);
+        border-radius: 10px;
     }
+
+    /* Tombol menu aktif */
     .css-1d391kg, .css-18e3th9 {
-        background-color: #ffffff !important;
-    }
-    /* Warna tombol aktif */
-    .stButton>button {
-        background-color: #1e90ff;
-        color: white;
+        background-color: rgba(30, 144, 255, 0.1) !important;
         border-radius: 8px;
-        padding: 8px 20px;
+    }
+
+    /* Tombol interaktif */
+    .stButton>button {
+        background: linear-gradient(90deg, #1e90ff, #00bfff);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
         font-size: 16px;
+        transition: all 0.3s ease-in-out;
     }
     .stButton>button:hover {
-        background-color: #00bfff;
+        transform: scale(1.05);
+        background: linear-gradient(90deg, #00bfff, #1e90ff);
+    }
+
+    /* Menu hover effect */
+    .css-1lcbmhc a:hover {
+        background-color: rgba(0, 191, 255, 0.2) !important;
+        border-radius: 6px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -43,31 +67,33 @@ st.markdown("""
 # --- SIDEBAR NAVIGATION ---
 with st.sidebar:
     selected = option_menu(
-        menu_title="Techmicals",  # Judul menu
+        menu_title="🌟 TECHMICALS",  # Judul menu
         options=["🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri", "📐 Konversi"],
         icons=["house", "flask", "calculator", "repeat"],
-        menu_icon="cast",
+        menu_icon="chemistry",
         default_index=0,
         styles={
-            "container": {"padding": "5!important", "background-color": "#f0f2f6"},
+            "container": {"padding": "5!important", "background-color": "transparent"},
             "icon": {"color": "#1e90ff", "font-size": "20px"},
             "nav-link": {
                 "font-size": "16px",
                 "text-align": "left",
-                "margin": "0px",
-                "--hover-color": "#eee"
+                "margin": "2px",
+                "transition": "all 0.3s ease-in-out"
             },
             "nav-link-selected": {
                 "background-color": "#1e90ff",
-                "color": "white"
+                "color": "white",
+                "border-radius": "8px",
+                "box-shadow": "0 4px 15px rgba(30, 144, 255, 0.4)"
             }
         }
     )
 
 # --- KONTEN HALAMAN SESUAI MENU ---
 if selected == "🏠 Home":
-    st.title("🏠 Selamat Datang di Website Kami")
-    st.write("Aplikasi interaktif untuk menghitung reaksi kimia, stoikiometri, dan konversi satuan.")
+    st.title("🏠 Selamat Datang di Website Kami!")
+    st.write("✨ Aplikasi interaktif untuk menghitung reaksi kimia, stoikiometri, dan konversi satuan.")
     st.image(
         "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
         use_container_width=True
@@ -77,17 +103,20 @@ elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
-        try:
-            reac, prod = equation.split("->")
-            reac_set = set(reac.strip().split('+'))
-            prod_set = set(prod.strip().split('+'))
-            reac_bal, prod_bal = balance_stoichiometry(reac_set, prod_set)
-            balanced_eq = " + ".join(f"{v} {k}" for k, v in reac_bal.items())
-            balanced_eq += " → "
-            balanced_eq += " + ".join(f"{v} {k}" for k, v in prod_bal.items())
-            st.success(f"*Persamaan Setara:* {balanced_eq}")
-        except Exception as e:
-            st.error(f"⚠ Error: {e}")
+        if "->" not in equation:
+            st.error("⚠ Format reaksi harus mengandung '->'")
+        else:
+            try:
+                reac, prod = equation.split("->")
+                reac_set = set(reac.strip().split('+'))
+                prod_set = set(prod.strip().split('+'))
+                reac_bal, prod_bal = balance_stoichiometry(reac_set, prod_set)
+                balanced_eq = " + ".join(f"{v} {k}" for k, v in reac_bal.items())
+                balanced_eq += " → "
+                balanced_eq += " + ".join(f"{v} {k}" for k, v in prod_bal.items())
+                st.success(f"*Persamaan Setara:* {balanced_eq}")
+            except Exception as e:
+                st.error(f"⚠ Error: {e}")
 
 elif selected == "🧪 Stoikiometri":
     st.title("🧪 Stoikiometri")
@@ -95,40 +124,19 @@ elif selected == "🧪 Stoikiometri":
     mass = st.number_input("Massa (gram)", min_value=0.0)
     if st.button("Hitung"):
         try:
-            # Improved regex to correctly parse chemical formulas like H2O, NaCl, C6H12O6.
-            # It captures an element symbol (e.g., H, Na, Cl) and an optional digit (subscript).
-            # [A-Z][a-z]* matches an uppercase letter followed by zero or more lowercase letters for the symbol.
-            # (\d*) matches the optional number (subscript), defaulting to 1 if not present.
-            pattern = re.findall(r'([A-Z][a-z]*)(\d*)', formula)
-            
-            molar_mass = 0.0 # Initialize as float
-            
-            if not pattern:
-                st.error("⚠ Error: Rumus kimia tidak valid atau tidak dapat diuraikan. Pastikan formatnya benar (e.g., H2O, NaCl).")
+            pattern = re.findall(r'([A-Z][a-z])(\d)', formula)
+            molar_mass = 0
+            for (element, count) in pattern:
+                element_mass = getattr(elements, element).mass
+                count = int(count) if count else 1
+                molar_mass += element_mass * count
+            if molar_mass == 0:
+                st.error("⚠ Rumus kimia tidak valid.")
             else:
-                all_elements_valid = True
-                for (element_symbol, count_str) in pattern:
-                    if not element_symbol: # Skip empty matches if any
-                        continue
-                    try:
-                        # Get element mass from periodictable library
-                        element_mass = elements.symbol(element_symbol).mass
-                        # Convert count string to integer, default to 1 if empty (no subscript)
-                        count = int(count_str) if count_str else 1
-                        molar_mass += element_mass * count
-                    except Exception:
-                        st.error(f"⚠ Error: Simbol elemen '{element_symbol}' tidak dikenal. Pastikan semua simbol elemen benar.")
-                        all_elements_valid = False # Mark that an invalid element was found
-                        break # Exit loop if an invalid element is found
-
-                if all_elements_valid: # Only proceed if all elements were valid
-                    if molar_mass > 0: # Ensure molar_mass is not zero before division
-                        moles = mass / molar_mass
-                        st.success(f"*Hasil:* {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
-                    else:
-                        st.error("⚠ Error: Massa molar tidak dapat dihitung atau bernilai nol. Periksa rumus kimia Anda.")
+                moles = mass / molar_mass
+                st.success(f"*Hasil:* {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
         except Exception as e:
-            st.error(f"⚠ Error umum: Terjadi masalah saat menghitung stoikiometri: {e}")
+            st.error(f"⚠ Error: {e}")
 
 elif selected == "📐 Konversi":
     st.title("📐 Konversi Suhu")
