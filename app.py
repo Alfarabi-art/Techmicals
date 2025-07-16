@@ -69,6 +69,7 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
+        st.experimental_rerun()
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
@@ -118,28 +119,31 @@ elif selected == "🧪 Stoikiometri":
 elif selected == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
     metode = st.selectbox("Pilih Metode", ["Molaritas", "Normalitas"])
-    if metode == "Molaritas":
-        solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
-        volume = st.number_input("Volume larutan (L)", min_value=0.0)
-        molar_mass = st.number_input("Massa molar zat (g/mol)", min_value=0.0)
-        if st.button("Hitung Molaritas"):
-            try:
-                mol = solute_mass / molar_mass
-                molarity = mol / volume
-                st.success(f"Molaritas: {molarity:.4f} mol/L")
-            except Exception as e:
-                st.error(f"⚠ Error: {e}")
-    elif metode == "Normalitas":
-        solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
-        eq_weight = st.number_input("Berat ekuivalen (g/eq)", min_value=0.0)
-        volume = st.number_input("Volume larutan (L)", min_value=0.0)
-        if st.button("Hitung Normalitas"):
-            try:
-                eq = solute_mass / eq_weight
-                normality = eq / volume
-                st.success(f"Normalitas: {normality:.4f} eq/L")
-            except Exception as e:
-                st.error(f"⚠ Error: {e}")
+    with st.form(key="konsentrasi_form"):
+        if metode == "Molaritas":
+            solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0, key="mol_mass")
+            volume = st.number_input("Volume larutan (L)", min_value=0.0, key="mol_vol")
+            molar_mass = st.number_input("Massa molar zat (g/mol)", min_value=0.0, key="mol_molar_mass")
+            hitung = st.form_submit_button("Hitung Molaritas")
+            if hitung:
+                try:
+                    mol = solute_mass / molar_mass
+                    molarity = mol / volume
+                    st.success(f"Molaritas: {molarity:.4f} mol/L")
+                except Exception as e:
+                    st.error(f"⚠ Error: {e}")
+        elif metode == "Normalitas":
+            solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0, key="norm_mass")
+            eq_weight = st.number_input("Berat ekuivalen (g/eq)", min_value=0.0, key="norm_eq_weight")
+            volume = st.number_input("Volume larutan (L)", min_value=0.0, key="norm_vol")
+            hitung = st.form_submit_button("Hitung Normalitas")
+            if hitung:
+                try:
+                    eq = solute_mass / eq_weight
+                    normality = eq / volume
+                    st.success(f"Normalitas: {normality:.4f} eq/L")
+                except Exception as e:
+                    st.error(f"⚠ Error: {e}")
 
 elif selected == "💧 pH dan pOH":
     st.title("💧 Hitung pH dan pOH")
@@ -173,22 +177,46 @@ elif selected == "🧬 Tabel Periodik":
 
 elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
-    kategori = st.selectbox("Pilih Kategori", [
-        "Mol ↔ Gram", "Mol ↔ Partikel", "Volume Gas (STP)",
-        "Tekanan", "Suhu", "Konsentrasi Larutan"
-    ])
-    nilai = st.number_input("Masukkan Nilai", value=1.0)
+    kategori = st.selectbox(
+        "Pilih Kategori",
+        [
+            "Mol ↔ Gram",
+            "Mol ↔ Partikel",
+            "Volume Gas (STP)",
+            "Tekanan",
+            "Suhu",
+            "Konsentrasi Larutan"
+        ],
+        key="konversi_kategori"
+    )
 
-    if kategori == "Konsentrasi Larutan":
-        dari = st.selectbox("Dari", ["Molaritas (M)", "Normalitas (N)"])
-        ke = st.selectbox("Ke", ["Normalitas (N)", "Molaritas (M)"])
-        valensi = st.number_input("Valensi", min_value=1)
-        if st.button("Konversi Konsentrasi"):
-            if dari == "Molaritas (M)" and ke == "Normalitas (N)":
-                normalitas = nilai * valensi
-                st.success(f"Normalitas: {normalitas:.4f} eq/L")
-            elif dari == "Normalitas (N)" and ke == "Molaritas (M)":
-                molaritas = nilai / valensi
-                st.success(f"Molaritas: {molaritas:.4f} mol/L")
-            else:
-                st.warning("Konversi ini belum didukung.")
+    if kategori == "Mol ↔ Gram":
+        with st.form(key="mol_gram_form"):
+            nilai = st.number_input("Masukkan Nilai", value=1.0, key="mol_gram_nilai")
+            molar_mass = st.number_input("Massa molar (g/mol)", value=18.0, key="mol_gram_molar_mass")
+            arah = st.radio("Konversi", ["Mol → Gram", "Gram → Mol"], key="mol_gram_arah")
+            hitung = st.form_submit_button("Hitung")
+            if hitung:
+                if arah == "Mol → Gram":
+                    hasil = nilai * molar_mass
+                    st.success(f"{hasil:.4f} gram")
+                else:
+                    hasil = nilai / molar_mass
+                    st.success(f"{hasil:.4f} mol")
+
+    elif kategori == "Konsentrasi Larutan":
+        with st.form(key="konversi_konsentrasi_form"):
+            nilai = st.number_input("Masukkan Nilai", value=1.0, key="konversi_konsentrasi_nilai")
+            dari = st.selectbox("Dari", ["Molaritas (M)", "Normalitas (N)"], key="konversi_konsentrasi_dari")
+            ke = st.selectbox("Ke", ["Normalitas (N)", "Molaritas (M)"], key="konversi_konsentrasi_ke")
+            valensi = st.number_input("Valensi", min_value=1, key="konversi_konsentrasi_valensi")
+            hitung = st.form_submit_button("Hitung Konsentrasi")
+            if hitung:
+                if dari == "Molaritas (M)" and ke == "Normalitas (N)":
+                    normalitas = nilai * valensi
+                    st.success(f"Normalitas: {normalitas:.4f} eq/L")
+                elif dari == "Normalitas (N)" and ke == "Molaritas (M)":
+                    molaritas = nilai / valensi
+                    st.success(f"Molaritas: {molaritas:.4f} mol/L")
+                else:
+                    st.warning("Konversi ini belum didukung.")
