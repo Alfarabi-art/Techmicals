@@ -81,8 +81,7 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         # Pindahkan user ke menu Reaksi Kimia
         st.experimental_set_query_params(menu="⚗ Reaksi Kimia")
-        st.experimental_rerun()
-    )
+        st.experimental_rerun)
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
