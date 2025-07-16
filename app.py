@@ -265,3 +265,53 @@ elif selected == "🔄 Konversi Satuan":
                     hasil = None
                 if hasil is not None:
                     st.success(f"Hasil: {hasil:.4f} {ke_satuan}")
+
+    elif selected == "📈 Regresi Linier":
+    st.title("📈 Kalkulator Regresi Linier")
+    st.write("Hitung slope, intercept, dan persamaan garis regresi.")
+
+    method = st.radio("Input data:", ["Manual", "Upload CSV"])
+
+    if method == "Manual":
+        x_values = st.text_area("Masukkan nilai X (pisahkan dengan koma):", "1, 2, 3, 4, 5")
+        y_values = st.text_area("Masukkan nilai Y (pisahkan dengan koma):", "2, 4, 5, 4, 5")
+        try:
+            x = [float(i.strip()) for i in x_values.split(",")]
+            y = [float(i.strip()) for i in y_values.split(",")]
+        except:
+            st.error("⚠ Pastikan semua nilai valid.")
+            x, y = [], []
+    else:
+        uploaded_file = st.file_uploader("Upload file CSV dengan kolom X dan Y")
+        if uploaded_file:
+            df = pd.read_csv(uploaded_file)
+            st.write(df)
+            x = df["X"]
+            y = df["Y"]
+        else:
+            x, y = [], []
+
+    if st.button("Hitung Regresi") and x and y:
+        from sklearn.linear_model import LinearRegression
+        import numpy as np
+        import matplotlib.pyplot as plt
+
+        X = np.array(x).reshape(-1, 1)
+        Y = np.array(y)
+        model = LinearRegression().fit(X, Y)
+
+        slope = model.coef_[0]
+        intercept = model.intercept_
+        r_sq = model.score(X, Y)
+
+        st.success(f"Persamaan garis: y = {slope:.3f}x + {intercept:.3f}")
+        st.info(f"R² = {r_sq:.4f}")
+
+        # Plot
+        fig, ax = plt.subplots()
+        ax.scatter(X, Y, color="blue", label="Data")
+        ax.plot(X, model.predict(X), color="red", label="Regresi Linier")
+        ax.set_xlabel("X")
+        ax.set_ylabel("Y")
+        ax.legend()
+        st.pyplot(fig)
