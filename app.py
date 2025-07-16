@@ -66,9 +66,10 @@ if selected == "🏠 Home":
     )
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True  # aktifkan sidebar
-        st.experimental_rerun()  # reload untuk munculkan sidebar
+        selected = "⚗ Reaksi Kimia"  # langsung arahkan ke fitur pertama
 
-elif selected == "⚗ Reaksi Kimia":
+# --- HALAMAN-HALAMAN ---
+if selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
@@ -86,32 +87,6 @@ elif selected == "⚗ Reaksi Kimia":
                 st.success(f"Persamaan Setara: {balanced_eq}")
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
-
-elif selected == "🧪 Stoikiometri":
-    st.title("🧪 Kalkulator Massa Molar")
-    formula = st.text_input("Rumus Kimia", "H2O")
-    mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")
-    if st.button("Hitung Mol"):
-        try:
-            mass = float(mass_input)
-            pattern = re.findall(r'([A-Z][a-z]?)(\d*)', formula)
-            molar_mass = 0
-            for (element, count) in pattern:
-                try:
-                    element_mass = getattr(elements, element).mass
-                    count = int(count) if count else 1
-                    molar_mass += element_mass * count
-                except AttributeError:
-                    st.error(f"⚠ Unsur {element} tidak ditemukan dalam tabel periodik.")
-                    break
-            else:
-                if molar_mass == 0:
-                    st.error("⚠ Rumus kimia tidak valid.")
-                else:
-                    moles = mass / molar_mass
-                    st.success(f"Hasil: {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
-        except ValueError:
-            st.error("⚠ Masukkan massa dalam angka yang valid.")
 
 elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
