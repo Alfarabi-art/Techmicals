@@ -5,6 +5,10 @@ from periodictable import elements
 import pandas as pd
 import re
 
+# --- INISIALISASI SESSION STATE ---
+if "open_sidebar" not in st.session_state:
+    st.session_state.open_sidebar = False
+
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Kalkulator Kimia Plus",
@@ -46,19 +50,16 @@ if selected == "🏠 Home":
         "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
         use_container_width=True
     )
-    
-    # Tombol untuk membuka sidebar
+
+    # Tombol buka sidebar
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state["open_sidebar"] = True
+        st.session_state.open_sidebar = True
         st.experimental_rerun()
 
-# --- CHECK SIDEBAR STATE ---
-if "open_sidebar" in st.session_state and st.session_state["open_sidebar"]:
-    # Memaksa pengguna ke sidebar (memilih menu selain Home)
-    st.sidebar.success("👈 Pilih fitur dari menu sidebar di sebelah kiri!")
-    st.sidebar.info("📌 Sidebar sudah terbuka, silakan pilih menu.")
-    st.sidebar.markdown("---")
-    st.session_state["open_sidebar"] = False  # Reset supaya tidak looping
+# --- AUTO OPEN SIDEBAR (Fix untuk rerun)
+if st.session_state.open_sidebar:
+    st.sidebar.success("👈 Sidebar sudah terbuka, silakan pilih fitur!")
+    st.session_state.open_sidebar = False
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
@@ -104,49 +105,6 @@ elif selected == "🧪 Stoikiometri":
                     st.success(f"Hasil: {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
         except ValueError:
             st.error("⚠ Masukkan massa dalam angka yang valid.")
-
-elif selected == "🧫 Konsentrasi Larutan":
-    st.title("🧫 Hitung Konsentrasi Larutan")
-    solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
-    volume = st.number_input("Volume larutan (L)", min_value=0.0)
-    molar_mass = st.number_input("Massa molar zat (g/mol)", min_value=0.0)
-    if st.button("Hitung Konsentrasi"):
-        try:
-            mol = solute_mass / molar_mass
-            molarity = mol / volume
-            st.success(f"Molaritas (M): {molarity:.4f} mol/L")
-        except Exception as e:
-            st.error(f"⚠ Error: {e}")
-
-elif selected == "💧 pH dan pOH":
-    st.title("💧 Hitung pH dan pOH")
-    conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
-    acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
-    if st.button("Hitung pH"):
-        import math
-        if conc > 0:
-            if acid_base == "Asam":
-                pH = -math.log10(conc)
-                pOH = 14 - pH
-            else:
-                pOH = -math.log10(conc)
-                pH = 14 - pOH
-            st.success(f"pH: {pH:.2f}, pOH: {pOH:.2f}")
-        else:
-            st.error("Konsentrasi harus lebih dari 0.")
-
-elif selected == "🧬 Tabel Periodik":
-    st.title("🧬 Tabel Periodik Interaktif")
-    periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
-                     for el in elements if el.number <= 118]
-    df = pd.DataFrame(periodic_data)
-    st.dataframe(df, use_container_width=True)
-    selected_element = st.selectbox("Pilih Unsur", [el.symbol for el in elements if el.number <= 118])
-    if selected_element:
-        el = getattr(elements, selected_element)
-        st.write(f"{el.name} ({el.symbol})")
-        st.write(f"Nomor Atom: {el.number}")
-        st.write(f"Massa Atom: {el.mass} g/mol")
 
 elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
