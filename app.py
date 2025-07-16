@@ -268,9 +268,9 @@ elif selected == "🔄 Konversi Satuan":
 
     elif selected == "📈 Regresi Linier":
     st.title("📈 Kalkulator Regresi Linier")
-    st.write("Hitung slope, intercept, dan persamaan garis regresi.")
+    st.write("Hitung slope, intercept, persamaan garis regresi, dan grafiknya.")
 
-    method = st.radio("Input data:", ["Manual", "Upload CSV"])
+    method = st.radio("Pilih metode input data:", ["Manual", "Upload CSV"])
 
     if method == "Manual":
         x_values = st.text_area("Masukkan nilai X (pisahkan dengan koma):", "1, 2, 3, 4, 5")
@@ -304,13 +304,13 @@ elif selected == "🔄 Konversi Satuan":
         intercept = model.intercept_
         r_sq = model.score(X, Y)
 
-        st.success(f"Persamaan garis: y = {slope:.3f}x + {intercept:.3f}")
-        st.info(f"R² = {r_sq:.4f}")
+        st.success(f"*Persamaan garis:* y = {slope:.3f}x + {intercept:.3f}")
+        st.info(f"*R² (koefisien determinasi):* {r_sq:.4f}")
 
-        # Plot
+        # Grafik
         fig, ax = plt.subplots()
         ax.scatter(X, Y, color="blue", label="Data")
-        ax.plot(X, model.predict(X), color="red", label="Regresi Linier")
+        ax.plot(X, model.predict(X), color="red", label="Garis Regresi")
         ax.set_xlabel("X")
         ax.set_ylabel("Y")
         ax.legend()
