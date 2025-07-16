@@ -1,0 +1,4 @@
+
+streamlit
+chempy
+periodictable
