@@ -167,4 +167,3 @@ elif selected == "🧬 Tabel Periodik":
         st.write(f"{el.name} ({el.symbol})")
         st.write(f"Nomor Atom: {el.number}")
         st.write(f"Massa Atom: {el.mass} g/mol")
-        st.write(f"Golongan: {el.group}, Periode: {el.period}")
