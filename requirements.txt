@@ -2,3 +2,4 @@
 streamlit
 chempy
 periodictable
+streamlit-option-menu
