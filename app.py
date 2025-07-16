@@ -70,6 +70,7 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
+        st.experimental_rerun()
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
@@ -175,10 +176,10 @@ elif selected == "🔄 Konversi Satuan":
         "Mol ↔ Partikel",
         "Volume Gas (STP)",
         "Tekanan",
-        "Suhu"
+        "Suhu",
+        "Konsentrasi Larutan"
     ])
 
-    # Mol <-> Gram
     if kategori == "Mol ↔ Gram":
         with st.form(key="mol_gram_form"):
             mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
@@ -188,7 +189,6 @@ elif selected == "🔄 Konversi Satuan":
                 mass = mol * molar_mass
                 st.success(f"Massa: {mass:.4f} gram")
 
-    # Mol <-> Partikel
     elif kategori == "Mol ↔ Partikel":
         with st.form(key="mol_partikel_form"):
             mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
@@ -198,7 +198,6 @@ elif selected == "🔄 Konversi Satuan":
                 partikel = mol * NA
                 st.success(f"Jumlah Partikel: {partikel:.2e}")
 
-    # Volume Gas STP
     elif kategori == "Volume Gas (STP)":
         with st.form(key="volume_stp_form"):
             mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
@@ -207,27 +206,37 @@ elif selected == "🔄 Konversi Satuan":
                 volume = mol * 22.4
                 st.success(f"Volume Gas: {volume:.2f} L (STP)")
 
-    # Suhu
-    elif kategori == "Suhu":
-        with st.form(key="suhu_form"):
-            temp_value = st.number_input("Masukkan Suhu", value=25.0)
-            from_unit = st.selectbox("Dari", ["C", "K", "F"])
-            to_unit = st.selectbox("Ke", ["C", "K", "F"])
-            hitung = st.form_submit_button("Konversi Suhu")
+    elif kategori == "Tekanan":
+        with st.form(key="tekanan_form"):
+            tekanan_awal = st.number_input("Nilai Tekanan", value=1.0)
+            dari_satuan = st.selectbox("Dari", ["atm", "Pa", "mmHg", "torr", "bar"])
+            ke_satuan = st.selectbox("Ke", ["atm", "Pa", "mmHg", "torr", "bar"])
+            hitung = st.form_submit_button("Konversi Tekanan")
             if hitung:
-                result = None
-                if from_unit == to_unit:
-                    result = temp_value
-                elif from_unit == "C" and to_unit == "K":
-                    result = temp_value + 273.15
-                elif from_unit == "C" and to_unit == "F":
-                    result = temp_value * 9/5 + 32
-                elif from_unit == "K" and to_unit == "C":
-                    result = temp_value - 273.15
-                elif from_unit == "K" and to_unit == "F":
-                    result = (temp_value - 273.15) * 9/5 + 32
-                elif from_unit == "F" and to_unit == "C":
-                    result = (temp_value - 32) * 5/9
-                elif from_unit == "F" and to_unit == "K":
-                    result = (temp_value - 32) * 5/9 + 273.15
-                st.success(f"Hasil Konversi: {result:.2f}°{to_unit}")
+                konversi_tekanan = {
+                    "atm": {"Pa": 101325, "mmHg": 760, "torr": 760, "bar": 1.01325},
+                    "Pa": {"atm": 1/101325, "mmHg": 760/101325, "torr": 760/101325, "bar": 1/100000},
+                    "mmHg": {"atm": 1/760, "Pa": 101325/760, "torr": 1, "bar": 1.01325/760},
+                    "torr": {"atm": 1/760, "Pa": 101325/760, "mmHg": 1, "bar": 1.01325/760},
+                    "bar": {"atm": 1/1.01325, "Pa": 100000, "mmHg": 760/1.01325, "torr": 760/1.01325}
+                }
+                if dari_satuan == ke_satuan:
+                    hasil = tekanan_awal
+                else:
+                    hasil = tekanan_awal * konversi_tekanan[dari_satuan][ke_satuan]
+                st.success(f"Hasil: {hasil:.4f} {ke_satuan}")
+
+    elif kategori == "Konsentrasi Larutan":
+        with st.form(key="konsentrasi_konversi_form"):
+            nilai_awal = st.number_input("Nilai Konsentrasi", value=1.0)
+            dari_satuan = st.selectbox("Dari", ["Molaritas (mol/L)", "Normalitas (eq/L)", "ppm", "% w/v"])
+            ke_satuan = st.selectbox("Ke", ["Molaritas (mol/L)", "Normalitas (eq/L)", "ppm", "% w/v"])
+            hitung = st.form_submit_button("Konversi Konsentrasi")
+            if hitung:
+                if dari_satuan == ke_satuan:
+                    hasil = nilai_awal
+                else:
+                    st.warning("⚠ Konversi ini perlu rumus khusus, tambahkan sesuai kebutuhan.")
+                    hasil = None
+                if hasil is not None:
+                    st.success(f"Hasil: {hasil:.4f} {ke_satuan}")
