@@ -97,22 +97,28 @@ elif selected == "⚗ Reaksi Kimia":
 elif selected == "🧪 Stoikiometri":
     st.title("🧪 Kalkulator Massa Molar")
     formula = st.text_input("Rumus Kimia", "H2O")
-    mass = st.number_input("Massa (gram)", min_value=0.0)
+    mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")  # Ganti koma jadi titik
     if st.button("Hitung Mol"):
         try:
-            pattern = re.findall(r'([A-Z][a-z])(\d)', formula)
+            mass = float(mass_input)
+            pattern = re.findall(r'([A-Z][a-z]?)(\d*)', formula)
             molar_mass = 0
             for (element, count) in pattern:
-                element_mass = getattr(elements, element).mass
-                count = int(count) if count else 1
-                molar_mass += element_mass * count
-            if molar_mass == 0:
-                st.error("⚠ Rumus kimia tidak valid.")
+                try:
+                    element_mass = getattr(elements, element).mass
+                    count = int(count) if count else 1
+                    molar_mass += element_mass * count
+                except AttributeError:
+                    st.error(f"⚠ Unsur {element} tidak ditemukan dalam tabel periodik.")
+                    break
             else:
-                moles = mass / molar_mass
-                st.success(f"*Hasil:* {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
-        except Exception as e:
-            st.error(f"⚠ Error: {e}")
+                if molar_mass == 0:
+                    st.error("⚠ Rumus kimia tidak valid.")
+                else:
+                    moles = mass / molar_mass
+                    st.success(f"*Hasil:* {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
+        except ValueError:
+            st.error("⚠ Masukkan massa dalam angka yang valid.")
 
 elif selected == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
