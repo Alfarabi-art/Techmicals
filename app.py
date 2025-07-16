@@ -4,6 +4,7 @@ from chempy import balance_stoichiometry
 from periodictable import elements
 import pandas as pd
 import re
+import math
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
@@ -138,6 +139,35 @@ elif selected == "🧫 Konsentrasi Larutan":
                 normality = eq / volume
                 st.success(f"Normalitas: {normality:.4f} eq/L")
 
+elif selected == "💧 pH dan pOH":
+    st.title("💧 Hitung pH dan pOH")
+    conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
+    acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
+    if st.button("Hitung pH dan pOH"):
+        if conc > 0:
+            if acid_base == "Asam":
+                pH = -math.log10(conc)
+                pOH = 14 - pH
+            else:
+                pOH = -math.log10(conc)
+                pH = 14 - pOH
+            st.success(f"pH: {pH:.2f}, pOH: {pOH:.2f}")
+        else:
+            st.error("Konsentrasi harus lebih dari 0.")
+
+elif selected == "🧬 Tabel Periodik":
+    st.title("🧬 Tabel Periodik Interaktif")
+    periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
+                     for el in elements if el.number <= 118]
+    df = pd.DataFrame(periodic_data)
+    st.dataframe(df, use_container_width=True)
+    selected_element = st.selectbox("Pilih Unsur", [el.symbol for el in elements if el.number <= 118])
+    if selected_element:
+        el = getattr(elements, selected_element)
+        st.write(f"{el.name} ({el.symbol})")
+        st.write(f"Nomor Atom: {el.number}")
+        st.write(f"Massa Atom: {el.mass} g/mol")
+
 elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
     kategori = st.selectbox("Pilih Kategori", [
@@ -210,3 +240,12 @@ elif selected == "🔄 Konversi Satuan":
                 elif dari == "F" and ke == "K":
                     result = (suhu - 32) * 5/9 + 273.15
                 st.success(f"{result:.2f} °{ke}")
+
+    elif kategori == "Konsentrasi Larutan":
+        with st.form(key="kons_larutan_form"):
+            nilai = st.number_input("Masukkan Nilai (mol/L)")
+            volume_ml = st.number_input("Volume (mL)")
+            hitung = st.form_submit_button("Hitung Konsentrasi")
+            if hitung:
+                conc = nilai * (volume_ml / 1000)
+                st.success(f"{conc:.4f} mol dalam {volume_ml:.2f} mL")
