@@ -5,34 +5,52 @@ from periodictable import elements
 import pandas as pd
 import re
 
-# --- CONFIGURASI HALAMAN ---
+# --- KONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Kalkulator Kimia Plus",
     page_icon="⚗",
     layout="wide"
 )
 
-# --- SIDEBAR NAVIGATION ---
-with st.sidebar:
-    selected = option_menu(
-        menu_title="🌟 Kalkulator Kimia",
-        options=[
-            "🏠 Home",
-            "⚗ Reaksi Kimia",
-            "🧪 Stoikiometri",
-            "🧫 Konsentrasi Larutan",
-            "💧 pH dan pOH",
-            "🧬 Tabel Periodik",
-            "🔄 Konversi Satuan"
-        ],
-        icons=[
-            "house", "flask", "calculator",
-            "droplet-half", "thermometer-half",
-            "grid-3x3-gap-fill", "repeat"
-        ],
-        menu_icon="chemistry",
-        default_index=0
-    )
+# --- SESSION STATE UNTUK SIDEBAR ---
+if "show_sidebar" not in st.session_state:
+    st.session_state.show_sidebar = False  # default: sidebar tersembunyi
+
+# --- CSS UNTUK SEMBUNYIKAN SIDEBAR ---
+if not st.session_state.show_sidebar:
+    hide_sidebar = """
+        <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+        </style>
+    """
+    st.markdown(hide_sidebar, unsafe_allow_html=True)
+
+# --- SIDEBAR NAVIGATION (akan muncul jika tombol ditekan) ---
+if st.session_state.show_sidebar:
+    with st.sidebar:
+        selected = option_menu(
+            menu_title="🌟 Kalkulator Kimia",
+            options=[
+                "🏠 Home",
+                "⚗ Reaksi Kimia",
+                "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan",
+                "💧 pH dan pOH",
+                "🧬 Tabel Periodik",
+                "🔄 Konversi Satuan"
+            ],
+            icons=[
+                "house", "flask", "calculator",
+                "droplet-half", "thermometer-half",
+                "grid-3x3-gap-fill", "repeat"
+            ],
+            menu_icon="chemistry",
+            default_index=0
+        )
+else:
+    selected = "🏠 Home"
 
 # --- KONTEN HALAMAN ---
 if selected == "🏠 Home":
@@ -46,9 +64,9 @@ if selected == "🏠 Home":
         "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
         use_container_width=True
     )
-    # Tombol buka sidebar
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.sidebar.success("👈 Sidebar sudah terbuka, silakan pilih fitur!")
+        st.session_state.show_sidebar = True  # aktifkan sidebar
+        st.experimental_rerun()  # reload untuk munculkan sidebar
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
@@ -107,45 +125,4 @@ elif selected == "🔄 Konversi Satuan":
         "Volume (mL ↔ L)"
     ])
     value = st.number_input("Masukkan Nilai", value=1.0)
-
-    if category == "Mol ↔ Gram":
-        formula = st.text_input("Rumus Kimia (contoh: H2O)")
-        direction = st.radio("Konversi", ["Mol → Gram", "Gram → Mol"])
-        if st.button("Hitung"):
-            try:
-                pattern = re.findall(r'([A-Z][a-z]?)(\d*)', formula)
-                molar_mass = 0
-                for (element, count) in pattern:
-                    element_mass = getattr(elements, element).mass
-                    count = int(count) if count else 1
-                    molar_mass += element_mass * count
-
-                if direction == "Mol → Gram":
-                    result = value * molar_mass
-                    st.success(f"{value} mol {formula} = {result:.4f} gram")
-                else:  # Gram → Mol
-                    result = value / molar_mass
-                    st.success(f"{value} gram {formula} = {result:.4f} mol")
-            except Exception as e:
-                st.error(f"⚠ Error: {e}")
-
-    elif category == "Suhu (°C, K, °F)":
-        from_unit = st.selectbox("Dari", ["°C", "K", "°F"])
-        to_unit = st.selectbox("Ke", ["°C", "K", "°F"])
-        if st.button("Konversi Suhu"):
-            result = None
-            if from_unit == to_unit:
-                result = value
-            elif from_unit == "°C" and to_unit == "K":
-                result = value + 273.15
-            elif from_unit == "°C" and to_unit == "°F":
-                result = (value * 9/5) + 32
-            elif from_unit == "K" and to_unit == "°C":
-                result = value - 273.15
-            elif from_unit == "K" and to_unit == "°F":
-                result = ((value - 273.15) * 9/5) + 32
-            elif from_unit == "°F" and to_unit == "°C":
-                result = (value - 32) * 5/9
-            elif from_unit == "°F" and to_unit == "K":
-                result = ((value - 32) * 5/9) + 273.15
-            st.success(f"Hasil: {result:.2f} {to_unit}")
+    st.info("Fitur konversi akan dihitung setelah kamu pilih kategori dan tekan tombol.")
