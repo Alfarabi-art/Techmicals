@@ -48,26 +48,30 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# --- STATE UNTUK NAVIGASI ---
+if "selected_page" not in st.session_state:
+    st.session_state["selected_page"] = "🏠 Home"
+
 # --- SIDEBAR NAVIGATION ---
-with st.sidebar:
-    selected = option_menu(
-        menu_title="🌟 Kalkulator Kimia",
-        options=[
-            "🏠 Home",
-            "⚗ Reaksi Kimia",
-            "🧪 Stoikiometri",
-            "🧫 Konsentrasi Larutan",
-            "💧 pH dan pOH",
-            "🧬 Tabel Periodik",
-            "🔄 Konversi Satuan"
-        ],
-        icons=["house", "flask", "calculator", "droplet-half", "thermometer-half", "grid-3x3-gap-fill", "repeat"],
-        menu_icon="chemistry",
-        default_index=0
-    )
+selected = option_menu(
+    menu_title="🌟 Kalkulator Kimia",
+    options=[
+        "🏠 Home",
+        "⚗ Reaksi Kimia",
+        "🧪 Stoikiometri",
+        "🧫 Konsentrasi Larutan",
+        "💧 pH dan pOH",
+        "🧬 Tabel Periodik",
+        "🔄 Konversi Satuan"
+    ],
+    icons=["house", "flask", "calculator", "droplet-half", "thermometer-half", "grid-3x3-gap-fill", "repeat"],
+    menu_icon="chemistry",
+    default_index=0,
+    key="selected_page"
+)
 
 # --- KONTEN HALAMAN ---
-if selected == "🏠 Home":
+if st.session_state["selected_page"] == "🏠 Home":
     st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
     st.write("""
         Hai! 👋 Selamat datang di Techmicals, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
@@ -79,10 +83,10 @@ if selected == "🏠 Home":
         use_container_width=True
     )
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state.selected_menu = "⚗ Reaksi Kimia"
+        st.session_state["selected_page"] = "⚗ Reaksi Kimia"
         st.experimental_rerun()
 
-elif selected == "⚗ Reaksi Kimia":
+elif st.session_state["selected_page"] == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
@@ -101,7 +105,7 @@ elif selected == "⚗ Reaksi Kimia":
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
 
-elif selected == "🧪 Stoikiometri":
+elif st.session_state["selected_page"] == "🧪 Stoikiometri":
     st.title("🧪 Kalkulator Massa Molar")
     formula = st.text_input("Rumus Kimia", "H2O")
     mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")
@@ -127,7 +131,7 @@ elif selected == "🧪 Stoikiometri":
         except ValueError:
             st.error("⚠ Masukkan massa dalam angka yang valid.")
 
-elif selected == "🧫 Konsentrasi Larutan":
+elif st.session_state["selected_page"] == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
     solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
     volume = st.number_input("Volume larutan (L)", min_value=0.0)
@@ -140,7 +144,7 @@ elif selected == "🧫 Konsentrasi Larutan":
         except Exception as e:
             st.error(f"⚠ Error: {e}")
 
-elif selected == "💧 pH dan pOH":
+elif st.session_state["selected_page"] == "💧 pH dan pOH":
     st.title("💧 Hitung pH dan pOH")
     conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
     acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
@@ -157,7 +161,7 @@ elif selected == "💧 pH dan pOH":
         else:
             st.error("Konsentrasi harus lebih dari 0.")
 
-elif selected == "🧬 Tabel Periodik":
+elif st.session_state["selected_page"] == "🧬 Tabel Periodik":
     st.title("🧬 Tabel Periodik Interaktif")
     periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
                      for el in elements if el.number <= 118]
@@ -170,46 +174,57 @@ elif selected == "🧬 Tabel Periodik":
         st.write(f"Nomor Atom: {el.number}")
         st.write(f"Massa Atom: {el.mass} g/mol")
 
-elif selected == "🔄 Konversi Satuan":
+elif st.session_state["selected_page"] == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
     category = st.selectbox("Pilih Kategori Konversi", [
-        "Mol ↔ Gram", "Mol ↔ Partikel", "Gram ↔ Partikel",
-        "Volume Gas STP (mol ↔ L)", "Tekanan (atm, mmHg, kPa)", 
-        "Energi (J ↔ cal)", "Suhu (°C, K, °F)", "Volume (mL ↔ L)", 
-        "Konsentrasi Larutan"
+        "Mol ↔ Gram", 
+        "Mol ↔ Partikel", 
+        "Volume Gas STP (mol ↔ L)", 
+        "Tekanan (atm, mmHg, kPa)", 
+        "Energi (J ↔ cal)", 
+        "Suhu (°C, K, °F)", 
+        "Volume (mL ↔ L)"
     ])
     value = st.number_input("Masukkan Nilai", value=1.0)
 
-    # --- Konversi Molaritas ---
-    if category == "Konsentrasi Larutan":
-        conc_type = st.selectbox("Jenis Konversi", ["Molaritas ↔ Normalitas", "Molaritas ↔ ppm", "Molaritas ↔ % w/v"])
-        if conc_type == "Molaritas ↔ Normalitas":
-            eq_factor = st.number_input("Faktor ekivalen (eq/mol)", value=1.0)
-            direction = st.radio("Arah Konversi", ["M → N", "N → M"])
-            if st.button("Konversi"):
-                if direction == "M → N":
-                    result = value * eq_factor
-                    st.success(f"{value} M = {result:.4f} N")
-                else:
-                    result = value / eq_factor
-                    st.success(f"{value} N = {result:.4f} M")
-        elif conc_type == "Molaritas ↔ ppm":
-            mm = st.number_input("Massa molar zat (g/mol)", value=18.0)
-            direction = st.radio("Arah Konversi", ["M → ppm", "ppm → M"])
-            if st.button("Konversi"):
-                if direction == "M → ppm":
-                    result = value * mm * 1000
-                    st.success(f"{value} M = {result:.2f} ppm")
-                else:
-                    result = value / (mm * 1000)
-                    st.success(f"{value} ppm = {result:.6f} M")
-        elif conc_type == "Molaritas ↔ % w/v":
-            mm = st.number_input("Massa molar zat (g/mol)", value=18.0)
-            direction = st.radio("Arah Konversi", ["M → % w/v", "% w/v → M"])
-            if st.button("Konversi"):
-                if direction == "M → % w/v":
-                    result = value * mm / 10
-                    st.success(f"{value} M = {result:.2f} % w/v")
-                else:
-                    result = value * 10 / mm
-                    st.success(f"{value} % w/v = {result:.6f} M")
+    if category == "Mol ↔ Gram":
+        formula = st.text_input("Rumus Kimia (contoh: H2O)")
+        direction = st.radio("Konversi", ["Mol → Gram", "Gram → Mol"])
+        if st.button("Hitung"):
+            try:
+                pattern = re.findall(r'([A-Z][a-z]?)(\d*)', formula)
+                molar_mass = 0
+                for (element, count) in pattern:
+                    element_mass = getattr(elements, element).mass
+                    count = int(count) if count else 1
+                    molar_mass += element_mass * count
+
+                if direction == "Mol → Gram":
+                    result = value * molar_mass
+                    st.success(f"{value} mol {formula} = {result:.4f} gram")
+                else:  # Gram → Mol
+                    result = value / molar_mass
+                    st.success(f"{value} gram {formula} = {result:.4f} mol")
+            except Exception as e:
+                st.error(f"⚠ Error: {e}")
+
+    elif category == "Suhu (°C, K, °F)":
+        from_unit = st.selectbox("Dari", ["°C", "K", "°F"])
+        to_unit = st.selectbox("Ke", ["°C", "K", "°F"])
+        if st.button("Konversi Suhu"):
+            result = None
+            if from_unit == to_unit:
+                result = value
+            elif from_unit == "°C" and to_unit == "K":
+                result = value + 273.15
+            elif from_unit == "°C" and to_unit == "°F":
+                result = (value * 9/5) + 32
+            elif from_unit == "K" and to_unit == "°C":
+                result = value - 273.15
+            elif from_unit == "K" and to_unit == "°F":
+                result = ((value - 273.15) * 9/5) + 32
+            elif from_unit == "°F" and to_unit == "°C":
+                result = (value - 32) * 5/9
+            elif from_unit == "°F" and to_unit == "K":
+                result = ((value - 32) * 5/9) + 273.15
+            st.success(f"Hasil: {result:.2f} {to_unit}")
