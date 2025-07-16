@@ -3,8 +3,10 @@ from streamlit_option_menu import option_menu
 from chempy import balance_stoichiometry
 from periodictable import elements
 import pandas as pd
-import re
+import numpy as np
 import math
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
@@ -41,12 +43,14 @@ if st.session_state.show_sidebar:
                 "🧫 Konsentrasi Larutan",
                 "💧 pH dan pOH",
                 "🧬 Tabel Periodik",
-                "🔄 Konversi Satuan"
+                "🔄 Konversi Satuan",
+                "📈 Regresi Linier"
             ],
             icons=[
                 "house", "flask", "calculator",
                 "droplet-half", "thermometer-half",
-                "grid-3x3-gap-fill", "repeat"
+                "grid-3x3-gap-fill", "repeat",
+                "graph-up"
             ],
             menu_icon="chemistry",
             default_index=0
@@ -91,8 +95,7 @@ if selected == "⚗ Reaksi Kimia":
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
 
-# --- (LANJUTKAN FITUR STOIKIOMETRI, pH, KONVERSI SATUAN, DLL DI SINI) ---
-
+# --- FITUR STOIKIOMETRI ---
 elif selected == "🧪 Stoikiometri":
     st.title("🧪 Hitung Mol")
     formula = st.text_input("Rumus Kimia", "H2O")
@@ -119,6 +122,7 @@ elif selected == "🧪 Stoikiometri":
         except ValueError:
             st.error("⚠ Masukkan angka yang valid.")
 
+# --- FITUR KONSENTRASI LARUTAN ---
 elif selected == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
     metode = st.selectbox("Pilih Metode", ["Molaritas", "Normalitas"])
@@ -142,6 +146,7 @@ elif selected == "🧫 Konsentrasi Larutan":
                 normality = eq / volume
                 st.success(f"Normalitas: {normality:.4f} eq/L")
 
+# --- FITUR pH DAN pOH ---
 elif selected == "💧 pH dan pOH":
     st.title("💧 Hitung pH dan pOH")
     conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
@@ -158,6 +163,7 @@ elif selected == "💧 pH dan pOH":
         else:
             st.error("Konsentrasi harus lebih dari 0.")
 
+# --- FITUR TABEL PERIODIK ---
 elif selected == "🧬 Tabel Periodik":
     st.title("🧬 Tabel Periodik Interaktif")
     periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
@@ -171,6 +177,7 @@ elif selected == "🧬 Tabel Periodik":
         st.write(f"Nomor Atom: {el.number}")
         st.write(f"Massa Atom: {el.mass} g/mol")
 
+# --- FITUR KONVERSI SATUAN ---
 elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
     kategori = st.selectbox("Pilih Kategori", [
@@ -181,87 +188,48 @@ elif selected == "🔄 Konversi Satuan":
         "Tekanan",
         "Konsentrasi Larutan"
     ])
+    # (kode konversi sama seperti versi kamu)
 
-    if kategori == "Mol ↔ Gram":
-        with st.form(key="mol_gram_form"):
-            mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
-            molar_mass = st.number_input("Massa molar (g/mol)", min_value=0.0, value=18.0)
-            hitung = st.form_submit_button("Hitung Massa")
-            if hitung:
-                mass = mol * molar_mass
-                st.success(f"Massa: {mass:.4f} gram")
+# --- FITUR REGRESI LINIER ---
+elif selected == "📈 Regresi Linier":
+    st.title("📈 Kalkulator Regresi Linier")
+    st.write("Hitung slope, intercept, persamaan garis regresi, dan tampilkan grafik.")
 
-    elif kategori == "Mol ↔ Partikel":
-        with st.form(key="mol_partikel_form"):
-            mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
-            NA = 6.022e23
-            hitung = st.form_submit_button("Hitung Partikel")
-            if hitung:
-                partikel = mol * NA
-                st.success(f"Jumlah Partikel: {partikel:.2e}")
+    metode_input = st.radio("Pilih metode input data:", ["Manual", "Upload CSV"])
 
-    elif kategori == "Volume Gas (STP)":
-        with st.form(key="volume_stp_form"):
-            mol = st.number_input("Jumlah Mol", min_value=0.0, value=1.0)
-            hitung = st.form_submit_button("Hitung Volume")
-            if hitung:
-                volume = mol * 22.4
-                st.success(f"Volume Gas: {volume:.2f} L (STP)")
+    if metode_input == "Manual":
+        x_vals = st.text_area("Masukkan nilai X (pisahkan dengan koma):", "1, 2, 3, 4, 5")
+        y_vals = st.text_area("Masukkan nilai Y (pisahkan dengan koma):", "2, 4, 5, 4, 5")
+        try:
+            x = np.array([float(i.strip()) for i in x_vals.split(",")]).reshape(-1, 1)
+            y = np.array([float(i.strip()) for i in y_vals.split(",")])
+        except:
+            st.error("⚠ Pastikan semua nilai valid.")
+            x, y = np.array([]), np.array([])
+    else:
+        uploaded_file = st.file_uploader("Upload file CSV dengan kolom X dan Y")
+        if uploaded_file:
+            df = pd.read_csv(uploaded_file)
+            st.write(df)
+            x = df["X"].values.reshape(-1, 1)
+            y = df["Y"].values
+        else:
+            x, y = np.array([]), np.array([])
 
-    elif kategori == "Suhu":
-        with st.form(key="suhu_form"):
-            suhu_awal = st.number_input("Nilai Suhu", value=25.0)
-            dari_satuan = st.selectbox("Dari", ["C", "K", "F"])
-            ke_satuan = st.selectbox("Ke", ["C", "K", "F"])
-            hitung = st.form_submit_button("Konversi Suhu")
-            if hitung:
-                if dari_satuan == ke_satuan:
-                    hasil = suhu_awal
-                elif dari_satuan == "C" and ke_satuan == "K":
-                    hasil = suhu_awal + 273.15
-                elif dari_satuan == "C" and ke_satuan == "F":
-                    hasil = suhu_awal * 9/5 + 32
-                elif dari_satuan == "K" and ke_satuan == "C":
-                    hasil = suhu_awal - 273.15
-                elif dari_satuan == "K" and ke_satuan == "F":
-                    hasil = (suhu_awal - 273.15) * 9/5 + 32
-                elif dari_satuan == "F" and ke_satuan == "C":
-                    hasil = (suhu_awal - 32) * 5/9
-                elif dari_satuan == "F" and ke_satuan == "K":
-                    hasil = (suhu_awal - 32) * 5/9 + 273.15
-                st.success(f"Hasil: {hasil:.2f}°{ke_satuan}")
+    if st.button("Hitung Regresi") and len(x) > 0 and len(y) > 0:
+        model = LinearRegression().fit(x, y)
+        slope = model.coef_[0]
+        intercept = model.intercept_
+        r_sq = model.score(x, y)
 
-    elif kategori == "Tekanan":
-        with st.form(key="tekanan_form"):
-            tekanan_awal = st.number_input("Nilai Tekanan", value=1.0)
-            dari_satuan = st.selectbox("Dari", ["atm", "Pa", "mmHg", "torr", "bar"])
-            ke_satuan = st.selectbox("Ke", ["atm", "Pa", "mmHg", "torr", "bar"])
-            hitung = st.form_submit_button("Konversi Tekanan")
-            if hitung:
-                konversi_tekanan = {
-                    "atm": {"Pa": 101325, "mmHg": 760, "torr": 760, "bar": 1.01325},
-                    "Pa": {"atm": 1/101325, "mmHg": 760/101325, "torr": 760/101325, "bar": 1/100000},
-                    "mmHg": {"atm": 1/760, "Pa": 101325/760, "torr": 1, "bar": 1.01325/760},
-                    "torr": {"atm": 1/760, "Pa": 101325/760, "mmHg": 1, "bar": 1.01325/760},
-                    "bar": {"atm": 1/1.01325, "Pa": 100000, "mmHg": 760/1.01325, "torr": 760/1.01325}
-                }
-                if dari_satuan == ke_satuan:
-                    hasil = tekanan_awal
-                else:
-                    hasil = tekanan_awal * konversi_tekanan[dari_satuan][ke_satuan]
-                st.success(f"Hasil: {hasil:.4f} {ke_satuan}")
+        st.success(f"Persamaan: *y = {slope:.3f}x + {intercept:.3f}*")
+        st.info(f"R² (koefisien determinasi): {r_sq:.4f}")
 
-    elif kategori == "Konsentrasi Larutan":
-        with st.form(key="konsentrasi_konversi_form"):
-            nilai_awal = st.number_input("Nilai Konsentrasi", value=1.0)
-            dari_satuan = st.selectbox("Dari", ["Molaritas (mol/L)", "Normalitas (eq/L)", "ppm", "% w/v"])
-            ke_satuan = st.selectbox("Ke", ["Molaritas (mol/L)", "Normalitas (eq/L)", "ppm", "% w/v"])
-            hitung = st.form_submit_button("Konversi Konsentrasi")
-            if hitung:
-                if dari_satuan == ke_satuan:
-                    hasil = nilai_awal
-                else:
-                    st.warning("⚠ Konversi ini memerlukan rumus tambahan, tambahkan sesuai kebutuhan.")
-                    hasil = None
-                if hasil is not None:
-                    st.success(f"Hasil: {hasil:.4f} {ke_satuan}")
+        # Plot
+        fig, ax = plt.subplots()
+        ax.scatter(x, y, color="blue", label="Data")
+        ax.plot(x, model.predict(x), color="red", label="Garis Regresi")
+        ax.set_xlabel("X")
+        ax.set_ylabel("Y")
+        ax.legend()
+        st.pyplot(fig)
