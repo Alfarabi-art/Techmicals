@@ -18,6 +18,8 @@ if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
+if "trigger_sidebar" not in st.session_state:
+    st.session_state.trigger_sidebar = False
 
 # --- SEMBUNYIKAN SIDEBAR DI AWAL ---
 if not st.session_state.show_sidebar:
@@ -70,7 +72,12 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.experimental_rerun()  # Reload untuk munculkan sidebar
+        st.session_state.trigger_sidebar = True
+        st.experimental_rerun()  # ✅ Aman karena hanya dipanggil sekali
+
+# --- CEGAH RERUN BERULANG ---
+if st.session_state.trigger_sidebar:
+    st.session_state.trigger_sidebar = False
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
