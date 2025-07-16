@@ -10,7 +10,7 @@ import math
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Kalkulator Kimia Plus",
+    page_title="Techmicals",
     page_icon="⚗",
     layout="wide"
 )
