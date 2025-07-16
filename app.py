@@ -4,9 +4,9 @@ from chempy import balance_stoichiometry
 from periodictable import elements
 import pandas as pd
 import numpy as np
-import math
 import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
+import re
+import math
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
@@ -14,6 +14,50 @@ st.set_page_config(
     page_icon="⚗",
     layout="wide"
 )
+
+# --- CUSTOM STYLE (GRADIENT BACKGROUND + FONT) ---
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    .stApp {
+        background: linear-gradient(135deg, #d1f2eb, #fef9e7, #fde2e4, #e0f7fa);
+        background-size: 400% 400%;
+        animation: gradientFlow 15s ease infinite;
+        color: #000000 !important;
+    }
+
+    @keyframes gradientFlow {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+
+    [data-testid="stSidebar"] {
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(6px);
+        border-radius: 10px;
+    }
+
+    .stButton>button {
+        background: linear-gradient(90deg, #1e90ff, #00bfff);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 24px;
+        font-size: 16px;
+        transition: all 0.3s ease-in-out;
+    }
+    .stButton>button:hover {
+        transform: scale(1.05);
+        background: linear-gradient(90deg, #00bfff, #1e90ff);
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # --- SESSION STATE ---
 if "show_sidebar" not in st.session_state:
@@ -49,8 +93,7 @@ if st.session_state.show_sidebar:
             icons=[
                 "house", "flask", "calculator",
                 "droplet-half", "thermometer-half",
-                "grid-3x3-gap-fill", "repeat",
-                "graph-up"
+                "grid-3x3-gap-fill", "repeat", "graph-up"
             ],
             menu_icon="chemistry",
             default_index=0
@@ -63,7 +106,7 @@ selected = st.session_state.menu_selected
 if selected == "🏠 Home":
     st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
     st.write("""
-        Hai! 👋 Selamat datang di Techmicals, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
+        Hai! 👋 Selamat datang di *Techmicals*, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
         Mau setarakan reaksi? Hitung mol? Cari massa molar? Semua bisa kamu lakukan di sini, cepat dan praktis.  
         🚀 Yuk mulai bereksperimen tanpa ribet!
     """)
@@ -74,6 +117,8 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
+        st.experimental_rerun()
+
 
 # --- FITUR REAKSI KIMIA ---
 if selected == "⚗ Reaksi Kimia":
