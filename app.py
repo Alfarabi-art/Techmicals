@@ -50,7 +50,7 @@ if st.session_state.show_sidebar:
             default_index=0
         )
 else:
-    selected = "🏠 Home"
+    selected = "🏠 Home"  # Default: hanya halaman Home tampil
 
 # --- KONTEN HALAMAN ---
 if selected == "🏠 Home":
@@ -66,38 +66,5 @@ if selected == "🏠 Home":
     )
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True  # aktifkan sidebar
-        selected = "⚗ Reaksi Kimia"  # langsung arahkan ke fitur pertama
-
-# --- HALAMAN-HALAMAN ---
-if selected == "⚗ Reaksi Kimia":
-    st.title("⚗ Setarakan Reaksi Kimia")
-    equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
-    if st.button("Setarakan"):
-        if "->" not in equation:
-            st.error("⚠ Format reaksi harus mengandung '->'")
-        else:
-            try:
-                reac, prod = equation.split("->")
-                reac_set = set(reac.strip().split('+'))
-                prod_set = set(prod.strip().split('+'))
-                reac_bal, prod_bal = balance_stoichiometry(reac_set, prod_set)
-                balanced_eq = " + ".join(f"{v} {k}" for k, v in reac_bal.items())
-                balanced_eq += " → "
-                balanced_eq += " + ".join(f"{v} {k}" for k, v in prod_bal.items())
-                st.success(f"Persamaan Setara: {balanced_eq}")
-            except Exception as e:
-                st.error(f"⚠ Error: {e}")
-
-elif selected == "🔄 Konversi Satuan":
-    st.title("🔄 Konversi Satuan Kimia")
-    category = st.selectbox("Pilih Kategori Konversi", [
-        "Mol ↔ Gram",
-        "Mol ↔ Partikel",
-        "Volume Gas STP (mol ↔ L)",
-        "Tekanan (atm, mmHg, kPa)",
-        "Energi (J ↔ cal)",
-        "Suhu (°C, K, °F)",
-        "Volume (mL ↔ L)"
-    ])
-    value = st.number_input("Masukkan Nilai", value=1.0)
-    st.info("Fitur konversi akan dihitung setelah kamu pilih kategori dan tekan tombol.")
+        # Jangan set selected, biarkan user pilih menu
+        st.experimental_rerun()  # reload tampilan supaya sidebar muncul
