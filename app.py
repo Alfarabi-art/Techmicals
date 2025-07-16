@@ -117,8 +117,6 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.experimental_rerun()
-
 
 # --- FITUR REAKSI KIMIA ---
 if selected == "⚗ Reaksi Kimia":
