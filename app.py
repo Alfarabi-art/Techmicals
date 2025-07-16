@@ -48,6 +48,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# --- INITIALIZE SESSION STATE ---
+if "selected_menu" not in st.session_state:
+    st.session_state.selected_menu = "🏠 Home"
+
 # --- SIDEBAR NAVIGATION ---
 with st.sidebar:
     selected = option_menu(
@@ -58,16 +62,20 @@ with st.sidebar:
             "🧪 Stoikiometri",
             "🧫 Konsentrasi Larutan",
             "💧 pH dan pOH",
-            "📊 Persentase Yield",
-            "🧬 Tabel Periodik"
+            "🧬 Tabel Periodik",
+            "🔄 Konversi Satuan",
+            "📌 Fraksi Mol & % Berat"
         ],
-        icons=["house", "flask", "calculator", "droplet-half", "thermometer-half", "percent", "grid-3x3-gap-fill"],
+        icons=["house", "flask", "calculator", "droplet-half", "thermometer-half", "grid-3x3-gap-fill", "repeat", "percent"],
         menu_icon="chemistry",
         default_index=0
     )
 
+# Update session state with current menu
+st.session_state.selected_menu = selected
+
 # --- KONTEN HALAMAN SESUAI MENU ---
-if selected == "🏠 Home":
+if st.session_state.selected_menu == "🏠 Home":
     st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
     st.write("""
         Hai! 👋 Selamat datang di Techmicals, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
@@ -79,10 +87,9 @@ if selected == "🏠 Home":
         use_container_width=True
     )
     if st.button("⚗ Mulai Hitung Sekarang"):
-        selected = "⚗ Reaksi Kimia"  # langsung alihkan ke menu Reaksi Kimia
-        st.experimental_rerun()  # ✅ dipanggil sebagai fungsi
+        st.session_state.selected_menu = "⚗ Reaksi Kimia"  # Pindah menu
 
-elif selected == "⚗ Reaksi Kimia":
+elif st.session_state.selected_menu == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
@@ -101,7 +108,7 @@ elif selected == "⚗ Reaksi Kimia":
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
 
-elif selected == "🧪 Stoikiometri":
+elif st.session_state.selected_menu == "🧪 Stoikiometri":
     st.title("🧪 Kalkulator Massa Molar")
     formula = st.text_input("Rumus Kimia", "H2O")
     mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")  # Ganti koma jadi titik
@@ -127,7 +134,7 @@ elif selected == "🧪 Stoikiometri":
         except ValueError:
             st.error("⚠ Masukkan massa dalam angka yang valid.")
 
-elif selected == "🧫 Konsentrasi Larutan":
+elif st.session_state.selected_menu == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
     solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
     volume = st.number_input("Volume larutan (L)", min_value=0.0)
@@ -140,7 +147,7 @@ elif selected == "🧫 Konsentrasi Larutan":
         except Exception as e:
             st.error(f"⚠ Error: {e}")
 
-elif selected == "💧 pH dan pOH":
+elif st.session_state.selected_menu == "💧 pH dan pOH":
     st.title("💧 Hitung pH dan pOH")
     conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
     acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
@@ -157,18 +164,7 @@ elif selected == "💧 pH dan pOH":
         else:
             st.error("Konsentrasi harus lebih dari 0.")
 
-elif selected == "📊 Persentase Yield":
-    st.title("📊 Hitung Persentase Yield")
-    teoritis = st.number_input("Hasil Teoritis (gram)", min_value=0.0)
-    aktual = st.number_input("Hasil Aktual (gram)", min_value=0.0)
-    if st.button("Hitung Yield"):
-        try:
-            yield_percent = (aktual / teoritis) * 100
-            st.success(f"Persentase Yield: {yield_percent:.2f}%")
-        except Exception as e:
-            st.error(f"⚠ Error: {e}")
-
-elif selected == "🧬 Tabel Periodik":
+elif st.session_state.selected_menu == "🧬 Tabel Periodik":
     st.title("🧬 Tabel Periodik Interaktif")
     periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
                      for el in elements if el.number <= 118]
@@ -180,3 +176,45 @@ elif selected == "🧬 Tabel Periodik":
         st.write(f"{el.name} ({el.symbol})")
         st.write(f"Nomor Atom: {el.number}")
         st.write(f"Massa Atom: {el.mass} g/mol")
+
+elif st.session_state.selected_menu == "🔄 Konversi Satuan":
+    st.title("🔄 Konversi Satuan Kimia")
+    value = st.number_input("Masukkan Nilai", value=1.0)
+    from_unit = st.selectbox("Dari", ["mol", "gram", "L (gas STP)"])
+    to_unit = st.selectbox("Ke", ["mol", "gram", "L (gas STP)"])
+    molar_mass_conv = st.number_input("Massa molar (g/mol) *jika diperlukan", value=18.0)
+    if st.button("Konversi"):
+        result = None
+        try:
+            if from_unit == "mol" and to_unit == "gram":
+                result = value * molar_mass_conv
+            elif from_unit == "gram" and to_unit == "mol":
+                result = value / molar_mass_conv
+            elif from_unit == "mol" and to_unit == "L (gas STP)":
+                result = value * 22.4
+            elif from_unit == "L (gas STP)" and to_unit == "mol":
+                result = value / 22.4
+            elif from_unit == to_unit:
+                result = value
+            st.success(f"Hasil: {result:.4f} {to_unit}")
+        except Exception as e:
+            st.error(f"⚠ Error: {e}")
+
+elif st.session_state.selected_menu == "📌 Fraksi Mol & % Berat":
+    st.title("📌 Hitung Fraksi Mol & % Berat")
+    mol_komp1 = st.number_input("Mol Komponen 1", value=1.0)
+    mol_komp2 = st.number_input("Mol Komponen 2", value=1.0)
+    mass_komp1 = st.number_input("Massa Komponen 1 (g)", value=10.0)
+    mass_komp2 = st.number_input("Massa Komponen 2 (g)", value=90.0)
+    if st.button("Hitung"):
+        try:
+            total_mol = mol_komp1 + mol_komp2
+            total_mass = mass_komp1 + mass_komp2
+            x1 = mol_komp1 / total_mol
+            x2 = mol_komp2 / total_mol
+            percent_mass_1 = (mass_komp1 / total_mass) * 100
+            percent_mass_2 = (mass_komp2 / total_mass) * 100
+            st.success(f"Fraksi Mol: Komp1 = {x1:.4f}, Komp2 = {x2:.4f}")
+            st.success(f"% Berat: Komp1 = {percent_mass_1:.2f}%, Komp2 = {percent_mass_2:.2f}%")
+        except Exception as e:
+            st.error(f"⚠ Error: {e}")
