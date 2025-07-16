@@ -16,9 +16,9 @@ st.set_page_config(
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
-    st.session_state.menu_selected = "🏠 Home"  # Default halaman
+    st.session_state.menu_selected = "🏠 Home"
 
-# --- CSS UNTUK SEMBUNYIKAN SIDEBAR ---
+# --- SEMBUNYIKAN SIDEBAR DI AWAL ---
 if not st.session_state.show_sidebar:
     st.markdown("""
         <style>
@@ -67,7 +67,6 @@ if selected == "🏠 Home":
         use_container_width=True
     )
     if st.button("⚗ Mulai Hitung Sekarang"):
-        # Aktifkan sidebar tanpa reload
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
@@ -118,16 +117,29 @@ elif selected == "🧪 Stoikiometri":
 
 elif selected == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
-    solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
-    volume = st.number_input("Volume larutan (L)", min_value=0.0)
-    molar_mass = st.number_input("Massa molar zat (g/mol)", min_value=0.0)
-    if st.button("Hitung Konsentrasi"):
-        try:
-            mol = solute_mass / molar_mass
-            molarity = mol / volume
-            st.success(f"Molaritas: {molarity:.4f} mol/L")
-        except Exception as e:
-            st.error(f"⚠ Error: {e}")
+    metode = st.selectbox("Pilih Metode", ["Molaritas", "Normalitas"])
+    if metode == "Molaritas":
+        solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
+        volume = st.number_input("Volume larutan (L)", min_value=0.0)
+        molar_mass = st.number_input("Massa molar zat (g/mol)", min_value=0.0)
+        if st.button("Hitung Molaritas"):
+            try:
+                mol = solute_mass / molar_mass
+                molarity = mol / volume
+                st.success(f"Molaritas: {molarity:.4f} mol/L")
+            except Exception as e:
+                st.error(f"⚠ Error: {e}")
+    elif metode == "Normalitas":
+        solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
+        eq_weight = st.number_input("Berat ekuivalen (g/eq)", min_value=0.0)
+        volume = st.number_input("Volume larutan (L)", min_value=0.0)
+        if st.button("Hitung Normalitas"):
+            try:
+                eq = solute_mass / eq_weight
+                normality = eq / volume
+                st.success(f"Normalitas: {normality:.4f} eq/L")
+            except Exception as e:
+                st.error(f"⚠ Error: {e}")
 
 elif selected == "💧 pH dan pOH":
     st.title("💧 Hitung pH dan pOH")
@@ -167,77 +179,16 @@ elif selected == "🔄 Konversi Satuan":
     ])
     nilai = st.number_input("Masukkan Nilai", value=1.0)
 
-    if kategori == "Mol ↔ Gram":
-        mm = st.number_input("Massa Molar (g/mol)", value=18.0)
-        arah = st.radio("Konversi", ["Mol ➝ Gram", "Gram ➝ Mol"])
-        if st.button("Hitung"):
-            hasil = nilai * mm if arah == "Mol ➝ Gram" else nilai / mm
-            satuan = "gram" if arah == "Mol ➝ Gram" else "mol"
-            st.success(f"Hasil: {hasil:.4f} {satuan}")
-
-    elif kategori == "Konsentrasi Larutan":
-        dari = st.selectbox("Dari", ["Molaritas (M)", "Molalitas (m)", "ppm", "ppb"])
-        ke = st.selectbox("Ke", ["Molalitas (m)", "Molaritas (M)", "ppm", "ppb"])
-        massa_pelarut = st.number_input("Massa Pelarut (kg)", min_value=0.001)
-        if st.button("Hitung"):
-            if dari == "Molaritas (M)" and ke == "Molalitas (m)":
-                molalitas = nilai / massa_pelarut
-                st.success(f"Hasil: {molalitas:.4f} mol/kg (Molalitas)")
-            elif dari == "Molalitas (m)" and ke == "Molaritas (M)":
-                molaritas = nilai * massa_pelarut
-                st.success(f"Hasil: {molaritas:.4f} mol/L (Molaritas)")
+    if kategori == "Konsentrasi Larutan":
+        dari = st.selectbox("Dari", ["Molaritas (M)", "Normalitas (N)"])
+        ke = st.selectbox("Ke", ["Normalitas (N)", "Molaritas (M)"])
+        valensi = st.number_input("Valensi", min_value=1)
+        if st.button("Konversi Konsentrasi"):
+            if dari == "Molaritas (M)" and ke == "Normalitas (N)":
+                normalitas = nilai * valensi
+                st.success(f"Normalitas: {normalitas:.4f} eq/L")
+            elif dari == "Normalitas (N)" and ke == "Molaritas (M)":
+                molaritas = nilai / valensi
+                st.success(f"Molaritas: {molaritas:.4f} mol/L")
             else:
-                st.warning("Konversi belum didukung sepenuhnya untuk kombinasi ini.")
-
-    elif kategori == "Mol ↔ Partikel":
-        arah = st.radio("Konversi", ["Mol ➝ Partikel", "Partikel ➝ Mol"])
-        if st.button("Hitung"):
-            NA = 6.022e23
-            hasil = nilai * NA if arah == "Mol ➝ Partikel" else nilai / NA
-            satuan = "partikel" if arah == "Mol ➝ Partikel" else "mol"
-            st.success(f"Hasil: {hasil:.4e} {satuan}")
-
-    elif kategori == "Volume Gas (STP)":
-        arah = st.radio("Konversi", ["Mol ➝ Liter (STP)", "Liter ➝ Mol (STP)"])
-        if st.button("Hitung"):
-            molar_volume = 22.4
-            hasil = nilai * molar_volume if arah == "Mol ➝ Liter (STP)" else nilai / molar_volume
-            satuan = "L" if arah == "Mol ➝ Liter (STP)" else "mol"
-            st.success(f"Hasil: {hasil:.4f} {satuan}")
-
-    elif kategori == "Tekanan":
-        dari = st.selectbox("Dari", ["atm", "Pa", "mmHg"])
-        ke = st.selectbox("Ke", ["atm", "Pa", "mmHg"])
-        if st.button("Hitung"):
-            atm_value = nilai
-            if dari == "Pa":
-                atm_value = nilai / 101325
-            elif dari == "mmHg":
-                atm_value = nilai / 760
-            hasil = atm_value
-            if ke == "Pa":
-                hasil = atm_value * 101325
-            elif ke == "mmHg":
-                hasil = atm_value * 760
-            st.success(f"Hasil: {hasil:.4f} {ke}")
-
-    elif kategori == "Suhu":
-        dari = st.selectbox("Dari", ["°C", "K", "°F"])
-        ke = st.selectbox("Ke", ["°C", "K", "°F"])
-        if st.button("Hitung"):
-            hasil = None
-            if dari == ke:
-                hasil = nilai
-            elif dari == "°C" and ke == "K":
-                hasil = nilai + 273.15
-            elif dari == "°C" and ke == "°F":
-                hasil = (nilai * 9/5) + 32
-            elif dari == "K" and ke == "°C":
-                hasil = nilai - 273.15
-            elif dari == "K" and ke == "°F":
-                hasil = (nilai - 273.15) * 9/5 + 32
-            elif dari == "°F" and ke == "°C":
-                hasil = (nilai - 32) * 5/9
-            elif dari == "°F" and ke == "K":
-                hasil = ((nilai - 32) * 5/9) + 273.15
-            st.success(f"Hasil: {hasil:.2f} {ke}")
+                st.warning("Konversi ini belum didukung.")
