@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- FIX: TEMA MODERN DAN LIGHT MODE ---
+# --- TEMA MODERN ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
@@ -48,14 +48,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- INITIALIZE SESSION STATE ---
-if "selected_menu" not in st.session_state:
-    st.session_state.selected_menu = "🏠 Home"
-
 # --- SIDEBAR NAVIGATION ---
 with st.sidebar:
     selected = option_menu(
-        menu_title="🌟 Kalkulator Kimia",  # Judul menu
+        menu_title="🌟 Kalkulator Kimia",
         options=[
             "🏠 Home",
             "⚗ Reaksi Kimia",
@@ -63,19 +59,15 @@ with st.sidebar:
             "🧫 Konsentrasi Larutan",
             "💧 pH dan pOH",
             "🧬 Tabel Periodik",
-            "🔄 Konversi Satuan",
-            "📌 Fraksi Mol & % Berat"
+            "🔄 Konversi Satuan"
         ],
-        icons=["house", "flask", "calculator", "droplet-half", "thermometer-half", "grid-3x3-gap-fill", "repeat", "percent"],
+        icons=["house", "flask", "calculator", "droplet-half", "thermometer-half", "grid-3x3-gap-fill", "repeat"],
         menu_icon="chemistry",
         default_index=0
     )
 
-# Update session state with current menu
-st.session_state.selected_menu = selected
-
-# --- KONTEN HALAMAN SESUAI MENU ---
-if st.session_state.selected_menu == "🏠 Home":
+# --- KONTEN HALAMAN ---
+if selected == "🏠 Home":
     st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
     st.write("""
         Hai! 👋 Selamat datang di Techmicals, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
@@ -87,9 +79,10 @@ if st.session_state.selected_menu == "🏠 Home":
         use_container_width=True
     )
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state.selected_menu = "⚗ Reaksi Kimia"  # Pindah menu
+        st.session_state.selected_menu = "⚗ Reaksi Kimia"
+        st.experimental_rerun()
 
-elif st.session_state.selected_menu == "⚗ Reaksi Kimia":
+elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
@@ -108,10 +101,10 @@ elif st.session_state.selected_menu == "⚗ Reaksi Kimia":
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
 
-elif st.session_state.selected_menu == "🧪 Stoikiometri":
+elif selected == "🧪 Stoikiometri":
     st.title("🧪 Kalkulator Massa Molar")
     formula = st.text_input("Rumus Kimia", "H2O")
-    mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")  # Ganti koma jadi titik
+    mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")
     if st.button("Hitung Mol"):
         try:
             mass = float(mass_input)
@@ -134,7 +127,7 @@ elif st.session_state.selected_menu == "🧪 Stoikiometri":
         except ValueError:
             st.error("⚠ Masukkan massa dalam angka yang valid.")
 
-elif st.session_state.selected_menu == "🧫 Konsentrasi Larutan":
+elif selected == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
     solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
     volume = st.number_input("Volume larutan (L)", min_value=0.0)
@@ -147,7 +140,7 @@ elif st.session_state.selected_menu == "🧫 Konsentrasi Larutan":
         except Exception as e:
             st.error(f"⚠ Error: {e}")
 
-elif st.session_state.selected_menu == "💧 pH dan pOH":
+elif selected == "💧 pH dan pOH":
     st.title("💧 Hitung pH dan pOH")
     conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
     acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
@@ -164,7 +157,7 @@ elif st.session_state.selected_menu == "💧 pH dan pOH":
         else:
             st.error("Konsentrasi harus lebih dari 0.")
 
-elif st.session_state.selected_menu == "🧬 Tabel Periodik":
+elif selected == "🧬 Tabel Periodik":
     st.title("🧬 Tabel Periodik Interaktif")
     periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
                      for el in elements if el.number <= 118]
@@ -177,44 +170,46 @@ elif st.session_state.selected_menu == "🧬 Tabel Periodik":
         st.write(f"Nomor Atom: {el.number}")
         st.write(f"Massa Atom: {el.mass} g/mol")
 
-elif st.session_state.selected_menu == "🔄 Konversi Satuan":
+elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
+    category = st.selectbox("Pilih Kategori Konversi", [
+        "Mol ↔ Gram", "Mol ↔ Partikel", "Gram ↔ Partikel",
+        "Volume Gas STP (mol ↔ L)", "Tekanan (atm, mmHg, kPa)", 
+        "Energi (J ↔ cal)", "Suhu (°C, K, °F)", "Volume (mL ↔ L)", 
+        "Konsentrasi Larutan"
+    ])
     value = st.number_input("Masukkan Nilai", value=1.0)
-    from_unit = st.selectbox("Dari", ["mol", "gram", "L (gas STP)"])
-    to_unit = st.selectbox("Ke", ["mol", "gram", "L (gas STP)"])
-    molar_mass_conv = st.number_input("Massa molar (g/mol) *jika diperlukan", value=18.0)
-    if st.button("Konversi"):
-        result = None
-        try:
-            if from_unit == "mol" and to_unit == "gram":
-                result = value * molar_mass_conv
-            elif from_unit == "gram" and to_unit == "mol":
-                result = value / molar_mass_conv
-            elif from_unit == "mol" and to_unit == "L (gas STP)":
-                result = value * 22.4
-            elif from_unit == "L (gas STP)" and to_unit == "mol":
-                result = value / 22.4
-            elif from_unit == to_unit:
-                result = value
-            st.success(f"Hasil: {result:.4f} {to_unit}")
-        except Exception as e:
-            st.error(f"⚠ Error: {e}")
 
-elif st.session_state.selected_menu == "📌 Fraksi Mol & % Berat":
-    st.title("📌 Hitung Fraksi Mol & % Berat")
-    mol_komp1 = st.number_input("Mol Komponen 1", value=1.0)
-    mol_komp2 = st.number_input("Mol Komponen 2", value=1.0)
-    mass_komp1 = st.number_input("Massa Komponen 1 (g)", value=10.0)
-    mass_komp2 = st.number_input("Massa Komponen 2 (g)", value=90.0)
-    if st.button("Hitung"):
-        try:
-            total_mol = mol_komp1 + mol_komp2
-            total_mass = mass_komp1 + mass_komp2
-            x1 = mol_komp1 / total_mol
-            x2 = mol_komp2 / total_mol
-            percent_mass_1 = (mass_komp1 / total_mass) * 100
-            percent_mass_2 = (mass_komp2 / total_mass) * 100
-            st.success(f"Fraksi Mol: Komp1 = {x1:.4f}, Komp2 = {x2:.4f}")
-            st.success(f"% Berat: Komp1 = {percent_mass_1:.2f}%, Komp2 = {percent_mass_2:.2f}%")
-        except Exception as e:
-            st.error(f"⚠ Error: {e}")
+    # --- Konversi Molaritas ---
+    if category == "Konsentrasi Larutan":
+        conc_type = st.selectbox("Jenis Konversi", ["Molaritas ↔ Normalitas", "Molaritas ↔ ppm", "Molaritas ↔ % w/v"])
+        if conc_type == "Molaritas ↔ Normalitas":
+            eq_factor = st.number_input("Faktor ekivalen (eq/mol)", value=1.0)
+            direction = st.radio("Arah Konversi", ["M → N", "N → M"])
+            if st.button("Konversi"):
+                if direction == "M → N":
+                    result = value * eq_factor
+                    st.success(f"{value} M = {result:.4f} N")
+                else:
+                    result = value / eq_factor
+                    st.success(f"{value} N = {result:.4f} M")
+        elif conc_type == "Molaritas ↔ ppm":
+            mm = st.number_input("Massa molar zat (g/mol)", value=18.0)
+            direction = st.radio("Arah Konversi", ["M → ppm", "ppm → M"])
+            if st.button("Konversi"):
+                if direction == "M → ppm":
+                    result = value * mm * 1000
+                    st.success(f"{value} M = {result:.2f} ppm")
+                else:
+                    result = value / (mm * 1000)
+                    st.success(f"{value} ppm = {result:.6f} M")
+        elif conc_type == "Molaritas ↔ % w/v":
+            mm = st.number_input("Massa molar zat (g/mol)", value=18.0)
+            direction = st.radio("Arah Konversi", ["M → % w/v", "% w/v → M"])
+            if st.button("Konversi"):
+                if direction == "M → % w/v":
+                    result = value * mm / 10
+                    st.success(f"{value} M = {result:.2f} % w/v")
+                else:
+                    result = value * 10 / mm
+                    st.success(f"{value} % w/v = {result:.6f} M")
