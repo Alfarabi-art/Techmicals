@@ -36,6 +36,12 @@ body {
 </style>
 """, unsafe_allow_html=True)
 
+from streamlit_option_menu import option_menu
+
+with st.sidebar:
+    choose = option_menu("Menu", ["Home", "Reaksi", "Konversi"],
+                         icons=['house', 'flask', 'repeat'], menu_icon="app-indicator")
+
 st.title("⚗️ Techmicals")
 
 tabs = st.tabs(["⚖️ Setarakan Reaksi", "🧪 Stoikiometri", "📏 Ketidakpastian", "📐 Konversi"])
