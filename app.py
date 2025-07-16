@@ -6,7 +6,7 @@ import re
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Kalkulator Kimia Plus",
+    page_title="Techmicals",
     page_icon="⚗",
     layout="wide"
 )
@@ -43,7 +43,7 @@ st.markdown("""
 # --- SIDEBAR NAVIGATION ---
 with st.sidebar:
     selected = option_menu(
-        menu_title="Kalkulator Kimia",  # Judul menu
+        menu_title="Techmicals",  # Judul menu
         options=["🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri", "📐 Konversi"],
         icons=["house", "flask", "calculator", "repeat"],
         menu_icon="cast",
@@ -66,7 +66,7 @@ with st.sidebar:
 
 # --- KONTEN HALAMAN SESUAI MENU ---
 if selected == "🏠 Home":
-    st.title("🏠 Selamat Datang di Kalkulator Kimia Plus")
+    st.title("🏠 Selamat Datang di Website Kami")
     st.write("Aplikasi interaktif untuk menghitung reaksi kimia, stoikiometri, dan konversi satuan.")
     st.image(
         "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
