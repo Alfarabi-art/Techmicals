@@ -5,37 +5,38 @@ from periodictable import elements
 import math
 import re
 
-st.set_page_config(page_title="Kalkulator Kimia Plus", page_icon="⚗️", layout="wide")
+st.set_page_config(page_title="Techmicals", page_icon="⚗️", layout="wide")
 
 st.markdown("""
-    <style>
-    .main {
-        background-color: #f2f6fc;
-        color: #333;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        background-color: #f0f0f5;
-        border-radius: 8px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        font-size: 16px;
-        padding: 10px;
-    }
-    .stButton button {
-        background: linear-gradient(90deg, #1e90ff, #00bfff);
-        border-radius: 6px;
-        color: white;
-        border: none;
-        font-size: 16px;
-        padding: 8px 16px;
-    }
-    .stButton button:hover {
-        background: linear-gradient(90deg, #00bfff, #1e90ff);
-    }
-    </style>
+<style>
+body {
+    background: linear-gradient(to bottom right, #00bfff, #1e90ff);
+    color: #fff;
+}
+
+.stButton>button {
+    background-color: #ff6347;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: #ffffff33;
+    color: #333;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #1e90ff !important;
+    color: white !important;
+}
+</style>
 """, unsafe_allow_html=True)
 
-st.title("⚗️ Kalkulator Kimia Plus")
+st.title("⚗️ Techmicals")
 
 tabs = st.tabs(["⚖️ Setarakan Reaksi", "🧪 Stoikiometri", "📏 Ketidakpastian", "📐 Konversi"])
 
