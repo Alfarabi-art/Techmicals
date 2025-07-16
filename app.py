@@ -13,13 +13,11 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- SESSION STATE UNTUK SIDEBAR & MENU ---
+# --- SESSION STATE ---
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
-if "trigger_sidebar" not in st.session_state:
-    st.session_state.trigger_sidebar = False
 
 # --- SEMBUNYIKAN SIDEBAR DI AWAL ---
 if not st.session_state.show_sidebar:
@@ -31,7 +29,7 @@ if not st.session_state.show_sidebar:
         </style>
     """, unsafe_allow_html=True)
 
-# --- SIDEBAR NAVIGATION ---
+# --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
@@ -55,7 +53,7 @@ if st.session_state.show_sidebar:
         )
         st.session_state.menu_selected = menu
 
-# --- KONTEN HALAMAN ---
+# --- KONTEN HALAMAN UTAMA ---
 selected = st.session_state.menu_selected
 
 if selected == "🏠 Home":
@@ -72,14 +70,9 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.session_state.trigger_sidebar = True
-        st.experimental_rerun()  # ✅ Aman karena hanya dipanggil sekali
 
-# --- CEGAH RERUN BERULANG ---
-if st.session_state.trigger_sidebar:
-    st.session_state.trigger_sidebar = False
-
-elif selected == "⚗ Reaksi Kimia":
+# --- FITUR REAKSI KIMIA ---
+if selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
@@ -97,6 +90,8 @@ elif selected == "⚗ Reaksi Kimia":
                 st.success(f"Persamaan Setara: {balanced_eq}")
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
+
+# --- (LANJUTKAN FITUR STOIKIOMETRI, pH, KONVERSI SATUAN, DLL DI SINI) ---
 
 elif selected == "🧪 Stoikiometri":
     st.title("🧪 Hitung Mol")
