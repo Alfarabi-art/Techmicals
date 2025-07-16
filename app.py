@@ -6,23 +6,27 @@ import re
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Techmicals",
-    page_icon="⚗️",
+    page_title="Kalkulator Kimia Plus",
+    page_icon="⚗",
     layout="wide"
 )
 
-# --- CUSTOM CSS TAMPAK MODERN ---
+# --- FIX: MEMAKSA LIGHT MODE ---
 st.markdown("""
     <style>
-    .main {
-        background-color: #f2f6fc;
+    /* Memaksa background terang dan teks gelap */
+    body, .main, .block-container, .stApp {
+        background-color: #f5f5f5 !important;
+        color: #000000 !important;
     }
-    .css-1v3fvcr {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 10px;
-        box-shadow: 0px 0px 10px #cccccc;
+    /* Memperbaiki sidebar */
+    .css-1lcbmhc, .css-6qob1r {
+        background-color: #ffffff !important;
     }
+    .css-1d391kg, .css-18e3th9 {
+        background-color: #ffffff !important;
+    }
+    /* Warna tombol aktif */
     .stButton>button {
         background-color: #1e90ff;
         color: white;
@@ -40,7 +44,7 @@ st.markdown("""
 with st.sidebar:
     selected = option_menu(
         menu_title="Kalkulator Kimia",  # Judul menu
-        options=["🏠 Home", "⚗️ Reaksi Kimia", "🧪 Stoikiometri", "📐 Konversi"],
+        options=["🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri", "📐 Konversi"],
         icons=["house", "flask", "calculator", "repeat"],
         menu_icon="cast",
         default_index=0,
@@ -62,12 +66,15 @@ with st.sidebar:
 
 # --- KONTEN HALAMAN SESUAI MENU ---
 if selected == "🏠 Home":
-    st.title("🏠 Selamat Datang di Techmicals")
-    st.write("Ini adalah aplikasi interaktif untuk menghitung reaksi kimia, stoikiometri, dan konversi satuan.")
-    st.image("https://images.unsplash.com/photo-1581093588401-5fe04c98b778", use_container_width=True)
+    st.title("🏠 Selamat Datang di Kalkulator Kimia Plus")
+    st.write("Aplikasi interaktif untuk menghitung reaksi kimia, stoikiometri, dan konversi satuan.")
+    st.image(
+        "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
+        use_container_width=True
+    )
 
-elif selected == "⚗️ Reaksi Kimia":
-    st.title("⚗️ Setarakan Reaksi Kimia")
+elif selected == "⚗ Reaksi Kimia":
+    st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
         try:
@@ -78,9 +85,9 @@ elif selected == "⚗️ Reaksi Kimia":
             balanced_eq = " + ".join(f"{v} {k}" for k, v in reac_bal.items())
             balanced_eq += " → "
             balanced_eq += " + ".join(f"{v} {k}" for k, v in prod_bal.items())
-            st.success(f"**Persamaan Setara:** {balanced_eq}")
+            st.success(f"*Persamaan Setara:* {balanced_eq}")
         except Exception as e:
-            st.error(f"⚠️ Error: {e}")
+            st.error(f"⚠ Error: {e}")
 
 elif selected == "🧪 Stoikiometri":
     st.title("🧪 Stoikiometri")
@@ -88,16 +95,16 @@ elif selected == "🧪 Stoikiometri":
     mass = st.number_input("Massa (gram)", min_value=0.0)
     if st.button("Hitung"):
         try:
-            pattern = re.findall(r'([A-Z][a-z]*)(\\d*)', formula)
+            pattern = re.findall(r'([A-Z][a-z])(\\d)', formula)
             molar_mass = 0
             for (element, count) in pattern:
                 element_mass = elements.symbol(element).mass
                 count = int(count) if count else 1
                 molar_mass += element_mass * count
             moles = mass / molar_mass
-            st.success(f"**Hasil:** {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
+            st.success(f"*Hasil:* {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
         except Exception as e:
-            st.error(f"⚠️ Error: {e}")
+            st.error(f"⚠ Error: {e}")
 
 elif selected == "📐 Konversi":
     st.title("📐 Konversi Suhu")
