@@ -162,7 +162,8 @@ elif selected == "🧬 Tabel Periodik":
 elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
     kategori = st.selectbox("Pilih Kategori", [
-        "Mol ↔ Gram", "Mol ↔ Partikel", "Volume Gas (STP)", "Tekanan", "Suhu"
+        "Mol ↔ Gram", "Mol ↔ Partikel", "Volume Gas (STP)",
+        "Tekanan", "Suhu", "Konsentrasi Larutan"
     ])
     nilai = st.number_input("Masukkan Nilai", value=1.0)
 
@@ -173,6 +174,52 @@ elif selected == "🔄 Konversi Satuan":
             hasil = nilai * mm if arah == "Mol ➝ Gram" else nilai / mm
             satuan = "gram" if arah == "Mol ➝ Gram" else "mol"
             st.success(f"Hasil: {hasil:.4f} {satuan}")
+
+    elif kategori == "Konsentrasi Larutan":
+        dari = st.selectbox("Dari", ["Molaritas (M)", "Molalitas (m)", "ppm", "ppb"])
+        ke = st.selectbox("Ke", ["Molalitas (m)", "Molaritas (M)", "ppm", "ppb"])
+        massa_pelarut = st.number_input("Massa Pelarut (kg)", min_value=0.001)
+        if st.button("Hitung"):
+            if dari == "Molaritas (M)" and ke == "Molalitas (m)":
+                molalitas = nilai / massa_pelarut
+                st.success(f"Hasil: {molalitas:.4f} mol/kg (Molalitas)")
+            elif dari == "Molalitas (m)" and ke == "Molaritas (M)":
+                molaritas = nilai * massa_pelarut
+                st.success(f"Hasil: {molaritas:.4f} mol/L (Molaritas)")
+            else:
+                st.warning("Konversi belum didukung sepenuhnya untuk kombinasi ini.")
+
+    elif kategori == "Mol ↔ Partikel":
+        arah = st.radio("Konversi", ["Mol ➝ Partikel", "Partikel ➝ Mol"])
+        if st.button("Hitung"):
+            NA = 6.022e23
+            hasil = nilai * NA if arah == "Mol ➝ Partikel" else nilai / NA
+            satuan = "partikel" if arah == "Mol ➝ Partikel" else "mol"
+            st.success(f"Hasil: {hasil:.4e} {satuan}")
+
+    elif kategori == "Volume Gas (STP)":
+        arah = st.radio("Konversi", ["Mol ➝ Liter (STP)", "Liter ➝ Mol (STP)"])
+        if st.button("Hitung"):
+            molar_volume = 22.4
+            hasil = nilai * molar_volume if arah == "Mol ➝ Liter (STP)" else nilai / molar_volume
+            satuan = "L" if arah == "Mol ➝ Liter (STP)" else "mol"
+            st.success(f"Hasil: {hasil:.4f} {satuan}")
+
+    elif kategori == "Tekanan":
+        dari = st.selectbox("Dari", ["atm", "Pa", "mmHg"])
+        ke = st.selectbox("Ke", ["atm", "Pa", "mmHg"])
+        if st.button("Hitung"):
+            atm_value = nilai
+            if dari == "Pa":
+                atm_value = nilai / 101325
+            elif dari == "mmHg":
+                atm_value = nilai / 760
+            hasil = atm_value
+            if ke == "Pa":
+                hasil = atm_value * 101325
+            elif ke == "mmHg":
+                hasil = atm_value * 760
+            st.success(f"Hasil: {hasil:.4f} {ke}")
 
     elif kategori == "Suhu":
         dari = st.selectbox("Dari", ["°C", "K", "°F"])
