@@ -95,16 +95,40 @@ elif selected == "🧪 Stoikiometri":
     mass = st.number_input("Massa (gram)", min_value=0.0)
     if st.button("Hitung"):
         try:
-            pattern = re.findall(r'([A-Z][a-z])(\\d)', formula)
-            molar_mass = 0
-            for (element, count) in pattern:
-                element_mass = elements.symbol(element).mass
-                count = int(count) if count else 1
-                molar_mass += element_mass * count
-            moles = mass / molar_mass
-            st.success(f"*Hasil:* {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
+            # Improved regex to correctly parse chemical formulas like H2O, NaCl, C6H12O6.
+            # It captures an element symbol (e.g., H, Na, Cl) and an optional digit (subscript).
+            # [A-Z][a-z]* matches an uppercase letter followed by zero or more lowercase letters for the symbol.
+            # (\d*) matches the optional number (subscript), defaulting to 1 if not present.
+            pattern = re.findall(r'([A-Z][a-z]*)(\d*)', formula)
+            
+            molar_mass = 0.0 # Initialize as float
+            
+            if not pattern:
+                st.error("⚠ Error: Rumus kimia tidak valid atau tidak dapat diuraikan. Pastikan formatnya benar (e.g., H2O, NaCl).")
+            else:
+                all_elements_valid = True
+                for (element_symbol, count_str) in pattern:
+                    if not element_symbol: # Skip empty matches if any
+                        continue
+                    try:
+                        # Get element mass from periodictable library
+                        element_mass = elements.symbol(element_symbol).mass
+                        # Convert count string to integer, default to 1 if empty (no subscript)
+                        count = int(count_str) if count_str else 1
+                        molar_mass += element_mass * count
+                    except Exception:
+                        st.error(f"⚠ Error: Simbol elemen '{element_symbol}' tidak dikenal. Pastikan semua simbol elemen benar.")
+                        all_elements_valid = False # Mark that an invalid element was found
+                        break # Exit loop if an invalid element is found
+
+                if all_elements_valid: # Only proceed if all elements were valid
+                    if molar_mass > 0: # Ensure molar_mass is not zero before division
+                        moles = mass / molar_mass
+                        st.success(f"*Hasil:* {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
+                    else:
+                        st.error("⚠ Error: Massa molar tidak dapat dihitung atau bernilai nol. Periksa rumus kimia Anda.")
         except Exception as e:
-            st.error(f"⚠ Error: {e}")
+            st.error(f"⚠ Error umum: Terjadi masalah saat menghitung stoikiometri: {e}")
 
 elif selected == "📐 Konversi":
     st.title("📐 Konversi Suhu")
