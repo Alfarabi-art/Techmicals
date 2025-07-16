@@ -70,7 +70,7 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.experimental_rerun()
+        st.experimental_rerun()  # Reload untuk munculkan sidebar
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
@@ -175,8 +175,8 @@ elif selected == "🔄 Konversi Satuan":
         "Mol ↔ Gram",
         "Mol ↔ Partikel",
         "Volume Gas (STP)",
-        "Tekanan",
         "Suhu",
+        "Tekanan",
         "Konsentrasi Larutan"
     ])
 
@@ -205,6 +205,29 @@ elif selected == "🔄 Konversi Satuan":
             if hitung:
                 volume = mol * 22.4
                 st.success(f"Volume Gas: {volume:.2f} L (STP)")
+
+    elif kategori == "Suhu":
+        with st.form(key="suhu_form"):
+            suhu_awal = st.number_input("Nilai Suhu", value=25.0)
+            dari_satuan = st.selectbox("Dari", ["C", "K", "F"])
+            ke_satuan = st.selectbox("Ke", ["C", "K", "F"])
+            hitung = st.form_submit_button("Konversi Suhu")
+            if hitung:
+                if dari_satuan == ke_satuan:
+                    hasil = suhu_awal
+                elif dari_satuan == "C" and ke_satuan == "K":
+                    hasil = suhu_awal + 273.15
+                elif dari_satuan == "C" and ke_satuan == "F":
+                    hasil = suhu_awal * 9/5 + 32
+                elif dari_satuan == "K" and ke_satuan == "C":
+                    hasil = suhu_awal - 273.15
+                elif dari_satuan == "K" and ke_satuan == "F":
+                    hasil = (suhu_awal - 273.15) * 9/5 + 32
+                elif dari_satuan == "F" and ke_satuan == "C":
+                    hasil = (suhu_awal - 32) * 5/9
+                elif dari_satuan == "F" and ke_satuan == "K":
+                    hasil = (suhu_awal - 32) * 5/9 + 273.15
+                st.success(f"Hasil: {hasil:.2f}°{ke_satuan}")
 
     elif kategori == "Tekanan":
         with st.form(key="tekanan_form"):
@@ -236,7 +259,7 @@ elif selected == "🔄 Konversi Satuan":
                 if dari_satuan == ke_satuan:
                     hasil = nilai_awal
                 else:
-                    st.warning("⚠ Konversi ini perlu rumus khusus, tambahkan sesuai kebutuhan.")
+                    st.warning("⚠ Konversi ini memerlukan rumus tambahan, tambahkan sesuai kebutuhan.")
                     hasil = None
                 if hasil is not None:
                     st.success(f"Hasil: {hasil:.4f} {ke_satuan}")
