@@ -12,66 +12,30 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- TEMA MODERN ---
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-    html, body, [class*="css"] {
-        font-family: 'Poppins', sans-serif !important;
-    }
-
-    .stApp {
-        background: linear-gradient(135deg, #e0f7fa, #ffffff) !important;
-        color: #000000 !important;
-    }
-
-    [data-testid="stSidebar"] {
-        background: rgba(255, 255, 255, 0.7) !important;
-        backdrop-filter: blur(8px);
-        border-radius: 10px;
-    }
-
-    .stButton>button {
-        background: linear-gradient(90deg, #1e90ff, #00bfff);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 24px;
-        font-size: 16px;
-        transition: all 0.3s ease-in-out;
-    }
-    .stButton>button:hover {
-        transform: scale(1.05);
-        background: linear-gradient(90deg, #00bfff, #1e90ff);
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# --- STATE UNTUK NAVIGASI ---
-if "selected_page" not in st.session_state:
-    st.session_state["selected_page"] = "🏠 Home"
-
 # --- SIDEBAR NAVIGATION ---
-selected = option_menu(
-    menu_title="🌟 Kalkulator Kimia",
-    options=[
-        "🏠 Home",
-        "⚗ Reaksi Kimia",
-        "🧪 Stoikiometri",
-        "🧫 Konsentrasi Larutan",
-        "💧 pH dan pOH",
-        "🧬 Tabel Periodik",
-        "🔄 Konversi Satuan"
-    ],
-    icons=["house", "flask", "calculator", "droplet-half", "thermometer-half", "grid-3x3-gap-fill", "repeat"],
-    menu_icon="chemistry",
-    default_index=0,
-    key="selected_page"
-)
+with st.sidebar:
+    selected = option_menu(
+        menu_title="🌟 Kalkulator Kimia",  # Judul menu
+        options=[
+            "🏠 Home",
+            "⚗ Reaksi Kimia",
+            "🧪 Stoikiometri",
+            "🧫 Konsentrasi Larutan",
+            "💧 pH dan pOH",
+            "🧬 Tabel Periodik",
+            "🔄 Konversi Satuan"
+        ],
+        icons=[
+            "house", "flask", "calculator",
+            "droplet-half", "thermometer-half",
+            "grid-3x3-gap-fill", "repeat"
+        ],
+        menu_icon="chemistry",
+        default_index=0
+    )
 
 # --- KONTEN HALAMAN ---
-if st.session_state["selected_page"] == "🏠 Home":
+if selected == "🏠 Home":
     st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
     st.write("""
         Hai! 👋 Selamat datang di Techmicals, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
@@ -82,11 +46,21 @@ if st.session_state["selected_page"] == "🏠 Home":
         "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
         use_container_width=True
     )
+    
+    # Tombol untuk membuka sidebar
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state["selected_page"] = "⚗ Reaksi Kimia"
+        st.session_state["open_sidebar"] = True
         st.experimental_rerun()
 
-elif st.session_state["selected_page"] == "⚗ Reaksi Kimia":
+# --- CHECK SIDEBAR STATE ---
+if "open_sidebar" in st.session_state and st.session_state["open_sidebar"]:
+    # Memaksa pengguna ke sidebar (memilih menu selain Home)
+    st.sidebar.success("👈 Pilih fitur dari menu sidebar di sebelah kiri!")
+    st.sidebar.info("📌 Sidebar sudah terbuka, silakan pilih menu.")
+    st.sidebar.markdown("---")
+    st.session_state["open_sidebar"] = False  # Reset supaya tidak looping
+
+elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
@@ -105,7 +79,7 @@ elif st.session_state["selected_page"] == "⚗ Reaksi Kimia":
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
 
-elif st.session_state["selected_page"] == "🧪 Stoikiometri":
+elif selected == "🧪 Stoikiometri":
     st.title("🧪 Kalkulator Massa Molar")
     formula = st.text_input("Rumus Kimia", "H2O")
     mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")
@@ -131,7 +105,7 @@ elif st.session_state["selected_page"] == "🧪 Stoikiometri":
         except ValueError:
             st.error("⚠ Masukkan massa dalam angka yang valid.")
 
-elif st.session_state["selected_page"] == "🧫 Konsentrasi Larutan":
+elif selected == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
     solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
     volume = st.number_input("Volume larutan (L)", min_value=0.0)
@@ -144,7 +118,7 @@ elif st.session_state["selected_page"] == "🧫 Konsentrasi Larutan":
         except Exception as e:
             st.error(f"⚠ Error: {e}")
 
-elif st.session_state["selected_page"] == "💧 pH dan pOH":
+elif selected == "💧 pH dan pOH":
     st.title("💧 Hitung pH dan pOH")
     conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
     acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
@@ -161,7 +135,7 @@ elif st.session_state["selected_page"] == "💧 pH dan pOH":
         else:
             st.error("Konsentrasi harus lebih dari 0.")
 
-elif st.session_state["selected_page"] == "🧬 Tabel Periodik":
+elif selected == "🧬 Tabel Periodik":
     st.title("🧬 Tabel Periodik Interaktif")
     periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
                      for el in elements if el.number <= 118]
@@ -174,15 +148,15 @@ elif st.session_state["selected_page"] == "🧬 Tabel Periodik":
         st.write(f"Nomor Atom: {el.number}")
         st.write(f"Massa Atom: {el.mass} g/mol")
 
-elif st.session_state["selected_page"] == "🔄 Konversi Satuan":
+elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
     category = st.selectbox("Pilih Kategori Konversi", [
-        "Mol ↔ Gram", 
-        "Mol ↔ Partikel", 
-        "Volume Gas STP (mol ↔ L)", 
-        "Tekanan (atm, mmHg, kPa)", 
-        "Energi (J ↔ cal)", 
-        "Suhu (°C, K, °F)", 
+        "Mol ↔ Gram",
+        "Mol ↔ Partikel",
+        "Volume Gas STP (mol ↔ L)",
+        "Tekanan (atm, mmHg, kPa)",
+        "Energi (J ↔ cal)",
+        "Suhu (°C, K, °F)",
         "Volume (mL ↔ L)"
     ])
     value = st.number_input("Masukkan Nilai", value=1.0)
