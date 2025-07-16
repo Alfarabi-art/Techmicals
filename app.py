@@ -20,14 +20,13 @@ if "menu_selected" not in st.session_state:
 
 # --- CSS UNTUK SEMBUNYIKAN SIDEBAR ---
 if not st.session_state.show_sidebar:
-    hide_sidebar = """
+    st.markdown("""
         <style>
         [data-testid="stSidebar"] {
             display: none;
         }
         </style>
-    """
-    st.markdown(hide_sidebar, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 # --- SIDEBAR NAVIGATION ---
 if st.session_state.show_sidebar:
@@ -68,7 +67,7 @@ if selected == "🏠 Home":
     )
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
-        # Tetap di Home agar user bisa pilih menu di sidebar
+        st.experimental_rerun()
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
@@ -157,3 +156,39 @@ elif selected == "🧬 Tabel Periodik":
         st.write(f"{el.name} ({el.symbol})")
         st.write(f"Nomor Atom: {el.number}")
         st.write(f"Massa Atom: {el.mass} g/mol")
+
+elif selected == "🔄 Konversi Satuan":
+    st.title("🔄 Konversi Satuan Kimia")
+    kategori = st.selectbox("Pilih Kategori", [
+        "Mol ↔ Gram", "Mol ↔ Partikel", "Volume Gas (STP)", "Tekanan", "Suhu"
+    ])
+    nilai = st.number_input("Masukkan Nilai", value=1.0)
+
+    if kategori == "Mol ↔ Gram":
+        mm = st.number_input("Massa Molar (g/mol)", value=18.0)
+        arah = st.radio("Konversi", ["Mol ➝ Gram", "Gram ➝ Mol"])
+        if st.button("Hitung"):
+            hasil = nilai * mm if arah == "Mol ➝ Gram" else nilai / mm
+            satuan = "gram" if arah == "Mol ➝ Gram" else "mol"
+            st.success(f"Hasil: {hasil:.4f} {satuan}")
+
+    elif kategori == "Suhu":
+        dari = st.selectbox("Dari", ["°C", "K", "°F"])
+        ke = st.selectbox("Ke", ["°C", "K", "°F"])
+        if st.button("Hitung"):
+            hasil = None
+            if dari == ke:
+                hasil = nilai
+            elif dari == "°C" and ke == "K":
+                hasil = nilai + 273.15
+            elif dari == "°C" and ke == "°F":
+                hasil = (nilai * 9/5) + 32
+            elif dari == "K" and ke == "°C":
+                hasil = nilai - 273.15
+            elif dari == "K" and ke == "°F":
+                hasil = (nilai - 273.15) * 9/5 + 32
+            elif dari == "°F" and ke == "°C":
+                hasil = (nilai - 32) * 5/9
+            elif dari == "°F" and ke == "K":
+                hasil = ((nilai - 32) * 5/9) + 273.15
+            st.success(f"Hasil: {hasil:.2f} {ke}")
