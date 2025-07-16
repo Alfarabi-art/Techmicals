@@ -6,7 +6,7 @@ import re
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Kalkulator Kimia Plus",
+    page_title="Techmicals",
     page_icon="⚗️",
     layout="wide"
 )
@@ -62,9 +62,9 @@ with st.sidebar:
 
 # --- KONTEN HALAMAN SESUAI MENU ---
 if selected == "🏠 Home":
-    st.title("🏠 Selamat Datang di Kalkulator Kimia Plus")
+    st.title("🏠 Selamat Datang di Techmicals")
     st.write("Ini adalah aplikasi interaktif untuk menghitung reaksi kimia, stoikiometri, dan konversi satuan.")
-    st.image("https://images.unsplash.com/photo-1581093588401-5fe04c98b778", use_column_width=True)
+    st.image("https://images.unsplash.com/photo-1581093588401-5fe04c98b778", use_container_width=True)
 
 elif selected == "⚗️ Reaksi Kimia":
     st.title("⚗️ Setarakan Reaksi Kimia")
