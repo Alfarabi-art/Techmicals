@@ -5,10 +5,6 @@ from periodictable import elements
 import pandas as pd
 import re
 
-# --- INISIALISASI SESSION STATE ---
-if "open_sidebar" not in st.session_state:
-    st.session_state.open_sidebar = False
-
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Kalkulator Kimia Plus",
@@ -19,7 +15,7 @@ st.set_page_config(
 # --- SIDEBAR NAVIGATION ---
 with st.sidebar:
     selected = option_menu(
-        menu_title="🌟 Kalkulator Kimia",  # Judul menu
+        menu_title="🌟 Kalkulator Kimia",
         options=[
             "🏠 Home",
             "⚗ Reaksi Kimia",
@@ -50,16 +46,9 @@ if selected == "🏠 Home":
         "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
         use_container_width=True
     )
-
     # Tombol buka sidebar
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state.open_sidebar = True
-        st.experimental_rerun()
-
-# --- AUTO OPEN SIDEBAR (Fix untuk rerun)
-if st.session_state.open_sidebar:
-    st.sidebar.success("👈 Sidebar sudah terbuka, silakan pilih fitur!")
-    st.session_state.open_sidebar = False
+        st.sidebar.success("👈 Sidebar sudah terbuka, silakan pilih fitur!")
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
