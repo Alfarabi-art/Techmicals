@@ -70,7 +70,7 @@ with st.sidebar:
 if selected == "🏠 Home":
     st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
     st.write("""
-        Hai! 👋 Selamat datang di *Techmicals*, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
+        Hai! 👋 Selamat datang di Techmicals, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
         Mau setarakan reaksi? Hitung mol? Cari massa molar? Semua bisa kamu lakukan di sini, cepat dan praktis.  
         🚀 Yuk mulai bereksperimen tanpa ribet!
     """)
@@ -79,10 +79,8 @@ if selected == "🏠 Home":
         use_container_width=True
     )
     if st.button("⚗ Mulai Hitung Sekarang"):
-        # Pindahkan user ke menu Reaksi Kimia
-        st.experimental_set_query_params(menu="⚗ Reaksi Kimia")
-        st.experimental_rerun
-)
+        selected = "⚗ Reaksi Kimia"  # langsung alihkan ke menu Reaksi Kimia
+        st.experimental_rerun()  # ✅ dipanggil sebagai fungsi
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
@@ -99,7 +97,7 @@ elif selected == "⚗ Reaksi Kimia":
                 balanced_eq = " + ".join(f"{v} {k}" for k, v in reac_bal.items())
                 balanced_eq += " → "
                 balanced_eq += " + ".join(f"{v} {k}" for k, v in prod_bal.items())
-                st.success(f"*Persamaan Setara:* {balanced_eq}")
+                st.success(f"Persamaan Setara: {balanced_eq}")
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
 
@@ -125,7 +123,7 @@ elif selected == "🧪 Stoikiometri":
                     st.error("⚠ Rumus kimia tidak valid.")
                 else:
                     moles = mass / molar_mass
-                    st.success(f"*Hasil:* {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
+                    st.success(f"Hasil: {moles:.4f} mol dari {mass} g {formula} (Massa molar: {molar_mass:.2f} g/mol)")
         except ValueError:
             st.error("⚠ Masukkan massa dalam angka yang valid.")
 
@@ -138,7 +136,7 @@ elif selected == "🧫 Konsentrasi Larutan":
         try:
             mol = solute_mass / molar_mass
             molarity = mol / volume
-            st.success(f"*Molaritas (M): {molarity:.4f} mol/L*")
+            st.success(f"Molaritas (M): {molarity:.4f} mol/L")
         except Exception as e:
             st.error(f"⚠ Error: {e}")
 
@@ -155,7 +153,7 @@ elif selected == "💧 pH dan pOH":
             else:
                 pOH = -math.log10(conc)
                 pH = 14 - pOH
-            st.success(f"*pH: {pH:.2f}, pOH: {pOH:.2f}*")
+            st.success(f"pH: {pH:.2f}, pOH: {pOH:.2f}")
         else:
             st.error("Konsentrasi harus lebih dari 0.")
 
@@ -166,7 +164,7 @@ elif selected == "📊 Persentase Yield":
     if st.button("Hitung Yield"):
         try:
             yield_percent = (aktual / teoritis) * 100
-            st.success(f"*Persentase Yield: {yield_percent:.2f}%*")
+            st.success(f"Persentase Yield: {yield_percent:.2f}%")
         except Exception as e:
             st.error(f"⚠ Error: {e}")
 
