@@ -69,7 +69,6 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.experimental_rerun()
 
 elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
@@ -121,80 +120,40 @@ elif selected == "🧫 Konsentrasi Larutan":
     metode = st.selectbox("Pilih Metode", ["Molaritas", "Normalitas"])
     with st.form(key="konsentrasi_form"):
         if metode == "Molaritas":
-            solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0, key="mol_mass")
-            volume = st.number_input("Volume larutan (L)", min_value=0.0, key="mol_vol")
-            molar_mass = st.number_input("Massa molar zat (g/mol)", min_value=0.0, key="mol_molar_mass")
+            solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
+            volume = st.number_input("Volume larutan (L)", min_value=0.0)
+            molar_mass = st.number_input("Massa molar zat (g/mol)", min_value=0.0)
             hitung = st.form_submit_button("Hitung Molaritas")
             if hitung:
-                try:
-                    mol = solute_mass / molar_mass
-                    molarity = mol / volume
-                    st.success(f"Molaritas: {molarity:.4f} mol/L")
-                except Exception as e:
-                    st.error(f"⚠ Error: {e}")
-        elif metode == "Normalitas":
-            solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0, key="norm_mass")
-            eq_weight = st.number_input("Berat ekuivalen (g/eq)", min_value=0.0, key="norm_eq_weight")
-            volume = st.number_input("Volume larutan (L)", min_value=0.0, key="norm_vol")
+                mol = solute_mass / molar_mass
+                molarity = mol / volume
+                st.success(f"Molaritas: {molarity:.4f} mol/L")
+        else:
+            solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
+            eq_weight = st.number_input("Berat ekuivalen (g/eq)", min_value=0.0)
+            volume = st.number_input("Volume larutan (L)", min_value=0.0)
             hitung = st.form_submit_button("Hitung Normalitas")
             if hitung:
-                try:
-                    eq = solute_mass / eq_weight
-                    normality = eq / volume
-                    st.success(f"Normalitas: {normality:.4f} eq/L")
-                except Exception as e:
-                    st.error(f"⚠ Error: {e}")
-
-elif selected == "💧 pH dan pOH":
-    st.title("💧 Hitung pH dan pOH")
-    conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
-    acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
-    if st.button("Hitung pH"):
-        import math
-        if conc > 0:
-            if acid_base == "Asam":
-                pH = -math.log10(conc)
-                pOH = 14 - pH
-            else:
-                pOH = -math.log10(conc)
-                pH = 14 - pOH
-            st.success(f"pH: {pH:.2f}, pOH: {pOH:.2f}")
-        else:
-            st.error("Konsentrasi harus lebih dari 0.")
-
-elif selected == "🧬 Tabel Periodik":
-    st.title("🧬 Tabel Periodik Interaktif")
-    periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
-                     for el in elements if el.number <= 118]
-    df = pd.DataFrame(periodic_data)
-    st.dataframe(df, use_container_width=True)
-    selected_element = st.selectbox("Pilih Unsur", [el.symbol for el in elements if el.number <= 118])
-    if selected_element:
-        el = getattr(elements, selected_element)
-        st.write(f"{el.name} ({el.symbol})")
-        st.write(f"Nomor Atom: {el.number}")
-        st.write(f"Massa Atom: {el.mass} g/mol")
+                eq = solute_mass / eq_weight
+                normality = eq / volume
+                st.success(f"Normalitas: {normality:.4f} eq/L")
 
 elif selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
-    kategori = st.selectbox(
-        "Pilih Kategori",
-        [
-            "Mol ↔ Gram",
-            "Mol ↔ Partikel",
-            "Volume Gas (STP)",
-            "Tekanan",
-            "Suhu",
-            "Konsentrasi Larutan"
-        ],
-        key="konversi_kategori"
-    )
+    kategori = st.selectbox("Pilih Kategori", [
+        "Mol ↔ Gram",
+        "Mol ↔ Partikel",
+        "Volume Gas (STP)",
+        "Tekanan",
+        "Suhu",
+        "Konsentrasi Larutan"
+    ])
 
     if kategori == "Mol ↔ Gram":
         with st.form(key="mol_gram_form"):
-            nilai = st.number_input("Masukkan Nilai", value=1.0, key="mol_gram_nilai")
-            molar_mass = st.number_input("Massa molar (g/mol)", value=18.0, key="mol_gram_molar_mass")
-            arah = st.radio("Konversi", ["Mol → Gram", "Gram → Mol"], key="mol_gram_arah")
+            nilai = st.number_input("Masukkan Nilai")
+            molar_mass = st.number_input("Massa molar (g/mol)", value=18.0)
+            arah = st.radio("Konversi", ["Mol → Gram", "Gram → Mol"])
             hitung = st.form_submit_button("Hitung")
             if hitung:
                 if arah == "Mol → Gram":
@@ -204,19 +163,50 @@ elif selected == "🔄 Konversi Satuan":
                     hasil = nilai / molar_mass
                     st.success(f"{hasil:.4f} mol")
 
-    elif kategori == "Konsentrasi Larutan":
-        with st.form(key="konversi_konsentrasi_form"):
-            nilai = st.number_input("Masukkan Nilai", value=1.0, key="konversi_konsentrasi_nilai")
-            dari = st.selectbox("Dari", ["Molaritas (M)", "Normalitas (N)"], key="konversi_konsentrasi_dari")
-            ke = st.selectbox("Ke", ["Normalitas (N)", "Molaritas (M)"], key="konversi_konsentrasi_ke")
-            valensi = st.number_input("Valensi", min_value=1, key="konversi_konsentrasi_valensi")
-            hitung = st.form_submit_button("Hitung Konsentrasi")
+    elif kategori == "Mol ↔ Partikel":
+        with st.form(key="mol_partikel_form"):
+            nilai = st.number_input("Masukkan Nilai (mol)")
+            hitung = st.form_submit_button("Hitung Partikel")
             if hitung:
-                if dari == "Molaritas (M)" and ke == "Normalitas (N)":
-                    normalitas = nilai * valensi
-                    st.success(f"Normalitas: {normalitas:.4f} eq/L")
-                elif dari == "Normalitas (N)" and ke == "Molaritas (M)":
-                    molaritas = nilai / valensi
-                    st.success(f"Molaritas: {molaritas:.4f} mol/L")
-                else:
-                    st.warning("Konversi ini belum didukung.")
+                NA = 6.022e23
+                partikel = nilai * NA
+                st.success(f"{partikel:.2e} partikel")
+
+    elif kategori == "Volume Gas (STP)":
+        with st.form(key="volume_gas_form"):
+            nilai = st.number_input("Masukkan Nilai (mol)")
+            hitung = st.form_submit_button("Hitung Volume")
+            if hitung:
+                volume = nilai * 22.4
+                st.success(f"{volume:.2f} L (STP)")
+
+    elif kategori == "Tekanan":
+        with st.form(key="tekanan_form"):
+            nilai = st.number_input("Masukkan Nilai (atm)")
+            hitung = st.form_submit_button("Hitung Tekanan")
+            if hitung:
+                kPa = nilai * 101.325
+                st.success(f"{kPa:.2f} kPa")
+
+    elif kategori == "Suhu":
+        with st.form(key="suhu_form"):
+            suhu = st.number_input("Masukkan Suhu")
+            dari = st.selectbox("Dari", ["C", "K", "F"])
+            ke = st.selectbox("Ke", ["C", "K", "F"])
+            hitung = st.form_submit_button("Hitung Suhu")
+            if hitung:
+                if dari == ke:
+                    result = suhu
+                elif dari == "C" and ke == "K":
+                    result = suhu + 273.15
+                elif dari == "K" and ke == "C":
+                    result = suhu - 273.15
+                elif dari == "C" and ke == "F":
+                    result = suhu * 9/5 + 32
+                elif dari == "F" and ke == "C":
+                    result = (suhu - 32) * 5/9
+                elif dari == "K" and ke == "F":
+                    result = (suhu - 273.15) * 9/5 + 32
+                elif dari == "F" and ke == "K":
+                    result = (suhu - 32) * 5/9 + 273.15
+                st.success(f"{result:.2f} °{ke}")
