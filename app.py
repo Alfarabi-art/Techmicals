@@ -252,10 +252,6 @@ if selected == "🏠 Home":
 """, unsafe_allow_html=True)
 
     import streamlit.runtime.scriptrunner as scriptrunner
-    
-    if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
