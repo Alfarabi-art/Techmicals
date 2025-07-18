@@ -268,37 +268,37 @@ elif menu == "🔄 Konversi Satuan":
             st.success(f"Hasil: {hasil:.4f} {ke}")
 
     elif kategori == "Konsentrasi Larutan":
-    st.subheader("Konversi Konsentrasi Larutan")
-    konversi_opsi = st.selectbox("Pilih Konversi", [
-        "Molaritas → ppm",
-        "Molaritas → % w/v",
-        "Molaritas → Normalitas",
-        "% w/v → ppm"
-    ])
+        st.subheader("Konversi Konsentrasi Larutan")
+        konversi_opsi = st.selectbox("Pilih Konversi", [
+            "Molaritas → ppm",
+            "Molaritas → % w/v",
+            "Molaritas → Normalitas",
+            "% w/v → ppm"
+        ])
 
-    nilai_awal = st.number_input("Nilai Konsentrasi", value=1.0, min_value=0.0)
-    massa_molar = 0
-    valensi = 1
+        nilai_awal = st.number_input("Nilai Konsentrasi", value=1.0, min_value=0.0)
+        massa_molar = 0
+        valensi = 1
 
-    if konversi_opsi in ["Molaritas → ppm", "Molaritas → % w/v"]:
+        if konversi_opsi in ["Molaritas → ppm", "Molaritas → % w/v"]:
         massa_molar = st.number_input("Massa molar zat (g/mol)", value=58.44)
-    if konversi_opsi == "Molaritas → Normalitas":
+        if konversi_opsi == "Molaritas → Normalitas":
         valensi = st.number_input("Valensi / Faktor ekuivalen", value=1.0, min_value=0.1)
 
-    if st.button("Hitung Konversi"):
-        hasil = None
-        if konversi_opsi == "Molaritas → ppm":
-            hasil = nilai_awal * massa_molar * 1000
-            st.success(f"{nilai_awal:.4f} mol/L = {hasil:.2f} ppm")
-        elif konversi_opsi == "Molaritas → % w/v":
-            hasil = nilai_awal * massa_molar / 10
-            st.success(f"{nilai_awal:.4f} mol/L = {hasil:.2f}% w/v")
-        elif konversi_opsi == "Molaritas → Normalitas":
-            hasil = nilai_awal * valensi
-            st.success(f"{nilai_awal:.4f} mol/L = {hasil:.2f} eq/L")
-        elif konversi_opsi == "% w/v → ppm":
-            hasil = nilai_awal * 10000
-            st.success(f"{nilai_awal:.4f}% w/v = {hasil:.2f} ppm")
+        if st.button("Hitung Konversi"):
+            hasil = None
+            if konversi_opsi == "Molaritas → ppm":
+                hasil = nilai_awal * massa_molar * 1000
+                st.success(f"{nilai_awal:.4f} mol/L = {hasil:.2f} ppm")
+            elif konversi_opsi == "Molaritas → % w/v":
+                hasil = nilai_awal * massa_molar / 10
+                st.success(f"{nilai_awal:.4f} mol/L = {hasil:.2f}% w/v")
+            elif konversi_opsi == "Molaritas → Normalitas":
+                hasil = nilai_awal * valensi
+                st.success(f"{nilai_awal:.4f} mol/L = {hasil:.2f} eq/L")
+            elif konversi_opsi == "% w/v → ppm":
+                hasil = nilai_awal * 10000
+                st.success(f"{nilai_awal:.4f}% w/v = {hasil:.2f} ppm")
 
 # --- FITUR REGRESI LINIER ---
 elif selected == "📈 Regresi Linier":
