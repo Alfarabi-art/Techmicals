@@ -223,35 +223,36 @@ if selected == "🏠 Home":
 }
 </style>
 
-<div class="grid-container">
-    <div class="feature-card">
-        <h3>⚗ Reaksi Kimia</h3>
-        <p>Setarakan reaksi dengan cepat dan akurat.</p>
-    </div>
-    <div class="feature-card">
-        <h3>🧪 Stoikiometri</h3>
-        <p>Hitung mol, massa molar, dan lainnya.</p>
-    </div>
-    <div class="feature-card">
-        <h3>📈 Konsentrasi Larutan</h3>
-        <p>Hitung dan konversi konsentrasi larutan.</p>
-    </div>
-    <div class="feature-card">
-        <h3>💧 pH dan pOH</h3>
-        <p>Hitung pH dan pOH larutan.</p>
-    </div>
-    <div class="feature-card">
-        <h3>🧬 Tabel Periodik</h3>
-        <p>Lihat data unsur periodik.</p>
-    </div>
-    <div class="feature-card">
-        <h3>📈 Regresi Linier</h3>
-        <p>Tampilkan grafik regresi data.</p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+# --- Card Klikable ---
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("⚗ Reaksi Kimia", key="card1"):
+            st.session_state.menu_selected = "⚗ Reaksi Kimia"
+            st.session_state.show_sidebar = True
+    with col2:
+        if st.button("🧪 Stoikiometri", key="card2"):
+            st.session_state.menu_selected = "🧪 Stoikiometri"
+            st.session_state.show_sidebar = True
+    with col3:
+        if st.button("📈 Konsentrasi Larutan", key="card3"):
+            st.session_state.menu_selected = "🧫 Konsentrasi Larutan"
+            st.session_state.show_sidebar = True
 
-    import streamlit.runtime.scriptrunner as scriptrunner
+    col4, col5, col6 = st.columns(3)
+    with col4:
+        if st.button("💧 pH dan pOH", key="card4"):
+            st.session_state.menu_selected = "💧 pH dan pOH"
+            st.session_state.show_sidebar = True
+    with col5:
+        if st.button("🧬 Tabel Periodik", key="card5"):
+            st.session_state.menu_selected = "🧬 Tabel Periodik"
+            st.session_state.show_sidebar = True
+    with col6:
+        if st.button("📈 Regresi Linier", key="card6"):
+            st.session_state.menu_selected = "📈 Regresi Linier"
+            st.session_state.show_sidebar = True
+
+    # Tombol Mulai Hitung
     if st.button("⚗ Mulai Hitung Sekarang", key="start_button"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
