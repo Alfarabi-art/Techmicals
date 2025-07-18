@@ -12,7 +12,7 @@ from io import BytesIO
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Kalkulator Kimia Plus",
+    page_title="Techmicals",
     page_icon="⚗",
     layout="wide"
 )
@@ -105,7 +105,7 @@ if not st.session_state.show_sidebar:
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
-            menu_title="🌟 Kalkulator Kimia",
+            menu_title="🌟 Kebutuhan Kimia",
             options=[
                 "🏠 Home",
                 "⚗ Reaksi Kimia",
@@ -151,7 +151,7 @@ if selected == "🏠 Home":
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
 # --- Footer ---
-st.markdown("<footer>© 2025 Techmicals by YourName | All rights reserved.</footer>", unsafe_allow_html=True)
+st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
 
 # --- FITUR REAKSI KIMIA ---
 if selected == "⚗ Reaksi Kimia":
