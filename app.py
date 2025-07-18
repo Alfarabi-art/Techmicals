@@ -74,19 +74,6 @@ st.set_page_config(
     layout="wide",
 )
 
-# Tambahkan style CSS untuk tombol
-st.markdown("""
-    <style>
-    .custom-button {
-        margin-top: 20px; /* Tambahkan jarak atas */
-        margin-bottom: 20px; /* Tambahkan jarak bawah */
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# Gunakan class CSS untuk tombol
-st.button("⚗ Mulai Hitung Sekarang", key="start_button")
-
 # --- CUSTOM CSS UNTUK DESAIN MODERN ---
 st.markdown("""
     <style>
@@ -278,6 +265,19 @@ if selected == "🏠 Home":
             window.scrollTo(0, 0);  // Scroll ke atas
             </script>
         """, height=0)
+
+# Tambahkan style CSS untuk tombol
+st.markdown("""
+    <style>
+    .custom-button {
+        margin-top: 20px; /* Tambahkan jarak atas */
+        margin-bottom: 20px; /* Tambahkan jarak bawah */
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Gunakan class CSS untuk tombol
+st.button("⚗ Mulai Hitung Sekarang", key="start_button")
 
 # --- About ---
 if selected == "📖 About":
