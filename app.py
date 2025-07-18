@@ -9,6 +9,8 @@ import re
 import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
+from streamlit_extras.switch_page_button
+import switch_page
 
 st.markdown("""
     <style>
@@ -185,15 +187,8 @@ if selected == "🏠 Home":
 
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.markdown("""
-            <style>
-            [data-testid="stSidebar"] {
-                display: block !important;
-            }
-            </style>
-        """, unsafe_allow_html=True)
-
+        switch_page("⚗ Reaksi Kimia")
+        
 # --- About ---
 if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
