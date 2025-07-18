@@ -105,7 +105,7 @@ if not st.session_state.show_sidebar:
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
-            menu_title="🌟 Kebutuhan Kimia",
+            menu_title="🌟 Kalkulator Kimia",
             options=[
                 "🏠 Home",
                 "⚗ Reaksi Kimia",
@@ -114,13 +114,14 @@ if st.session_state.show_sidebar:
                 "💧 pH dan pOH",
                 "🧬 Tabel Periodik",
                 "🔄 Konversi Satuan",
-                "📈 Regresi Linier"
+                "📈 Regresi Linier",
+                "📖 About"
             ],
             icons=[
                 "house", "flask", "calculator",
                 "droplet-half", "thermometer-half",
                 "grid-3x3-gap-fill", "repeat",
-                "graph-up"
+                "graph-up", "info-circle"
             ],
             menu_icon="chemistry",
             default_index=0
@@ -149,6 +150,22 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
+
+# --- FITUR ABOUT ---
+elif selected == "📖 About":
+    st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
+    st.write("""
+        <div style='text-align:center;'>
+        <p><b>Techmicals</b> adalah kalkulator kimia interaktif yang dibuat untuk mempermudah perhitungan kimia dalam dunia pendidikan dan praktikum.</p>
+        <p>💻 Dibuat dengan ❤️ oleh <b>YourName</b>.</p>
+        <p style='font-style:italic; color:#555;'>“Sains itu seru kalau kamu punya alat yang tepat.”</p>
+        <img src="https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif" width="250">
+        <p>
+            🌐 <a href="https://github.com/username/techmicals" target="_blank">GitHub</a> |
+            📷 <a href="https://instagram.com/username" target="_blank">Instagram</a>
+        </p>
+        </div>
+    """, unsafe_allow_html=True)
 
 # --- Footer ---
 st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
