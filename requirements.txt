@@ -4,3 +4,4 @@ chempy
 periodictable
 streamlit-option-menu
 scikit-learn
+streamlit-extras
