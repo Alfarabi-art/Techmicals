@@ -10,6 +10,15 @@ import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
 
+# Paksa scroll ke atas otomatis (HP/Desktop)
+st.markdown("""
+    <script>
+    window.onload = function() {
+        window.scrollTo(0, 0);
+    }
+    </script>
+""", unsafe_allow_html=True)
+
 st.markdown("""
     <style>
     /* Atur body biar responsif */
@@ -135,6 +144,22 @@ if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
+    
+# Paksa sidebar terbuka di HP
+if st.session_state.show_sidebar:
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: block !important;
+        }
+        </style>
+        <script>
+        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+        if (sidebar) {
+            sidebar.style.display = "block";
+        }
+        </script>
+    """, unsafe_allow_html=True)
 
 # --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
@@ -187,16 +212,6 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-
-if st.session_state.show_sidebar:
-    st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            display: block !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
         
 # --- About ---
 if selected == "📖 About":
