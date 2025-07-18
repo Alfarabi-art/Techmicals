@@ -416,10 +416,14 @@ elif selected == "📈 Regresi Linier":
         ax.legend()
         st.pyplot(fig)
 
-       # Tombol download hasil
-        hasil_text = f"Persamaan: {y_label} = {slope:.3f}{x_label} + {intercept:.3f}\nR² = {r_sq:.4f}"
-        from io import BytesIO
-        buffer = BytesIO()
-        buffer.write(hasil_text.encode())
-        buffer.seek(0)
-        st.download_button("📥 Download Hasil Regresi", buffer, file_name="hasil_regresi.txt", mime="text/plain")
+      # Tombol Download PDF
+            buffer = BytesIO()
+            fig.savefig(buffer, format="pdf")
+            st.download_button(
+                label="📄 Download Grafik Regresi (PDF)",
+                data=buffer.getvalue(),
+                file_name="regresi_linier.pdf",
+                mime="application/pdf"
+            )
+        except Exception as e:
+            st.error(f"⚠️ Error saat menghitung regresi: {e}")
