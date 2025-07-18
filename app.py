@@ -228,7 +228,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-elif selected == "📖 About":
+if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
     st.write("""
         <div style='text-align:center;'>
@@ -253,7 +253,7 @@ elif selected == "📖 About":
 st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
 
 # --- FITUR REAKSI KIMIA ---
-if selected == "⚗ Reaksi Kimia":
+elif selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
