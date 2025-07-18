@@ -189,7 +189,7 @@ if selected == "🏠 Home":
 
     if st.button("⚗ Mulai Hitung Sekarang"):
         tampilkan_sidebar("⚗ Reaksi Kimia")
-        st.experimental_rerun()
+        st.session_state()
 
     # Paksa sidebar muncul jika show_sidebar True
     if st.session_state.show_sidebar:
