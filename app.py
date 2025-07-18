@@ -69,25 +69,31 @@ st.markdown("""
 
 st.markdown("""
 <style>
-/* Set tinggi minimum yang sama untuk semua feature-card */
-.feature-card {
-    min-height: 150px; /* atur sesuai kebutuhan */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* Paksa semua card di baris yang sama agar sejajar */
+/* Pastikan semua kolom sejajar vertikal */
 .stColumns > div {
     display: flex;
     flex-direction: column;
+    justify-content: stretch;
 }
 
-/* Responsive di HP: stack 1 card per baris */
+/* Paksa semua feature-card punya tinggi yang sama */
+.feature-card {
+    flex: 1;
+    height: 100%; /* buat tingginya penuh dalam kolom */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+/* Responsive: di HP jadi 1 kolom per baris */
 @media screen and (max-width: 768px) {
     .stColumns {
-        display: flex;
-        flex-direction: column !important;
+        display: block !important;
+    }
+    .stColumns > div {
+        width: 100% !important;
+        margin-bottom: 10px;
     }
 }
 </style>
