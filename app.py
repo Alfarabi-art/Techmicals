@@ -205,8 +205,18 @@ if selected == "🏠 Home":
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
+    st.session_state.show_sidebar = True
+    st.session_state.menu_selected = "⚗ Reaksi Kimia"
+
+# Force show sidebar jika sudah diaktifkan
+if st.session_state.show_sidebar:
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: block !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
 elif selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
