@@ -107,27 +107,33 @@ if st.session_state.show_sidebar:
             icons=[
                 "house", "flask", "calculator",
                 "droplet-half", "thermometer-half",
-                "grid-3x3-gap-fill", "repeat", "graph-up"
+                "grid-3x3-gap-fill", "repeat",
+                "graph-up"
             ],
             menu_icon="chemistry",
             default_index=0
         )
         st.session_state.menu_selected = menu
 
-# --- KONTEN HALAMAN UTAMA ---
+# --- KONTEN HALAMAN UTAMA (HOME) ---
 selected = st.session_state.menu_selected
 
 if selected == "🏠 Home":
     st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
     st.write("""
-        Hai! 👋 Selamat datang di *Techmicals*, aplikasi kimia seru yang bikin hitung-hitungan jadi lebih gampang.  
-        Mau setarakan reaksi? Hitung mol? Cari massa molar? Semua bisa kamu lakukan di sini, cepat dan praktis.  
+        Hai! 👋 Selamat datang di **Techmicals**, aplikasi kimia modern yang bikin hitung-hitungan jadi super mudah.  
+        🎓 Cocok untuk pelajar, mahasiswa, dan siapapun yang ingin cepat menghitung reaksi, mol, konsentrasi, hingga grafik regresi.  
         🚀 Yuk mulai bereksperimen tanpa ribet!
     """)
-    st.image(
-        "https://images.unsplash.com/photo-1581093588401-5fe04c98b778",
-        use_container_width=True
-    )
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("<div class='feature-card'><h3>⚗ Reaksi Kimia</h3><p>Setarakan reaksi dengan cepat dan akurat.</p></div>", unsafe_allow_html=True)
+    with col2:
+        st.markdown("<div class='feature-card'><h3>🧪 Stoikiometri</h3><p>Hitung mol, massa molar, dan lainnya.</p></div>", unsafe_allow_html=True)
+    with col3:
+        st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dengan regresi & grafik.</p></div>", unsafe_allow_html=True)
+
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
