@@ -138,8 +138,6 @@ if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 
 # --- SIDEBAR MENU ---
-st.session_state.menu_selected = menu
-
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
