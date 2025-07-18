@@ -263,9 +263,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Gunakan class CSS untuk tombol
-st.button("⚗ Mulai Hitung Sekarang", key="start_button")
-    st.session_state.show_sidebar = True
+if st.button("⚗ Mulai Hitung Sekarang", key="start_button"):
+        st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
 # --- About ---
