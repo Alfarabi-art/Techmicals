@@ -146,6 +146,9 @@ if not st.session_state.show_sidebar:
         </style>
     """, unsafe_allow_html=True)
 
+# --- DEFINISIKAN selected ---
+selected = st.session_state.menu_selected
+
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
