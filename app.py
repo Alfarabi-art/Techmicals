@@ -17,58 +17,70 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS UNTUK TAMPILAN MENARIK ---
+# --- CUSTOM CSS UNTUK DESAIN MODERN ---
 st.markdown("""
     <style>
-    /* Background Gradient */
+    /* Background gradient animated */
     body {
-        background: linear-gradient(135deg, #89f7fe, #66a6ff);
-        background-attachment: fixed;
+        background: linear-gradient(-45deg, #89f7fe, #66a6ff, #fbc2eb, #a6c1ee);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
     }
 
-    /* Panel transparan dengan shadow */
+    /* Smooth fade in animation */
     .stApp {
-        background: rgba(255, 255, 255, 0.85);
-        border-radius: 15px;
-        padding: 15px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        animation: fadeIn 1.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
     }
 
-    /* Header & Judul */
-    h1, h2, h3 {
-        color: #3f3d56;
-        text-align: center;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    /* Tombol lebih modern */
-    .stButton>button {
-        background-color: #66a6ff;
-        color: white;
-        border-radius: 10px;
-        padding: 8px 16px;
-        border: none;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-    .stButton>button:hover {
-        background-color: #89f7fe;
-        color: black;
-        transform: scale(1.05);
-    }
-
-    /* Kartu fitur di halaman Home */
+    /* Kartu fitur */
     .feature-card {
-        background: white;
-        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
         padding: 20px;
         margin: 10px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         transition: 0.3s;
+        text-align: center;
     }
     .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Tombol stylish */
+    .stButton>button {
+        background: linear-gradient(45deg, #66a6ff, #89f7fe);
+        color: white;
+        border-radius: 12px;
+        padding: 10px 20px;
+        border: none;
+        font-weight: bold;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+    .stButton>button:hover {
+        background: linear-gradient(45deg, #fbc2eb, #a6c1ee);
+        color: black;
+        transform: scale(1.08);
+        box-shadow: 0 8px 12px rgba(0,0,0,0.3);
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        padding: 15px;
+        font-size: 14px;
+        color: #555;
+        margin-top: 40px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -119,12 +131,12 @@ if st.session_state.show_sidebar:
 selected = st.session_state.menu_selected
 
 if selected == "🏠 Home":
-    st.title("🧪 Techmicals – Teman Asik Kimia-mu!")
+    st.markdown("<h1 style='text-align:center; font-size: 3rem;'>🧪 Techmicals</h1>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align:center; color:#3f3d56;'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
     st.write("""
-        Hai! 👋 Selamat datang di **Techmicals**, aplikasi kimia modern yang bikin hitung-hitungan jadi super mudah.  
-        🎓 Cocok untuk pelajar, mahasiswa, dan siapapun yang ingin cepat menghitung reaksi, mol, konsentrasi, hingga grafik regresi.  
-        🚀 Yuk mulai bereksperimen tanpa ribet!
-    """)
+        <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.  
+        🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
+    """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -132,11 +144,14 @@ if selected == "🏠 Home":
     with col2:
         st.markdown("<div class='feature-card'><h3>🧪 Stoikiometri</h3><p>Hitung mol, massa molar, dan lainnya.</p></div>", unsafe_allow_html=True)
     with col3:
-        st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dengan regresi & grafik.</p></div>", unsafe_allow_html=True)
+        st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
+
+# --- Footer ---
+st.markdown("<footer>© 2025 Techmicals by YourName | All rights reserved.</footer>", unsafe_allow_html=True)
 
 # --- FITUR REAKSI KIMIA ---
 if selected == "⚗ Reaksi Kimia":
