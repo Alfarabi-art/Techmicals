@@ -67,38 +67,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* Pastikan semua kolom sejajar vertikal */
-.stColumns > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-}
-
-/* Paksa semua feature-card punya tinggi yang sama */
-.feature-card {
-    flex: 1;
-    height: 100%; /* buat tingginya penuh dalam kolom */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-}
-
-/* Responsive: di HP jadi 1 kolom per baris */
-@media screen and (max-width: 768px) {
-    .stColumns {
-        display: block !important;
-    }
-    .stColumns > div {
-        width: 100% !important;
-        margin-bottom: 10px;
-    }
-}
-</style>
-""", unsafe_allow_html=True)
-
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Techmicals",
@@ -226,25 +194,62 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    # --- BARIS PERTAMA (3 KOLOM) ---
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown("<div class='feature-card'><h3>⚗ Reaksi Kimia</h3><p>Setarakan reaksi dengan cepat dan akurat.</p></div>", unsafe_allow_html=True)
-    with col2:
-        st.markdown("<div class='feature-card'><h3>🧪 Stoikiometri</h3><p>Hitung mol, massa molar, dan lainnya.</p></div>", unsafe_allow_html=True)
-    with col3:
-        st.markdown("<div class='feature-card'><h3>📈 Konsentrasi Larutan</h3><p>Hitung dan konversi konsentrasi larutan.</p></div>", unsafe_allow_html=True)
+    st.markdown("""
+<style>
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
 
-    # --- BARIS KEDUA (3 KOLOM) ---
-    col4, col5, col6 = st.columns(3)
-    with col4:
-        st.markdown("<div class='feature-card'><h3>💧 pH dan pOH</h3><p>Hitung pH dan pOH larutan.</p></div>", unsafe_allow_html=True)
-    with col5:
-        st.markdown("<div class='feature-card'><h3>🧬 Tabel Periodik</h3><p>Lihat data unsur-unsur periodik.</p></div>", unsafe_allow_html=True)
-    with col6:
-        st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
+.feature-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    height: 100%;
+    transition: 0.3s;
+}
 
+.feature-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
 
+.feature-card h3 {
+    margin: 10px 0;
+}
+</style>
+
+<div class="grid-container">
+    <div class="feature-card">
+        <h3>⚗ Reaksi Kimia</h3>
+        <p>Setarakan reaksi dengan cepat dan akurat.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🧪 Stoikiometri</h3>
+        <p>Hitung mol, massa molar, dan lainnya.</p>
+    </div>
+    <div class="feature-card">
+        <h3>📈 Konsentrasi Larutan</h3>
+        <p>Hitung dan konversi konsentrasi larutan.</p>
+    </div>
+    <div class="feature-card">
+        <h3>💧 pH dan pOH</h3>
+        <p>Hitung pH dan pOH larutan.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🧬 Tabel Periodik</h3>
+        <p>Lihat data unsur periodik.</p>
+    </div>
+    <div class="feature-card">
+        <h3>📈 Regresi Linier</h3>
+        <p>Tampilkan grafik regresi data.</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
     import streamlit.runtime.scriptrunner as scriptrunner
     
