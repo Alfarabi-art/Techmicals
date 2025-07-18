@@ -10,17 +10,79 @@ import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
 
+st.markdown("""
+    <style>
+    /* Atur body biar responsif */
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    /* Container utama */
+    .block-container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 1rem;
+    }
+
+    /* Card menu lebih rapi */
+    .element-container {
+        margin-bottom: 10px;
+    }
+
+    /* Responsive typography */
+    h1, h2, h3 {
+        word-wrap: break-word;
+    }
+
+    /* Media query untuk HP */
+    @media screen and (max-width: 768px) {
+        .block-container {
+            padding: 0.5rem;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+    }
+
+    /* Gradient background biar elegan */
+    body {
+        background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Techmicals",
     page_icon="⚗",
     layout="wide"
+    initial_sidebar_state="collapsed"  # Awal sidebar collapse
 )
 
 # --- CUSTOM CSS UNTUK DESAIN MODERN ---
 st.markdown("""
     <style>
-    /* Background gradient animated */
+    html, body, [data-testid="stAppViewContainer"] {
+        margin: 0;
+        padding: 0;
+        scroll-behavior: smooth;
+    }
     body {
         background: linear-gradient(-45deg, #89f7fe, #66a6ff, #fbc2eb, #a6c1ee);
         background-size: 400% 400%;
@@ -31,17 +93,11 @@ st.markdown("""
         50% {background-position: 100% 50%;}
         100% {background-position: 0% 50%;}
     }
-
-    /* Smooth fade in animation */
-    .stApp {
-        animation: fadeIn 1.2s ease-in-out;
-    }
+    .stApp { animation: fadeIn 1s ease-in-out; }
     @keyframes fadeIn {
         from {opacity: 0;}
         to {opacity: 1;}
     }
-
-    /* Kartu fitur */
     .feature-card {
         background: rgba(255, 255, 255, 0.9);
         border-radius: 15px;
@@ -55,8 +111,6 @@ st.markdown("""
         transform: scale(1.05);
         box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
-
-    /* Tombol stylish */
     .stButton>button {
         background: linear-gradient(45deg, #66a6ff, #89f7fe);
         color: white;
@@ -73,24 +127,7 @@ st.markdown("""
         transform: scale(1.08);
         box-shadow: 0 8px 12px rgba(0,0,0,0.3);
     }
-
-    /* Footer */
-    footer {
-        text-align: center;
-        padding: 15px;
-        font-size: 14px;
-        color: #555;
-        margin-top: 40px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# --- CSS SCROLL KE ATAS SAAT BUKA ---
-st.markdown("""
-    <style>
-        html, body, [data-testid="stAppViewContainer"] {
-            scroll-behavior: smooth;
-        }
+    footer { text-align: center; color: #555; margin-top: 40px; }
     </style>
 """, unsafe_allow_html=True)
 
@@ -100,17 +137,11 @@ if "show_sidebar" not in st.session_state:
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 
-# --- SEMBUNYIKAN SIDEBAR DI AWAL ---
-if not st.session_state.show_sidebar:
-    st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            display: none;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
 # --- SIDEBAR MENU ---
+def tampilkan_sidebar(menu):
+    st.session_state.show_sidebar = True
+    st.session_state.menu_selected = menu
+
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
@@ -156,10 +187,9 @@ if selected == "🏠 Home":
     with col3:
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
-    if "menu" in query_params and not st.session_state.show_sidebar:
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
-
+    if st.button("⚗ Mulai Hitung Sekarang"):
+        tampilkan_sidebar("⚗ Reaksi Kimia")
+        st.experimental_rerun()
 
     # Paksa sidebar muncul jika show_sidebar True
     if st.session_state.show_sidebar:
@@ -458,7 +488,7 @@ elif selected == "📈 Regresi Linier":
             x = np.array([float(i.strip()) for i in x_vals.split(",")]).reshape(-1, 1)
             y = np.array([float(i.strip()) for i in y_vals.split(",")])
         except:
-            st.error("⚠️ Pastikan semua nilai valid.")
+            st.error("⚠ Pastikan semua nilai valid.")
             x, y = np.array([]), np.array([])
     else:
         uploaded_file = st.file_uploader("Upload file CSV dengan kolom X dan Y")
@@ -477,7 +507,7 @@ elif selected == "📈 Regresi Linier":
             intercept = model.intercept_
             r_sq = model.score(x, y)
 
-            st.success(f"Persamaan: **{y_label} = {slope:.3f}{x_label} + {intercept:.3f}**")
+            st.success(f"Persamaan: *{y_label} = {slope:.3f}{x_label} + {intercept:.3f}*")
             st.info(f"R² (koefisien determinasi): {r_sq:.4f}")
 
             # Plot grafik regresi
@@ -503,7 +533,7 @@ elif selected == "📈 Regresi Linier":
             )
 
         except Exception as e:
-            st.error(f"⚠️ Error saat menghitung regresi: {e}")
+            st.error(f"⚠ Error saat menghitung regresi: {e}")
 
 # --- Footer ---
 st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
