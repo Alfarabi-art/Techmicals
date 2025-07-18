@@ -416,14 +416,17 @@ elif selected == "📈 Regresi Linier":
         ax.legend()
         st.pyplot(fig)
 
-      # Tombol Download PDF
+     # Tombol Download PDF
+            from io import BytesIO
             buffer = BytesIO()
             fig.savefig(buffer, format="pdf")
+            buffer.seek(0)  # Penting: kembalikan pointer ke awal
             st.download_button(
                 label="📄 Download Grafik Regresi (PDF)",
                 data=buffer.getvalue(),
                 file_name="regresi_linier.pdf",
                 mime="application/pdf"
             )
+
         except Exception as e:
             st.error(f"⚠️ Error saat menghitung regresi: {e}")
