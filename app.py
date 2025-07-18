@@ -12,51 +12,46 @@ from io import BytesIO
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Techmicals",
+    page_title="Kalkulator Kimia Plus",
     page_icon="⚗",
     layout="wide"
 )
 
-# --- CUSTOM STYLE (GRADIENT BACKGROUND + FONT) ---
+# --- CUSTOM CSS UNTUK BACKGROUND GRADIENT ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-    html, body, [class*="css"] {
-        font-family: 'Poppins', sans-serif !important;
+    /* Background gradient lembut */
+    body {
+        background: linear-gradient(135deg, #89f7fe, #66a6ff);
+        background-attachment: fixed;
     }
 
+    /* Panel transparan untuk konten */
     .stApp {
-        background: linear-gradient(135deg, #d1f2eb, #fef9e7, #fde2e4, #e0f7fa);
-        background-size: 400% 400%;
-        animation: gradientFlow 15s ease infinite;
-        color: #000000 !important;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
 
-    @keyframes gradientFlow {
-        0% {background-position: 0% 50%;}
-        50% {background-position: 100% 50%;}
-        100% {background-position: 0% 50%;}
+    /* Judul besar lebih menonjol */
+    h1, h2, h3 {
+        color: #3f3d56;
+        text-align: center;
     }
 
-    [data-testid="stSidebar"] {
-        background: rgba(255, 255, 255, 0.85) !important;
-        backdrop-filter: blur(6px);
-        border-radius: 10px;
-    }
-
-    .stButton>button {
-        background: linear-gradient(90deg, #1e90ff, #00bfff);
+    /* Tombol lebih elegan */
+    button {
+        background-color: #66a6ff;
         color: white;
+        border-radius: 10px;
+        padding: 8px 16px;
         border: none;
-        border-radius: 8px;
-        padding: 10px 24px;
-        font-size: 16px;
-        transition: all 0.3s ease-in-out;
+        font-weight: bold;
     }
-    .stButton>button:hover {
-        transform: scale(1.05);
-        background: linear-gradient(90deg, #00bfff, #1e90ff);
+    button:hover {
+        background-color: #89f7fe;
+        color: black;
     }
     </style>
 """, unsafe_allow_html=True)
