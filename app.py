@@ -218,15 +218,6 @@ if selected == "🏠 Home":
             </style>
         """, unsafe_allow_html=True)
 
-
-# --- FOOTER (TAMPIL DI SEMUA HALAMAN) ---
-st.markdown("""
-    <hr style="border:1px solid #bbb">
-    <p style="text-align:center;">
-        © 2025 <b>Techmicals</b> by Kelompok 10 | All rights reserved.
-    </p>
-""", unsafe_allow_html=True)
-
 # --- Footer ---
 st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
 
