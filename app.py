@@ -374,6 +374,10 @@ elif selected == "📈 Regresi Linier":
 
     metode_input = st.radio("Pilih metode input data:", ["Manual", "Upload CSV"])
 
+    # Tambahkan input untuk label sumbu
+    x_label = st.text_input("Judul Sumbu X", "X")
+    y_label = st.text_input("Judul Sumbu Y", "Y")
+
     if metode_input == "Manual":
         x_vals = st.text_area("Masukkan nilai X (pisahkan dengan koma):", "1, 2, 3, 4, 5")
         y_vals = st.text_area("Masukkan nilai Y (pisahkan dengan koma):", "2, 4, 5, 4, 5")
@@ -394,23 +398,23 @@ elif selected == "📈 Regresi Linier":
             x, y = np.array([]), np.array([])
 
     if st.button("Hitung Regresi") and len(x) > 0 and len(y) > 0:
-        try:
-            model = LinearRegression().fit(x, y)
-            slope = model.coef_[0]
-            intercept = model.intercept_
-            r_sq = model.score(x, y)
+        model = LinearRegression().fit(x, y)
+        slope = model.coef_[0]
+        intercept = model.intercept_
+        r_sq = model.score(x, y)
 
-            st.success(f"Persamaan: **y = {slope:.3f}x + {intercept:.3f}**")
-            st.info(f"R² (koefisien determinasi): {r_sq:.4f}")
+        st.success(f"Persamaan: **{y_label} = {slope:.3f}{x_label} + {intercept:.3f}**")
+        st.info(f"R² (koefisien determinasi): {r_sq:.4f}")
 
-            # Plot
-            fig, ax = plt.subplots()
-            ax.scatter(x, y, color="blue", label="Data")
-            ax.plot(x, model.predict(x), color="red", label="Garis Regresi")
-            ax.set_xlabel("X")
-            ax.set_ylabel("Y")
-            ax.legend()
-            st.pyplot(fig)
+        # Plot
+        fig, ax = plt.subplots()
+        ax.scatter(x, y, color="blue", label="Data")
+        ax.plot(x, model.predict(x), color="red", label="Garis Regresi")
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
+        ax.set_title("Grafik Regresi Linier")
+        ax.legend()
+        st.pyplot(fig)
 
             # Tombol Download PDF
             buffer = BytesIO()
