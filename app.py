@@ -281,9 +281,9 @@ elif menu == "🔄 Konversi Satuan":
         valensi = 1
 
         if konversi_opsi in ["Molaritas → ppm", "Molaritas → % w/v"]:
-        massa_molar = st.number_input("Massa molar zat (g/mol)", value=58.44)
+            massa_molar = st.number_input("Massa molar zat (g/mol)", value=58.44)
         if konversi_opsi == "Molaritas → Normalitas":
-        valensi = st.number_input("Valensi / Faktor ekuivalen", value=1.0, min_value=0.1)
+            valensi = st.number_input("Valensi / Faktor ekuivalen", value=1.0, min_value=0.1)
 
         if st.button("Hitung Konversi"):
             hasil = None
