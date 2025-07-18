@@ -85,6 +85,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# --- JAVASCRIPT FIX: Always Scroll to Top ---
+st.markdown("""
+    <script>
+        window.scrollTo(0, 0);
+    </script>
+""", unsafe_allow_html=True)
+
 # --- SESSION STATE ---
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
