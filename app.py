@@ -92,6 +92,23 @@ st.markdown("""
     </script>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+    <script>
+        if (window.location.hash === "") {
+            window.location.hash = "#home";
+            window.location.reload();
+        }
+    </script>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+        .block-container {
+            padding-top: 0rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # --- SESSION STATE ---
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
