@@ -9,7 +9,6 @@ import re
 import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
-from streamlit_extras.switch_page_button import switch_page
 
 st.markdown("""
     <style>
@@ -184,9 +183,13 @@ if selected == "🏠 Home":
     with col3:
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
+    import streamlit.runtime.scriptrunner as scriptrunner
+
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
-        switch_page("⚗ Reaksi Kimia")
+        st.session_state.menu_selected = "⚗ Reaksi Kimia"
+        scriptrunner.RerunException()  # paksa refresh
+
         
 # --- About ---
 if selected == "📖 About":
