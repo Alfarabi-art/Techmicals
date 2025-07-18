@@ -141,7 +141,7 @@ st.markdown("""
 
 # --- SESSION STATE ---
 if "show_sidebar" not in st.session_state:
-    st.session_state.show_sidebar = True
+    st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
     
