@@ -218,9 +218,7 @@ if selected == "🏠 Home":
             </style>
         """, unsafe_allow_html=True)
 
-# --- Footer ---
-st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
-
+# --- About ---
 if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
     st.write("""
@@ -553,3 +551,6 @@ elif selected == "📈 Regresi Linier":
 
         except Exception as e:
             st.error(f"⚠️ Error saat menghitung regresi: {e}")
+
+# --- Footer ---
+st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
