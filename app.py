@@ -7,6 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import re
 import math
+from sklearn.linear_model import LinearRegression
+from io import BytesIO
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
@@ -359,7 +361,7 @@ elif selected == "📈 Regresi Linier":
             x = np.array([float(i.strip()) for i in x_vals.split(",")]).reshape(-1, 1)
             y = np.array([float(i.strip()) for i in y_vals.split(",")])
         except:
-            st.error("⚠ Pastikan semua nilai valid.")
+            st.error("⚠️ Pastikan semua nilai valid.")
             x, y = np.array([]), np.array([])
     else:
         uploaded_file = st.file_uploader("Upload file CSV dengan kolom X dan Y")
@@ -372,19 +374,32 @@ elif selected == "📈 Regresi Linier":
             x, y = np.array([]), np.array([])
 
     if st.button("Hitung Regresi") and len(x) > 0 and len(y) > 0:
-        model = LinearRegression().fit(x, y)
-        slope = model.coef_[0]
-        intercept = model.intercept_
-        r_sq = model.score(x, y)
+        try:
+            model = LinearRegression().fit(x, y)
+            slope = model.coef_[0]
+            intercept = model.intercept_
+            r_sq = model.score(x, y)
 
-        st.success(f"Persamaan: *y = {slope:.3f}x + {intercept:.3f}*")
-        st.info(f"R² (koefisien determinasi): {r_sq:.4f}")
+            st.success(f"Persamaan: **y = {slope:.3f}x + {intercept:.3f}**")
+            st.info(f"R² (koefisien determinasi): {r_sq:.4f}")
 
-        # Plot
-        fig, ax = plt.subplots()
-        ax.scatter(x, y, color="blue", label="Data")
-        ax.plot(x, model.predict(x), color="red", label="Garis Regresi")
-        ax.set_xlabel("X")
-        ax.set_ylabel("Y")
-        ax.legend()
-        st.pyplot(fig)
+            # Plot
+            fig, ax = plt.subplots()
+            ax.scatter(x, y, color="blue", label="Data")
+            ax.plot(x, model.predict(x), color="red", label="Garis Regresi")
+            ax.set_xlabel("X")
+            ax.set_ylabel("Y")
+            ax.legend()
+            st.pyplot(fig)
+
+            # Tombol Download PDF
+            buffer = BytesIO()
+            fig.savefig(buffer, format="pdf")
+            st.download_button(
+                label="📄 Download Grafik Regresi (PDF)",
+                data=buffer.getvalue(),
+                file_name="regresi_linier.pdf",
+                mime="application/pdf"
+            )
+        except Exception as e:
+            st.error(f"⚠️ Error saat menghitung regresi: {e}")
