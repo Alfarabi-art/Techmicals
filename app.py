@@ -260,10 +260,10 @@ if selected == "🏠 Home":
 # --- About ---
 if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
-    st.write("""
+    st.markdown("""
         <div style='text-align:center;'>
         <p><b>Techmicals</b> adalah kalkulator kimia interaktif yang dibuat untuk mempermudah perhitungan kimia dalam dunia pendidikan dan praktikum.</p>
-        <p>💻 Dibuat dengan oleh <b>Tim Techmicals</b>.</p>
+        <p>💻 Dibuat oleh <b>Tim Techmicals</b>.</p>
         <p style='font-style:italic; color:#555;'>“Sains itu seru kalau kamu punya alat yang tepat.”</p>
         <img src="https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif" width="250">
     """, unsafe_allow_html=True)
