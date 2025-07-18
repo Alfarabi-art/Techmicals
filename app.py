@@ -110,6 +110,12 @@ if "show_sidebar" not in st.session_state:
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 
+# --- CEK PARAMETER QUERY ---
+query_params = st.experimental_get_query_params()
+if "menu" in query_params and query_params["menu"][0] == "reaksi_kimia":
+    st.session_state.show_sidebar = True
+    st.session_state.menu_selected = "⚗ Reaksi Kimia"
+
 # --- SEMBUNYIKAN SIDEBAR DI AWAL ---
 if not st.session_state.show_sidebar:
     st.markdown("""
