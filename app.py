@@ -10,6 +10,63 @@ import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
 
+st.markdown("""
+    <style>
+    /* Atur body biar responsif */
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    /* Container utama */
+    .block-container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 1rem;
+    }
+
+    /* Card menu lebih rapi */
+    .element-container {
+        margin-bottom: 10px;
+    }
+
+    /* Responsive typography */
+    h1, h2, h3 {
+        word-wrap: break-word;
+    }
+
+    /* Media query untuk HP */
+    @media screen and (max-width: 768px) {
+        .block-container {
+            padding: 0.5rem;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+    }
+
+    /* Gradient background biar elegan */
+    body {
+        background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Techmicals",
