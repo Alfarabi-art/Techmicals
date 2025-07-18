@@ -252,17 +252,6 @@ if selected == "🏠 Home":
 """, unsafe_allow_html=True)
 
 import streamlit.runtime.scriptrunner as scriptrunner
-
-# Tambahkan style CSS untuk tombol
-st.markdown("""
-    <style>
-    .custom-button {
-        margin-top: 20px; /* Tambahkan jarak atas */
-        margin-bottom: 20px; /* Tambahkan jarak bawah */
-    }
-    </style>
-""", unsafe_allow_html=True)
-    
     if st.button("⚗ Mulai Hitung Sekarang", key="start_button"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
