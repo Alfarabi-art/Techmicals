@@ -251,7 +251,7 @@ if selected == "🏠 Home":
 </div>
 """, unsafe_allow_html=True)
 
-    import streamlit.runtime.scriptrunner as scriptrunner
+import streamlit.runtime.scriptrunner as scriptrunner
 
 # Tambahkan style CSS untuk tombol
 st.markdown("""
