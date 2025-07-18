@@ -72,7 +72,6 @@ st.set_page_config(
     page_title="Techmicals",
     page_icon="⚗",
     layout="wide",
-    initial_sidebar_state="collapsed"  # Awal sidebar collapse
 )
 
 # --- CUSTOM CSS UNTUK DESAIN MODERN ---
