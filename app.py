@@ -17,41 +17,58 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM CSS UNTUK BACKGROUND GRADIENT ---
+# --- CUSTOM CSS UNTUK TAMPILAN MENARIK ---
 st.markdown("""
     <style>
-    /* Background gradient lembut */
+    /* Background Gradient */
     body {
         background: linear-gradient(135deg, #89f7fe, #66a6ff);
         background-attachment: fixed;
     }
 
-    /* Panel transparan untuk konten */
+    /* Panel transparan dengan shadow */
     .stApp {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.85);
         border-radius: 15px;
-        padding: 10px;
+        padding: 15px;
         box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     }
 
-    /* Judul besar lebih menonjol */
+    /* Header & Judul */
     h1, h2, h3 {
         color: #3f3d56;
         text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* Tombol lebih elegan */
-    button {
+    /* Tombol lebih modern */
+    .stButton>button {
         background-color: #66a6ff;
         color: white;
         border-radius: 10px;
         padding: 8px 16px;
         border: none;
         font-weight: bold;
+        transition: 0.3s;
     }
-    button:hover {
+    .stButton>button:hover {
         background-color: #89f7fe;
         color: black;
+        transform: scale(1.05);
+    }
+
+    /* Kartu fitur di halaman Home */
+    .feature-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
     </style>
 """, unsafe_allow_html=True)
