@@ -154,10 +154,9 @@ if selected == "🏠 Home":
     with col3:
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
-    if st.button("⚗ Mulai Hitung Sekarang"):
+    if st.button("⚗ Mulai Hitung Sekarang", type="primary"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.experimental_rerun()
 
     # Paksa sidebar muncul jika show_sidebar True
     if st.session_state.show_sidebar:
