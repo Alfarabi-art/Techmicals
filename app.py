@@ -172,10 +172,9 @@ if selected == "🏠 Home":
     with col3:
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
-    if st.button("⚗ Mulai Hitung Sekarang"):
+    if "menu" in query_params and not st.session_state.show_sidebar:
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.query_params(menu="reaksi_kimia")  # Tambahkan query param untuk HP
 
 
     # Paksa sidebar muncul jika show_sidebar True
