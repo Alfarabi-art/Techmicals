@@ -136,21 +136,26 @@ if "show_sidebar" not in st.session_state:
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 
+# --- SEMBUNYIKAN SIDEBAR DI AWAL ---
+if not st.session_state.show_sidebar:
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
 # --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
             menu_title="🌟 Kebutuhan Kimia",
             options=[
-                "🏠 Home",
-                "⚗ Reaksi Kimia",
-                "🧪 Stoikiometri",
-                "🧫 Konsentrasi Larutan",
-                "💧 pH dan pOH",
-                "🧬 Tabel Periodik",
-                "🔄 Konversi Satuan",
-                "📈 Regresi Linier",
-                "📖 About"
+                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+                "📈 Regresi Linier", "📖 About"
             ],
             icons=[
                 "house", "flask", "calculator",
@@ -158,14 +163,29 @@ if st.session_state.show_sidebar:
                 "grid-3x3-gap-fill", "repeat",
                 "graph-up", "info-circle"
             ],
-            menu_icon="chemistry",
             default_index=0
         )
         st.session_state.menu_selected = menu
 
-# --- KONTEN HALAMAN UTAMA (HOME) ---
-selected = st.session_state.menu_selected
+    # FIX: Suntikkan CSS agar sidebar selalu tampil di mobile
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: block !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
+    # FIX: Suntikkan JS agar sidebar langsung muncul
+    st.components.v1.html("""
+        <script>
+        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+        if(sidebar){ sidebar.style.display = "block"; }
+        </script>
+    """, height=0)
+
+# --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
+selected = st.session_state.menu_selected
 if selected == "🏠 Home":
     st.markdown("<h1 style='text-align:center; font-size: 3rem;'>🧪 Techmicals</h1>", unsafe_allow_html=True)
     st.markdown("<h3 style='text-align:center; color:#3f3d56;'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
@@ -174,30 +194,78 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.markdown("<div class='feature-card'><h3>⚗ Reaksi Kimia</h3><p>Setarakan reaksi dengan cepat dan akurat.</p></div>", unsafe_allow_html=True)
-    with col2:
-        st.markdown("<div class='feature-card'><h3>🧪 Stoikiometri</h3><p>Hitung mol, massa molar, dan lainnya.</p></div>", unsafe_allow_html=True)
-    with col3:
-        st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
+    st.markdown("""
+<style>
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    height: 100%;
+    transition: 0.3s;
+}
+
+.feature-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.feature-card h3 {
+    margin: 10px 0;
+}
+</style>
+
+<div class="grid-container">
+    <div class="feature-card">
+        <h3>⚗ Reaksi Kimia</h3>
+        <p>Setarakan reaksi dengan cepat dan akurat.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🧪 Stoikiometri</h3>
+        <p>Hitung mol, massa molar, dan lainnya.</p>
+    </div>
+    <div class="feature-card">
+        <h3>📈 Konsentrasi Larutan</h3>
+        <p>Hitung dan konversi konsentrasi larutan.</p>
+    </div>
+    <div class="feature-card">
+        <h3>💧 pH dan pOH</h3>
+        <p>Hitung pH dan pOH larutan.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🧬 Tabel Periodik</h3>
+        <p>Lihat data unsur periodik.</p>
+    </div>
+    <div class="feature-card">
+        <h3>📈 Regresi Linier</h3>
+        <p>Tampilkan grafik regresi data.</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
     import streamlit.runtime.scriptrunner as scriptrunner
-
+    
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
-    # Paksa sidebar muncul + scroll ke atas
-    st.components.v1.html("""
-        <script>
-        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
-        if(sidebar){ sidebar.style.display = "block"; }
-        window.scrollTo(0, 0);
-        </script>
-    """, height=0)
+        # FIX: Paksa scroll ke atas & sidebar muncul
+        st.components.v1.html("""
+            <script>
+            const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+            if(sidebar){ sidebar.style.display = "block"; }
+            window.scrollTo(0, 0);  // Scroll ke atas
+            </script>
+        """, height=0)
 
-        
 # --- About ---
 if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
