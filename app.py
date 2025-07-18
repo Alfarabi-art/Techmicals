@@ -200,6 +200,12 @@ if selected == "🏠 Home":
     with col2:
         st.markdown("<div class='feature-card'><h3>🧪 Stoikiometri</h3><p>Hitung mol, massa molar, dan lainnya.</p></div>", unsafe_allow_html=True)
     with col3:
+        st.markdown("<div class='feature-card'><h3>📈 Konsentrasi Larutan</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
+     with col4:
+        st.markdown("<div class='feature-card'><h3>📈 pH dan pOH</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
+     with col5:
+        st.markdown("<div class='feature-card'><h3>📈 Tabel Periodik</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
+     with col6:
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
     import streamlit.runtime.scriptrunner as scriptrunner
