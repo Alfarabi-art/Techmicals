@@ -303,7 +303,7 @@ elif menu == "🔄 Konversi Satuan":
 # --- FITUR REGRESI LINIER ---
 elif selected == "📈 Regresi Linier":
     st.header("📈 Kalkulator Regresi Linier")
-    st.write("Hitung slope, intercept, persamaan garis regresi, dan tampilkan grafik.")
+    st.write("Hitung slope, intercept, persamaan garis regresi, tampilkan grafik, dan download PDF.")
 
     metode_input = st.radio("Pilih metode input data:", ["Manual", "Upload CSV"])
 
@@ -340,12 +340,28 @@ elif selected == "📈 Regresi Linier":
             st.info(f"R² (koefisien determinasi): {r_sq:.4f}")
 
             # Plot grafik regresi
-            fig, ax = plt.subplots()
+            fig, ax = plt.subplots(figsize=(8, 5))
             ax.scatter(x, y, color="blue", label="Data")
             ax.plot(x, model.predict(x), color="red", label="Garis Regresi")
             ax.set_xlabel(x_label)
             ax.set_ylabel(y_label)
             ax.set_title("Grafik Regresi Linier")
+
+            # Tambahkan hasil regresi ke grafik
+            textstr = (
+                f"Persamaan: {y_label} = {slope:.3f}{x_label} + {intercept:.3f}\n"
+                f"Slope (m): {slope:.3f}\n"
+                f"Intercept (b): {intercept:.3f}\n"
+                f"R²: {r_sq:.4f}"
+            )
+            ax.text(
+                0.05, 0.95, textstr,
+                transform=ax.transAxes,
+                fontsize=10,
+                verticalalignment='top',
+                bbox=dict(boxstyle="round,pad=0.3", facecolor="lightyellow", edgecolor="gray")
+            )
+
             ax.legend()
             st.pyplot(fig)
 
@@ -362,6 +378,7 @@ elif selected == "📈 Regresi Linier":
             )
         except Exception as e:
             st.error(f"⚠ Error saat menghitung regresi: {e}")
+
 
 # --- Footer ---
 st.write("---")
