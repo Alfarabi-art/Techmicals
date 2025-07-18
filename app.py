@@ -204,19 +204,22 @@ if selected == "🏠 Home":
     with col3:
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
-if st.button("⚗ Mulai Hitung Sekarang"):
-    st.session_state.show_sidebar = True
-    st.session_state.menu_selected = "⚗ Reaksi Kimia"
+ if st.button("⚗ Mulai Hitung Sekarang"):
+        st.session_state.show_sidebar = True
+        st.experimental_rerun()
 
-# Tampilkan sidebar kalau show_sidebar = True
+# --- TAMPILKAN SIDEBAR HANYA JIKA DIHALAMAN LAIN ---
 if st.session_state.show_sidebar:
-    st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            display: block !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    with st.sidebar:
+        # isi sidebar seperti biasa...
+
+# --- FOOTER (TAMPIL DI SEMUA HALAMAN) ---
+st.markdown("""
+    <hr style="border:1px solid #bbb">
+    <p style="text-align:center;">
+        © 2025 <b>Techmicals</b> by Kelompok 10 | All rights reserved.
+    </p>
+""", unsafe_allow_html=True)
 
 # Force show sidebar jika sudah diaktifkan
 if st.session_state.show_sidebar:
