@@ -67,6 +67,32 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Set tinggi minimum yang sama untuk semua feature-card */
+.feature-card {
+    min-height: 150px; /* atur sesuai kebutuhan */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Paksa semua card di baris yang sama agar sejajar */
+.stColumns > div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Responsive di HP: stack 1 card per baris */
+@media screen and (max-width: 768px) {
+    .stColumns {
+        display: flex;
+        flex-direction: column !important;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
+
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Techmicals",
