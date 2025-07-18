@@ -85,22 +85,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- JAVASCRIPT FIX: Always Scroll to Top ---
-st.markdown("""
-    <script>
-        window.scrollTo(0, 0);
-    </script>
-""", unsafe_allow_html=True)
-
+# --- CSS SCROLL KE ATAS SAAT BUKA ---
 st.markdown("""
     <style>
-    html, body, [data-testid="stAppViewContainer"] {
-        scroll-behavior: smooth;
-        overflow-anchor: none;
-    }
-    .block-container {
-        padding-top: 1rem;
-    }
+        html, body, [data-testid="stAppViewContainer"] {
+            scroll-behavior: smooth;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -109,12 +99,6 @@ if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
-
-# --- CEK PARAMETER QUERY ---
-query_params = st.experimental_get_query_params()
-if "menu" in query_params and query_params["menu"][0] == "reaksi_kimia":
-    st.session_state.show_sidebar = True
-    st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
 # --- SEMBUNYIKAN SIDEBAR DI AWAL ---
 if not st.session_state.show_sidebar:
