@@ -1,8 +1,0 @@
-body {
-    background: linear-gradient(135deg, #e0f7fa, #ffffff);
-}
-h1, h2, h3 { word-wrap: break-word; }
-.stButton > button {
-    background: linear-gradient(45deg, #66a6ff, #89f7fe);
-    color: white; border-radius: 12px;
-}
