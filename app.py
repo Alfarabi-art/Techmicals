@@ -169,7 +169,7 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.experimental_set_query_params(menu="reaksi_kimia")  # Tambahkan query param untuk HP
+        st.query_params(menu="reaksi_kimia")  # Tambahkan query param untuk HP
 
 
     # Paksa sidebar muncul jika show_sidebar True
