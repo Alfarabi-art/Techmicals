@@ -192,7 +192,8 @@ elif menu == "🔄 Konversi Satuan":
         "Mol ↔ Partikel",
         "Volume Gas (STP)",
         "Suhu",
-        "Tekanan"
+        "Tekanan",
+        "Konsentrasi Larutan"
     ])
 
     if kategori == "Mol ↔ Gram":
