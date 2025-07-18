@@ -131,61 +131,83 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- SESSION STATE ---
-# --- SESSION STATE ---
+if "show_sidebar" not in st.session_state:
+    st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 
 # --- SIDEBAR MENU ---
-menu = option_menu(
-    menu_title="🌟 Kebutuhan Kimia",
-    options=[
-        "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
-        "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
-        "🧬 Tabel Periodik", "🔄 Konversi Satuan",
-        "📈 Regresi Linier", "📖 About"
-    ],
-    icons=[
-        "house", "flask", "calculator",
-        "droplet-half", "thermometer-half",
-        "grid-3x3-gap-fill", "repeat",
-        "graph-up", "info-circle"
-    ],
-    default_index=0
-)
-st.session_state.menu_selected = menu
+if st.session_state.show_sidebar:
+    with st.sidebar:
+        menu = option_menu(
+            menu_title="🌟 Kebutuhan Kimia",
+            options=[
+                "🏠 Home",
+                "⚗ Reaksi Kimia",
+                "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan",
+                "💧 pH dan pOH",
+                "🧬 Tabel Periodik",
+                "🔄 Konversi Satuan",
+                "📈 Regresi Linier",
+                "📖 About"
+            ],
+            icons=[
+                "house", "flask", "calculator",
+                "droplet-half", "thermometer-half",
+                "grid-3x3-gap-fill", "repeat",
+                "graph-up", "info-circle"
+            ],
+            menu_icon="chemistry",
+            default_index=0
+        )
+        st.session_state.menu_selected = menu
 
+# --- KONTEN HALAMAN UTAMA (HOME) ---
 selected = st.session_state.menu_selected
 
-# --- TOMBOL CARD YANG BISA DIKLIK ---
-def clickable_card(title, desc, menu_target):
-    if st.button(f"{title}\n{desc}"):
-        st.session_state.menu_selected = menu_target
-        st.experimental_rerun()
-
-# --- HOME PAGE ---
 if selected == "🏠 Home":
     st.markdown("<h1 style='text-align:center; font-size: 3rem;'>🧪 Techmicals</h1>", unsafe_allow_html=True)
     st.markdown("<h3 style='text-align:center; color:#3f3d56;'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu. 🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>", unsafe_allow_html=True)
+    st.write("""
+        <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.  
+        🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
+    """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        clickable_card("⚗ Reaksi Kimia", "Setarakan reaksi dengan cepat.", "⚗ Reaksi Kimia")
-        clickable_card("🧪 Stoikiometri", "Hitung mol dan massa molar.", "🧪 Stoikiometri")
-        clickable_card("🧫 Konsentrasi", "Hitung konsentrasi larutan.", "🧫 Konsentrasi Larutan")
+        st.markdown("<div class='feature-card'><h3>⚗ Reaksi Kimia</h3><p>Setarakan reaksi dengan cepat dan akurat.</p></div>", unsafe_allow_html=True)
     with col2:
-        clickable_card("💧 pH dan pOH", "Hitung pH larutan.", "💧 pH dan pOH")
-        clickable_card("🧬 Tabel Periodik", "Data unsur kimia.", "🧬 Tabel Periodik")
+        st.markdown("<div class='feature-card'><h3>🧪 Stoikiometri</h3><p>Hitung mol, massa molar, dan lainnya.</p></div>", unsafe_allow_html=True)
     with col3:
-        clickable_card("🔄 Konversi Satuan", "Konversi unit kimia.", "🔄 Konversi Satuan")
-        clickable_card("📈 Regresi Linier", "Hitung garis regresi.", "📈 Regresi Linier")
+        st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
-# --- ABOUT ---
-elif selected == "📖 About":
+    import streamlit.runtime.scriptrunner as scriptrunner
+
+    if st.button("⚗ Mulai Hitung Sekarang"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "⚗ Reaksi Kimia"
+
+    # Paksa sidebar muncul + scroll ke atas
+    st.components.v1.html("""
+        <script>
+        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+        if(sidebar){ sidebar.style.display = "block"; }
+        window.scrollTo(0, 0);
+        </script>
+    """, height=0)
+
+        
+# --- About ---
+if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
-    st.write("💻 Dibuat oleh **Tim Techmicals**.")
-    st.markdown("<p style='text-align:center; font-style:italic; color:#555;'>“Sains itu seru kalau kamu punya alat yang tepat.”</p>", unsafe_allow_html=True)
-    st.image("https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif", width=250)
+    st.write("""
+        <div style='text-align:center;'>
+        <p><b>Techmicals</b> adalah kalkulator kimia interaktif yang dibuat untuk mempermudah perhitungan kimia dalam dunia pendidikan dan praktikum.</p>
+        <p>💻 Dibuat dengan oleh <b>Tim Techmicals</b>.</p>
+        <p style='font-style:italic; color:#555;'>“Sains itu seru kalau kamu punya alat yang tepat.”</p>
+        <img src="https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif" width="250">
+    """, unsafe_allow_html=True)
 
     st.markdown("<h3 style='text-align:center;'>👥 Anggota Tim</h3>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
