@@ -264,8 +264,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
     if st.button("⚗ Mulai Hitung Sekarang", key="start_button"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
+            st.session_state.show_sidebar = True
+            st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
 # --- About ---
 if selected == "📖 About":
