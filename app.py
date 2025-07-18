@@ -184,7 +184,90 @@ elif selected == "🧬 Tabel Periodik":
         st.write(f"Nomor Atom: {el.number}")
         st.write(f"Massa Atom: {el.mass} g/mol")
 
-elif kategori == "Konsentrasi Larutan":
+# ✅ --- Konversi Satuan ---
+elif menu == "🔄 Konversi Satuan":
+    st.header("🔄 Konversi Satuan Kimia")
+    kategori = st.selectbox("Pilih Kategori", [
+        "Mol ↔ Gram",
+        "Mol ↔ Partikel",
+        "Volume Gas (STP)",
+        "Suhu",
+        "Tekanan"
+    ])
+
+    if kategori == "Mol ↔ Gram":
+        mode = st.radio("Mode", ["Mol → Gram", "Gram → Mol"])
+        massa_molar = st.number_input("Massa Molar (g/mol)", value=18.0)
+        if mode == "Mol → Gram":
+            mol = st.number_input("Jumlah Mol", value=1.0)
+            if st.button("Hitung Massa"):
+                mass = mol * massa_molar
+                st.success(f"Massa: {mass:.4f} gram")
+        else:
+            mass = st.number_input("Massa (gram)", value=1.0)
+            if st.button("Hitung Mol"):
+                mol = mass / massa_molar
+                st.success(f"Mol: {mol:.4f} mol")
+
+    elif kategori == "Mol ↔ Partikel":
+        mode = st.radio("Mode", ["Mol → Partikel", "Partikel → Mol"])
+        if mode == "Mol → Partikel":
+            mol = st.number_input("Jumlah Mol", value=1.0)
+            if st.button("Hitung Partikel"):
+                partikel = mol * 6.022e23
+                st.success(f"Jumlah Partikel: {partikel:.2e}")
+        else:
+            partikel = st.number_input("Jumlah Partikel", value=6.022e23)
+            if st.button("Hitung Mol"):
+                mol = partikel / 6.022e23
+                st.success(f"Mol: {mol:.4f} mol")
+
+    elif kategori == "Volume Gas (STP)":
+        mode = st.radio("Mode", ["Mol → Liter", "Liter → Mol"])
+        if mode == "Mol → Liter":
+            mol = st.number_input("Jumlah Mol", value=1.0)
+            if st.button("Hitung Volume"):
+                volume = mol * 22.4
+                st.success(f"Volume Gas: {volume:.2f} L (STP)")
+        else:
+            volume = st.number_input("Volume Gas (L)", value=22.4)
+            if st.button("Hitung Mol"):
+                mol = volume / 22.4
+                st.success(f"Mol: {mol:.4f} mol")
+
+    elif kategori == "Suhu":
+        suhu_awal = st.number_input("Nilai Suhu", value=25.0)
+        dari = st.selectbox("Dari", ["C", "K", "F"])
+        ke = st.selectbox("Ke", ["C", "K", "F"])
+        if st.button("Konversi Suhu"):
+            hasil = suhu_awal
+            if dari != ke:
+                if dari == "C" and ke == "K": hasil += 273.15
+                elif dari == "C" and ke == "F": hasil = suhu_awal * 9/5 + 32
+                elif dari == "K" and ke == "C": hasil -= 273.15
+                elif dari == "K" and ke == "F": hasil = (suhu_awal - 273.15) * 9/5 + 32
+                elif dari == "F" and ke == "C": hasil = (suhu_awal - 32) * 5/9
+                elif dari == "F" and ke == "K": hasil = (suhu_awal - 32) * 5/9 + 273.15
+            st.success(f"Hasil: {hasil:.2f}°{ke}")
+
+    elif kategori == "Tekanan":
+        tekanan_awal = st.number_input("Nilai Tekanan", value=1.0)
+        dari = st.selectbox("Dari", ["atm", "Pa", "mmHg", "bar"])
+        ke = st.selectbox("Ke", ["atm", "Pa", "mmHg", "bar"])
+        konversi = {
+            "atm": {"Pa": 101325, "mmHg": 760, "bar": 1.01325},
+            "Pa": {"atm": 1/101325, "mmHg": 760/101325, "bar": 1e-5},
+            "mmHg": {"atm": 1/760, "Pa": 133.322, "bar": 1.333e-3},
+            "bar": {"atm": 0.98692, "Pa": 1e5, "mmHg": 750.062}
+        }
+        if st.button("Konversi Tekanan"):
+            if dari == ke:
+                hasil = tekanan_awal
+            else:
+                hasil = tekanan_awal * konversi[dari][ke]
+            st.success(f"Hasil: {hasil:.4f} {ke}")
+
+    elif kategori == "Konsentrasi Larutan":
     st.subheader("Konversi Konsentrasi Larutan")
     konversi_opsi = st.selectbox("Pilih Konversi", [
         "Molaritas → ppm",
