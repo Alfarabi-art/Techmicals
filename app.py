@@ -93,19 +93,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-    <script>
-        if (window.location.hash === "") {
-            window.location.hash = "#home";
-            window.location.reload();
-        }
-    </script>
-""", unsafe_allow_html=True)
-
-st.markdown("""
     <style>
-        .block-container {
-            padding-top: 0rem;
-        }
+    html, body, [data-testid="stAppViewContainer"] {
+        scroll-behavior: smooth;
+        overflow-anchor: none;
+    }
+    .block-container {
+        padding-top: 1rem;
+    }
     </style>
 """, unsafe_allow_html=True)
 
