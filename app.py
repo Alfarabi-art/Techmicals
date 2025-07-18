@@ -227,6 +227,8 @@ st.markdown("""
     </p>
 """, unsafe_allow_html=True)
 
+# --- Footer ---
+st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
 
 if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
@@ -248,9 +250,6 @@ if selected == "📖 About":
     with col3:
         st.markdown("<div class='feature-card'><h4>👩‍🔬 Ovalia Kareva Betaubun</h4><p>NIM - 2460478</p></div>", unsafe_allow_html=True)
         st.markdown("<div class='feature-card'><h4>👩‍🔬 Widya Aulia Putri</h4><p>NIM - 2460534</p></div>", unsafe_allow_html=True)
-
-# --- Footer ---
-st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
 
 # --- FITUR REAKSI KIMIA ---
 elif selected == "⚗ Reaksi Kimia":
