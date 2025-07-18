@@ -204,19 +204,19 @@ if selected == "🏠 Home":
     with col3:
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
 
-if st.button("⚗ Mulai Hitung Sekarang"):
-    st.session_state.show_sidebar = True
-    st.session_state.menu_selected = "⚗ Reaksi Kimia"
+    if st.button("⚗ Mulai Hitung Sekarang"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
-# Paksa sidebar muncul jika show_sidebar True
-if st.session_state.show_sidebar:
-    st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            display: block !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+    # Paksa sidebar muncul jika show_sidebar True
+    if st.session_state.show_sidebar:
+        st.markdown("""
+            <style>
+            [data-testid="stSidebar"] {
+                display: block !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
 
 
 # --- FOOTER (TAMPIL DI SEMUA HALAMAN) ---
