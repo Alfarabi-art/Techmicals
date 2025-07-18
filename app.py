@@ -8,6 +8,7 @@ import math
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
+import re
 
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
