@@ -9,8 +9,7 @@ import re
 import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
-from streamlit_extras.switch_page_button
-import switch_page
+from streamlit_extras.switch_page_button import switch_page
 
 st.markdown("""
     <style>
