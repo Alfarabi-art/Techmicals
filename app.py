@@ -252,6 +252,8 @@ if selected == "🏠 Home":
 """, unsafe_allow_html=True)
 
     import streamlit.runtime.scriptrunner as scriptrunner
+
+
     
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
