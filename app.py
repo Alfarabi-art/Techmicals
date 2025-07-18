@@ -194,19 +194,24 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3, col4, col5, col6 = st.columns(6)
+    # --- BARIS PERTAMA (3 KOLOM) ---
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("<div class='feature-card'><h3>⚗ Reaksi Kimia</h3><p>Setarakan reaksi dengan cepat dan akurat.</p></div>", unsafe_allow_html=True)
     with col2:
         st.markdown("<div class='feature-card'><h3>🧪 Stoikiometri</h3><p>Hitung mol, massa molar, dan lainnya.</p></div>", unsafe_allow_html=True)
     with col3:
-        st.markdown("<div class='feature-card'><h3>📈 Konsentrasi Larutan</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
+        st.markdown("<div class='feature-card'><h3>📈 Konsentrasi Larutan</h3><p>Hitung dan konversi konsentrasi larutan.</p></div>", unsafe_allow_html=True)
+
+    # --- BARIS KEDUA (3 KOLOM) ---
+    col4, col5, col6 = st.columns(3)
     with col4:
         st.markdown("<div class='feature-card'><h3>💧 pH dan pOH</h3><p>Hitung pH dan pOH larutan.</p></div>", unsafe_allow_html=True)
     with col5:
         st.markdown("<div class='feature-card'><h3>🧬 Tabel Periodik</h3><p>Lihat data unsur-unsur periodik.</p></div>", unsafe_allow_html=True)
     with col6:
         st.markdown("<div class='feature-card'><h3>📈 Regresi Linier</h3><p>Analisis data dan tampilkan grafik regresi.</p></div>", unsafe_allow_html=True)
+
 
 
     import streamlit.runtime.scriptrunner as scriptrunner
