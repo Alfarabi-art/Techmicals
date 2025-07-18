@@ -186,7 +186,6 @@ elif selected == "📖 About":
     st.write("💻 Dibuat oleh **Tim Techmicals**.")
     st.markdown("<p style='text-align:center; font-style:italic; color:#555;'>“Sains itu seru kalau kamu punya alat yang tepat.”</p>", unsafe_allow_html=True)
     st.image("https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif", width=250)
-    """, unsafe_allow_html=True)
 
     st.markdown("<h3 style='text-align:center;'>👥 Anggota Tim</h3>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
