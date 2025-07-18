@@ -10,15 +10,6 @@ import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
 
-# Paksa scroll ke atas otomatis (HP/Desktop)
-st.markdown("""
-    <script>
-    window.onload = function() {
-        window.scrollTo(0, 0);
-    }
-    </script>
-""", unsafe_allow_html=True)
-
 st.markdown("""
     <style>
     /* Atur body biar responsif */
@@ -144,22 +135,31 @@ if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
-    
-# Paksa sidebar terbuka di HP
-if st.session_state.show_sidebar:
+
+# --- SEMBUNYIKAN SIDEBAR DI AWAL ---
+if not st.session_state.show_sidebar:
     st.markdown("""
         <style>
         [data-testid="stSidebar"] {
-            display: block !important;
+            display: none;
         }
         </style>
-        <script>
-        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
-        if (sidebar) {
-            sidebar.style.display = "block";
-        }
-        </script>
     """, unsafe_allow_html=True)
+
+# --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
+if selected == "🏠 Home":
+    if st.button("⚗ Mulai Hitung Sekarang"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "⚗ Reaksi Kimia"
+
+        # FIX: Paksa scroll ke atas & sidebar muncul
+        st.components.v1.html("""
+            <script>
+            const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+            if(sidebar){ sidebar.style.display = "block"; }
+            window.scrollTo(0, 0);  // Scroll ke atas
+            </script>
+        """, height=0)
 
 # --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
@@ -167,15 +167,10 @@ if st.session_state.show_sidebar:
         menu = option_menu(
             menu_title="🌟 Kebutuhan Kimia",
             options=[
-                "🏠 Home",
-                "⚗ Reaksi Kimia",
-                "🧪 Stoikiometri",
-                "🧫 Konsentrasi Larutan",
-                "💧 pH dan pOH",
-                "🧬 Tabel Periodik",
-                "🔄 Konversi Satuan",
-                "📈 Regresi Linier",
-                "📖 About"
+                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+                "📈 Regresi Linier", "📖 About"
             ],
             icons=[
                 "house", "flask", "calculator",
@@ -183,15 +178,27 @@ if st.session_state.show_sidebar:
                 "grid-3x3-gap-fill", "repeat",
                 "graph-up", "info-circle"
             ],
-            menu_icon="chemistry",
             default_index=0
         )
         st.session_state.menu_selected = menu
 
-# --- KONTEN HALAMAN UTAMA (HOME) ---
-selected = st.session_state.menu_selected
+    # FIX: Suntikkan CSS agar sidebar selalu tampil di mobile
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: block !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
-if selected == "🏠 Home":
+    # FIX: Suntikkan JS agar sidebar langsung muncul
+    st.components.v1.html("""
+        <script>
+        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+        if(sidebar){ sidebar.style.display = "block"; }
+        </script>
+    """, height=0)
+
     st.markdown("<h1 style='text-align:center; font-size: 3rem;'>🧪 Techmicals</h1>", unsafe_allow_html=True)
     st.markdown("<h3 style='text-align:center; color:#3f3d56;'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
     st.write("""
@@ -209,10 +216,6 @@ if selected == "🏠 Home":
 
     import streamlit.runtime.scriptrunner as scriptrunner
 
-    if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        
 # --- About ---
 if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
