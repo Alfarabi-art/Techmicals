@@ -74,17 +74,18 @@ st.set_page_config(
     layout="wide",
 )
 
-/* Tambahkan margin agar tombol tidak mepet */
-.stButton > button {
-    margin-top: 20px; /* tambahkan jarak atas */
-    margin-bottom: 20px; /* tambahkan jarak bawah */
-}
+# Tambahkan style CSS untuk tombol
+st.markdown("""
+    <style>
+    .custom-button {
+        margin-top: 20px; /* Tambahkan jarak atas */
+        margin-bottom: 20px; /* Tambahkan jarak bawah */
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-/* Kalau mau khusus tombol "Mulai Hitung Sekarang" */
-button:has-text("Mulai Hitung Sekarang") {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
+# Gunakan class CSS untuk tombol
+st.button("⚗ Mulai Hitung Sekarang", key="start_button")
 
 # --- CUSTOM CSS UNTUK DESAIN MODERN ---
 st.markdown("""
