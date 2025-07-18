@@ -172,9 +172,6 @@ elif selected == "📖 About":
         st.markdown("<div class='feature-card'><h4>👨‍🔬 Ovalia Kareva Betaubun</h4><p>Data Scientist</p></div>", unsafe_allow_html=True)
         st.markdown("<div class='feature-card'><h4>👨‍🔬 Widya Aulia Putri</h4><p>QA Tester</p></div>", unsafe_allow_html=True)
 
-    """, unsafe_allow_html=True)
-
-
 # --- Footer ---
 st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
 
