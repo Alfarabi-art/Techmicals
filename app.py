@@ -139,7 +139,7 @@ if "menu_selected" not in st.session_state:
 
 # --- SIDEBAR MENU ---
 def tampilkan_sidebar(menu):
-    st.session_state.show_sidebar = True
+    st.session_state.show_sidebar = False
     st.session_state.menu_selected = menu
 
 if st.session_state.show_sidebar:
@@ -190,9 +190,6 @@ if selected == "🏠 Home":
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
-
-    # Paksa sidebar muncul jika show_sidebar True
-    if st.session_state.show_sidebar:
         st.markdown("""
             <style>
             [data-testid="stSidebar"] {
