@@ -22,11 +22,27 @@ h1, h2, h3 {
     word-wrap: break-word;
 }
 
+h1 {
+    margin-bottom: 0.3rem; /* rapatkan jarak ke bawah */
+    line-height: 1.2;      /* rapatkan baris judul */
+}
+
+h3 {
+    margin-top: 0.2rem;    /* rapatkan jarak ke atas */
+    line-height: 1.3;
+}
+
 /* Media query untuk HP */
 @media screen and (max-width: 768px) {
-    .block-container {
-        padding: 0.5rem;
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.2rem; /* lebih rapat di layar kecil */
     }
+    h3 {
+        font-size: 1.2rem;
+        margin-top: 0.1rem;    /* lebih rapat di layar kecil */
+    }
+}
 
     img {
         max-width: 100%;
