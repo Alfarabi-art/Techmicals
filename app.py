@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 # Import halaman
-from . import home_page as home
+from import home_page as home
 import about
 
 from pages import (
