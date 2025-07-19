@@ -125,7 +125,7 @@ if selected == "🏠 Home":
         <p>Tampilkan grafik regresi data.</p>
     </div>
 </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
     import streamlit.runtime.scriptrunner as scriptrunner
 
@@ -141,7 +141,7 @@ if selected == "🏠 Home":
             if(sidebar){ sidebar.style.display = "block"; }
             window.scrollTo(0, 0);  // Scroll ke atas
             </script>
-        """, height=0)
+            """, height=0)
 
 # --- About ---
 if selected == "📖 About":
