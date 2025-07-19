@@ -56,7 +56,7 @@ if st.session_state.show_sidebar:
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 selected = st.session_state.menu_selected
 if selected == "🏠 Home":
-    st.markdown("<h1 class='gradient-text'>🧪 Techmicals</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
     st.markdown("""
         <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.  
