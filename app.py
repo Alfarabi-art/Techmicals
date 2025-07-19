@@ -11,6 +11,11 @@ import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
 
+# Load custom CSS
+css_file = Path(__file__).parent / "style.css"
+with open(css_file) as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Techmicals",
