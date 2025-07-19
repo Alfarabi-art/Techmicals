@@ -121,14 +121,48 @@ footer {
     margin-bottom: 50px; /* Tambahkan jarak ke bawah */
 }
 
-/* Atur item di sidebar supaya emoji rata dengan teks */
-[data-testid="stSidebar"] .nav-link span {
-    display: inline-flex;
-    align-items: center; /* membuat emoji & teks sejajar vertikal */
-    gap: 0.5rem;         /* jarak antara emoji dan teks */
-    font-size: 1.1rem;   /* biar ukuran lebih konsisten */
+/* --- SIDEBAR RESPONSIF DAN RAPIH --- */
+
+/* Atur seluruh sidebar */
+[data-testid="stSidebar"] .css-1d391kg {
+    padding: 0.5rem 1rem;
+    overflow-x: hidden;
 }
 
-[data-testid="stSidebar"] .nav-link span::first-letter {
-    font-size: 1.1rem;
+/* Atur tampilan setiap menu agar emoji & teks sejajar */
+[data-testid="stSidebar"] .nav-link {
+    display: flex;
+    align-items: center;  /* Vertikal sejajar */
+    gap: 10px;            /* Jarak antara emoji dan teks */
+    font-size: 1.1rem;    /* Ukuran teks default */
+    white-space: nowrap;  /* Teks tidak pindah baris */
+    padding: 8px 12px;    /* Padding dalam menu */
+    border-radius: 10px;  /* Biar menu sedikit rounded */
+    transition: all 0.2s ease-in-out;
+}
+
+/* Warna saat hover */
+[data-testid="stSidebar"] .nav-link:hover {
+    background-color: #f0f2f6;
+    transform: translateX(2px);
+}
+
+/* Ukuran emoji lebih konsisten */
+[data-testid="stSidebar"] .nav-link span {
+    font-size: 1.4rem;    /* Ukuran emoji desktop */
+    display: inline-flex;
+    align-items: center;
+}
+
+/* --- RESPONSIVE UNTUK LAYAR HP --- */
+@media screen and (max-width: 768px) {
+    [data-testid="stSidebar"] .nav-link {
+        font-size: 1rem;   /* Kecilkan teks */
+        gap: 6px;          /* Rapatkan emoji & teks */
+        padding: 6px 10px; /* Lebih kompak */
+    }
+
+    [data-testid="stSidebar"] .nav-link span {
+        font-size: 1.1rem; /* Kecilkan emoji */
+    }
 }
