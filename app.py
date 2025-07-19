@@ -145,7 +145,8 @@ if selected == "🏠 Home":
 """, unsafe_allow_html=True)
 
     import streamlit.runtime.scriptrunner as scriptrunner
-    
+
+    st.markdown('<div class="mulai-btn">', unsafe_allow_html=True)
     if st.button("⚗ Mulai Hitung Sekarang"):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
