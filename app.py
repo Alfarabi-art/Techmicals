@@ -50,13 +50,6 @@ if st.session_state.show_sidebar:
                 "🧬 Tabel Periodik", "🔄 Konversi Satuan",
                 "📈 Regresi Linier", "📖 About"
             ],
-            icons=[
-                "house", "beaker", "calculator",
-                "droplet-half", "thermometer-half",
-                "grid-3x3-gap-fill", "repeat",
-                "graph-up", "info-circle"
-            ],
-            default_index=0
         )
         st.session_state.menu_selected = menu
 
