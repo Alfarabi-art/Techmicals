@@ -70,6 +70,15 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
 .feature-card {
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
