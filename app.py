@@ -459,10 +459,18 @@ elif selected == "📈 Regresi Linier":
             st.success(f"Persamaan: {y_label} = {slope:.3f}{x_label} + {intercept:.3f}")
             st.info(f"R² (koefisien determinasi): {r_sq:.4f}")
 
-            # Plot grafik regresi
             fig, ax = plt.subplots()
             ax.scatter(x, y, color="blue", label="Data")
             ax.plot(x, model.predict(x), color="red", label="Garis Regresi")
+
+            # Tambahkan teks hasil regresi di grafik
+            persamaan = f"{y_label} = {slope:.3f}×{x_label} + {intercept:.3f}"
+            r2_text = f"R² = {r_sq:.4f}"
+            info_text = f"{persamaan}\n{r2_text}"
+            ax.text(0.05, 0.95, info_text, transform=ax.transAxes,
+                    fontsize=10, verticalalignment='top',
+                    bbox=dict(boxstyle="round", facecolor="white", alpha=0.5))
+
             ax.set_xlabel(x_label)
             ax.set_ylabel(y_label)
             ax.set_title("Grafik Regresi Linier")
