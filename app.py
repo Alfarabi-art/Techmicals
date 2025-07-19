@@ -127,7 +127,7 @@ st.markdown("""
 </div>
         """, unsafe_allow_html=True)
 
-    import streamlit.runtime.scriptrunner as scriptrunner
+import streamlit.runtime.scriptrunner as scriptrunner
 
     st.markdown('<div class="mulai-btn">', unsafe_allow_html=True)
     if st.button("⚗ Mulai Hitung Sekarang"):
