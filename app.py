@@ -49,8 +49,6 @@ if st.session_state.show_sidebar:
                 "💧 Konsentrasi Larutan", "🧬 Tabel Periodik",
                 "📈 Regresi Linier", "📖 About"
             ],
-            icons=[ "", "", "", "", "", "", "", "" ],  # kosongkan icon
-            default_index=0
         )
         st.session_state.menu_selected = menu
 
