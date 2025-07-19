@@ -63,33 +63,42 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
 
     st.markdown("""
-<div class="grid-container">
-    <div class="feature-card">
-        <h3>⚗ Reaksi Kimia</h3>
-        <p>Setarakan reaksi dengan cepat dan akurat.</p>
+if selected == "🏠 Home":
+    st.markdown("""
+    <h1 style='text-align:center; font-size: 3rem;'>🧪 Techmicals</h1>
+    <div class="typing-text">Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</div>
+
+    <div class="grid-container">
+        <div class="feature-card">
+            <h3>⚗ Reaksi Kimia</h3>
+            <p>Setarakan reaksi dengan cepat dan akurat.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🧪 Stoikiometri</h3>
+            <p>Hitung mol, massa molar, dan lainnya.</p>
+        </div>
+        <div class="feature-card">
+            <h3>📈 Konsentrasi Larutan</h3>
+            <p>Hitung dan konversi konsentrasi larutan.</p>
+        </div>
+        <div class="feature-card">
+            <h3>💧 pH dan pOH</h3>
+            <p>Hitung pH dan pOH larutan.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🧬 Tabel Periodik</h3>
+            <p>Lihat data unsur periodik.</p>
+        </div>
+        <div class="feature-card">
+            <h3>📈 Regresi Linier</h3>
+            <p>Tampilkan grafik regresi data.</p>
+        </div>
     </div>
-    <div class="feature-card">
-        <h3>🧪 Stoikiometri</h3>
-        <p>Hitung mol, massa molar, dan lainnya.</p>
+
+    <div style="text-align:center;">
+        <button class="start-btn">⚗ Mulai Hitung Sekarang</button>
     </div>
-    <div class="feature-card">
-        <h3>📈 Konsentrasi Larutan</h3>
-        <p>Hitung dan konversi konsentrasi larutan.</p>
-    </div>
-    <div class="feature-card">
-        <h3>💧 pH dan pOH</h3>
-        <p>Hitung pH dan pOH larutan.</p>
-    </div>
-    <div class="feature-card">
-        <h3>🧬 Tabel Periodik</h3>
-        <p>Lihat data unsur periodik.</p>
-    </div>
-    <div class="feature-card">
-        <h3>📈 Regresi Linier</h3>
-        <p>Tampilkan grafik regresi data.</p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
     if st.button("⚗ Mulai Hitung Sekarang", key="start", help="Klik untuk memulai fitur", use_container_width=True):
         st.session_state.show_sidebar = True
