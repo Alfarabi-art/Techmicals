@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import streamlit as st
 from pathlib import Path
 from streamlit_option_menu import option_menu
@@ -60,39 +59,36 @@ if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
     st.markdown("""
-        <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.  
+        <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.<br>
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
+    """, unsafe_allow_html=True)
 
     st.markdown("""
     <div class="grid-container">
         <div class="feature-card">
-            <h3>⚗ Reaksi Kimia</h3>
+            <h3>&#x2697; Reaksi Kimia</h3>
             <p>Setarakan reaksi dengan cepat dan akurat.</p>
         </div>
         <div class="feature-card">
-            <h3>🧪 Stoikiometri</h3>
+            <h3>&#x1F9EA; Stoikiometri</h3>
             <p>Hitung mol, massa molar, dan lainnya.</p>
         </div>
         <div class="feature-card">
-            <h3>📈 Konsentrasi Larutan</h3>
+            <h3>&#x1F4C8; Konsentrasi Larutan</h3>
             <p>Hitung dan konversi konsentrasi larutan.</p>
         </div>
         <div class="feature-card">
-            <h3>💧 pH dan pOH</h3>
+            <h3>&#x1F4A7; pH dan pOH</h3>
             <p>Hitung pH dan pOH larutan.</p>
         </div>
         <div class="feature-card">
-            <h3>🧬 Tabel Periodik</h3>
+            <h3>&#x1F9EC; Tabel Periodik</h3>
             <p>Lihat data unsur periodik.</p>
         </div>
         <div class="feature-card">
-            <h3>📈 Regresi Linier</h3>
+            <h3>&#x1F4C8; Regresi Linier</h3>
             <p>Tampilkan grafik regresi data.</p>
         </div>
-    </div>
-
-    <div style="text-align:center;">
-        <button class="start-btn">⚗ Mulai Hitung Sekarang</button>
     </div>
     """, unsafe_allow_html=True)
 
