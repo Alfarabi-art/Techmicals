@@ -250,7 +250,11 @@ elif selected == "🧫 Konsentrasi Larutan":
             eq_weight = st.number_input("Berat ekuivalen (g/eq)", min_value=0.0)
             volume = st.number_input("Volume larutan (L)", min_value=0.0)
             hitung = st.form_submit_button("Hitung Normalitas")
-            if hitung:
+            if eq_weight <= 0:
+                st.error("⚠ Berat ekuivalen harus lebih dari 0.")
+            elif volume <= 0:
+                st.error("⚠ Volume harus lebih dari 0.")
+            else:
                 eq = solute_mass / eq_weight
                 normality = eq / volume
                 st.success(f"Normalitas: {normality:.4f} eq/L")
@@ -497,4 +501,4 @@ elif selected == "📈 Regresi Linier":
             st.error(f"⚠ Error saat menghitung regresi: {e}")
 
 # --- Footer ---
-st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
+st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True) 
