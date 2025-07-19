@@ -1,4 +1,5 @@
 import streamlit as st
+from pathlib import Path
 from streamlit_option_menu import option_menu
 from chempy import balance_stoichiometry
 from periodictable import elements
@@ -10,125 +11,12 @@ import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
 
-st.markdown("""
-    <style>
-    /* Atur body biar responsif */
-    body, html {
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-    }
-
-    /* Container utama */
-    .block-container {
-        max-width: 1000px;
-        margin: auto;
-        padding: 1rem;
-    }
-
-    /* Card menu lebih rapi */
-    .element-container {
-        margin-bottom: 10px;
-    }
-
-    /* Responsive typography */
-    h1, h2, h3 {
-        word-wrap: break-word;
-    }
-
-    /* Media query untuk HP */
-    @media screen and (max-width: 768px) {
-        .block-container {
-            padding: 0.5rem;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-        }
-
-        h2 {
-            font-size: 1.4rem;
-        }
-
-        p {
-            font-size: 1rem;
-        }
-    }
-
-    /* Gradient background biar elegan */
-    body {
-        background: linear-gradient(135deg, #e0f7fa, #ffffff);
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Techmicals",
     page_icon="⚗",
     layout="wide",
 )
-
-# --- CUSTOM CSS UNTUK DESAIN MODERN ---
-st.markdown("""
-    <style>
-    html, body, [data-testid="stAppViewContainer"] {
-        margin: 0;
-        padding: 0;
-        scroll-behavior: smooth;
-    }
-    body {
-        background: linear-gradient(-45deg, #89f7fe, #66a6ff, #fbc2eb, #a6c1ee);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-    }
-    @keyframes gradientBG {
-        0% {background-position: 0% 50%;}
-        50% {background-position: 100% 50%;}
-        100% {background-position: 0% 50%;}
-    }
-    .stApp { animation: fadeIn 1s ease-in-out; }
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-    .feature-card {
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 15px;
-        padding: 20px;
-        margin: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        transition: 0.3s;
-        text-align: center;
-    }
-    .feature-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-    .stButton>button {
-        background: linear-gradient(45deg, #66a6ff, #89f7fe);
-        color: white;
-        border-radius: 12px;
-        padding: 10px 20px;
-        border: none;
-        font-weight: bold;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-    }
-    .stButton>button:hover {
-        background: linear-gradient(45deg, #fbc2eb, #a6c1ee);
-        color: black;
-        transform: scale(1.08);
-        box-shadow: 0 8px 12px rgba(0,0,0,0.3);
-    }
-    footer { text-align: center; color: #555; margin-top: 40px; }
-    </style>
-""", unsafe_allow_html=True)
 
 # --- SESSION STATE ---
 if "show_sidebar" not in st.session_state:
