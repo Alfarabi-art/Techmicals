@@ -43,7 +43,7 @@ if not st.session_state.show_sidebar:
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
-            menu_title="Kebutuhan Kimia",
+            menu_title="Kebutuhan Kimia 🌟",
             options=[
                 "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
                 "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
