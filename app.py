@@ -51,6 +51,7 @@ if st.session_state.show_sidebar:
                 "📈 Regresi Linier", "📖 About"
             ],
         )
+        st.session_state.menu_selected = menu
 
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 selected = st.session_state.menu_selected
