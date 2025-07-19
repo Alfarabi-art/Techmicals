@@ -1,16 +1,41 @@
 import streamlit as st
 
-def show_home():
-    st.markdown("<h1 style='text-align:center;'>🧪 Techmicals</h1>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align:center; color:#3f3d56;'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
-
-    st.write("""
-        <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.  
-        🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
+def show():
+    st.title("🏠 Selamat Datang di Techmicals")
+    st.markdown("""
+    <h3 style='text-align:center; color:#3f3d56;'>
+        Teman Asik Kimia-mu – Seru, Modern, dan Mudah!
+    </h3>
     """, unsafe_allow_html=True)
 
-    # Grid fitur
+    st.write("""
+    Selamat datang di **Techmicals**, aplikasi all-in-one untuk semua kebutuhan kimia kamu. 🚀
+    Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.
+    """)
+
     st.markdown("""
+    <style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .feature-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        text-align: center;
+        height: 100%;
+        transition: 0.3s;
+    }
+    .feature-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    </style>
+
     <div class="grid-container">
         <div class="feature-card">
             <h3>⚗ Reaksi Kimia</h3>
@@ -28,19 +53,8 @@ def show_home():
             <h3>💧 pH dan pOH</h3>
             <p>Hitung pH dan pOH larutan.</p>
         </div>
-        <div class="feature-card">
-            <h3>🧬 Tabel Periodik</h3>
-            <p>Lihat data unsur periodik.</p>
-        </div>
-        <div class="feature-card">
-            <h3>📈 Regresi Linier</h3>
-            <p>Tampilkan grafik regresi data.</p>
-        </div>
     </div>
     """, unsafe_allow_html=True)
 
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
-
-        st.experimental_rerun()
+        st.experimental_r_
