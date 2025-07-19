@@ -125,7 +125,7 @@ if selected == "🏠 Home":
         <p>Tampilkan grafik regresi data.</p>
     </div>
 </div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
     import streamlit.runtime.scriptrunner as scriptrunner
 
