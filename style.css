@@ -35,7 +35,7 @@ h3 {
 /* Media query untuk HP */
 @media screen and (max-width: 768px) {
     h1 {
-        font-size: 1.7rem;
+        font-size: 1.8rem;
         margin-bottom: 0.2rem; /* lebih rapat di layar kecil */
     }
     h3 {
