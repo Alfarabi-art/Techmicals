@@ -1,5 +1,10 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
+
+# Import halaman
+import home_page as home
+import about
+
 from pages import (
     reaksi_kimia,
     stoikiometry,
@@ -10,67 +15,57 @@ from pages import (
     regresi_linier
 )
 
-# Atur halaman
+# --- KONFIGURASI HALAMAN UTAMA ---
 st.set_page_config(
     page_title="Techmicals",
     page_icon="⚗",
-    layout="wide",
+    layout="wide"
 )
 
-# Load style
+# --- CUSTOM CSS ---
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Sidebar menu
-with st.sidebar:
-    menu = option_menu(
-        menu_title="🌟 Kebutuhan Kimia",
-        options=[
-            "🏠 Home",
-            "⚗ Reaksi Kimia",
-            "🧪 Stoikiometri",
-            "🧫 Konsentrasi Larutan",
-            "💧 pH dan pOH",
-            "🧬 Tabel Periodik",
-            "🔄 Konversi Satuan",
-            "📈 Regresi Linier",
-            "📖 About"
-        ],
-        icons=[
-            "house", "flask", "calculator",
-            "droplet-half", "thermometer-half",
-            "grid-3x3-gap-fill", "repeat",
-            "graph-up", "info-circle"
-        ],
-        default_index=0
-    )
+# --- MENU NAVIGASI ---
+selected = option_menu(
+    menu_title="Techmicals Menu",
+    options=[
+        "🏠 Home", 
+        "⚗ Reaksi Kimia", 
+        "🧪 Stoikiometri",
+        "🧫 Konsentrasi Larutan", 
+        "💧 pH dan pOH",
+        "🧬 Tabel Periodik", 
+        "🔄 Konversi Satuan",
+        "📈 Regresi Linier", 
+        "📖 About"
+    ],
+    icons=[
+        "house", "flask", "calculator",
+        "droplet-half", "thermometer-half",
+        "grid-3x3-gap-fill", "repeat",
+        "graph-up", "info-circle"
+    ],
+    default_index=0,
+    orientation="horizontal"
+)
 
-# Routing
-if menu == "🏠 Home":
-    import home_page as home
+# --- LOAD HALAMAN BERDASARKAN MENU ---
+if selected == "🏠 Home":
     home.show()
-
-elif menu == "📖 About":
-    import about
-    about.show()
-
-elif menu == "⚗ Reaksi Kimia":
+elif selected == "⚗ Reaksi Kimia":
     reaksi_kimia.show()
-
-elif menu == "🧪 Stoikiometri":
+elif selected == "🧪 Stoikiometri":
     stoikiometry.show()
-
-elif menu == "🧫 Konsentrasi Larutan":
+elif selected == "🧫 Konsentrasi Larutan":
     konsentrasi.show()
-
-elif menu == "💧 pH dan pOH":
+elif selected == "💧 pH dan pOH":
     ph_poh.show()
-
-elif menu == "🧬 Tabel Periodik":
+elif selected == "🧬 Tabel Periodik":
     tabel_periodik.show()
-
-elif menu == "🔄 Konversi Satuan":
+elif selected == "🔄 Konversi Satuan":
     konversi_satuan.show()
-
-elif menu == "📈 Regresi Linier":
+elif selected == "📈 Regresi Linier":
     regresi_linier.show()
+elif selected == "📖 About":
+    about.show()
