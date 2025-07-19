@@ -51,7 +51,7 @@ if st.session_state.show_sidebar:
                 "📈 Regresi Linier", "📖 About"
             ],
             icons=[
-                "house", "flask", "calculator",
+                "house", "beaker", "calculator",
                 "droplet-half", "thermometer-half",
                 "grid-3x3-gap-fill", "repeat",
                 "graph-up", "info-circle"
