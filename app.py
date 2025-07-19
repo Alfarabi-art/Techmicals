@@ -63,11 +63,6 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
 
     st.markdown("""
-if selected == "🏠 Home":
-    st.markdown("""
-    <h1 style='text-align:center; font-size: 3rem;'>🧪 Techmicals</h1>
-    <div class="typing-text">Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</div>
-
     <div class="grid-container">
         <div class="feature-card">
             <h3>⚗ Reaksi Kimia</h3>
