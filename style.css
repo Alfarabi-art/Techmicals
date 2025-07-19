@@ -120,3 +120,15 @@ footer {
     margin-top: 20px;
     margin-bottom: 50px; /* Tambahkan jarak ke bawah */
 }
+
+/* Atur item di sidebar supaya emoji rata dengan teks */
+[data-testid="stSidebar"] .nav-link span {
+    display: inline-flex;
+    align-items: center; /* membuat emoji & teks sejajar vertikal */
+    gap: 0.5rem;         /* jarak antara emoji dan teks */
+    font-size: 1.1rem;   /* biar ukuran lebih konsisten */
+}
+
+[data-testid="stSidebar"] .nav-link span::first-letter {
+    font-size: 1.1rem;
+}
