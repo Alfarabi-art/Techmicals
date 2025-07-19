@@ -47,7 +47,7 @@ with st.sidebar:
 
 # Routing
 if menu == "🏠 Home":
-    import home
+    import home_page as home
     home.show()
 
 elif menu == "📖 About":
