@@ -166,3 +166,30 @@ footer {
         font-size: 1.1rem; /* Kecilkan emoji */
     }
 }
+
+/* Header Techmicals */
+.techmicals-header {
+    text-align: center;
+    font-size: 3rem; /* default untuk layar besar */
+    color: #333;
+    margin: 10px 0;
+    line-height: 1.2;
+}
+
+/* Sub-header */
+.techmicals-subheader {
+    text-align: center;
+    color: #3f3d56;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Responsif untuk layar kecil */
+@media screen and (max-width: 768px) {
+    .techmicals-header {
+        font-size: 2rem; /* lebih kecil di HP */
+    }
+    .techmicals-subheader {
+        font-size: 1.2rem;
+    }
+}
