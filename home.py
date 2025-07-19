@@ -57,4 +57,4 @@ def show():
     """, unsafe_allow_html=True)
 
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.experimental_rerun_
+        st.experimental_rerun()
