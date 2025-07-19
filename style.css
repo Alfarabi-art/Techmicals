@@ -62,43 +62,65 @@ h3 {
     }
 }
 
-/* Efek background animasi */
+/* BACKGROUND ANIMASI GRADIENT */
 body {
-    background: linear-gradient(-45deg, #89f7fe, #66a6ff, #fbc2eb, #a6c1ee);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd, #c2e9fb);
+    background-size: 500% 500%;
+    animation: gradientMove 20s ease infinite;
 }
-@keyframes gradientBG {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* PARTIKEL EFEK */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 2px, transparent 2px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    animation: moveParticles 30s linear infinite;
+}
+
+@keyframes moveParticles {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 1000px; }
 }
 
 /* Teks ketik animasi */
 .typing-text {
     font-family: 'Courier New', Courier, monospace;
-    color: #3f3d56;
-    font-size: 1.6rem;
+    color: #fff;
+    font-size: 2rem;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 3px solid #3f3d56;
+    border-right: 3px solid #fff;
     width: 0;
     animation: typing 4s steps(40, end) forwards, blink 0.8s step-end infinite;
-    margin: 0 auto;
+    margin: 20px auto;
     text-align: center;
 }
+
 @keyframes typing {
     from { width: 0; }
     to { width: 100%; }
 }
 @keyframes blink {
     from, to { border-color: transparent; }
-    50% { border-color: #3f3d56; }
+    50% { border-color: #fff; }
 }
 
-/* Tombol glow */
+/* Tombol Glow */
 button.start-btn {
-    background: linear-gradient(90deg, #66a6ff, #fbc2eb, #a6c1ee);
+    background: linear-gradient(90deg, #89f7fe, #66a6ff, #fbc2eb, #a6c1ee);
     color: white;
     font-weight: bold;
     font-size: 1.2rem;
@@ -107,12 +129,20 @@ button.start-btn {
     border: none;
     cursor: pointer;
     box-shadow: 0 0 20px #89f7fe, 0 0 40px #66a6ff;
+    animation: pulseGlow 2s infinite;
     transition: all 0.3s ease-in-out;
 }
+
 button.start-btn:hover {
     transform: scale(1.1);
     box-shadow: 0 0 30px #fbc2eb, 0 0 60px #a6c1ee;
     color: #000;
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 20px #89f7fe, 0 0 40px #66a6ff; }
+    50% { box-shadow: 0 0 40px #fbc2eb, 0 0 80px #a6c1ee; }
+    100% { box-shadow: 0 0 20px #89f7fe, 0 0 40px #66a6ff; }
 }
 
 /* Grid untuk fitur */
@@ -163,27 +193,6 @@ h3.sub-text {
     font-weight: normal;
     margin-top: -10px;
     font-size: 1.4rem;
-}
-
-/* Tombol Glow */
-button.start-btn {
-    display: block;
-    margin: 30px auto;
-    background: linear-gradient(90deg, #66a6ff, #fbc2eb, #a6c1ee);
-    color: white;
-    font-weight: bold;
-    font-size: 1.2rem;
-    padding: 14px 30px;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 0 20px #89f7fe, 0 0 40px #66a6ff;
-    transition: all 0.3s ease-in-out;
-}
-button.start-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 30px #fbc2eb, 0 0 60px #a6c1ee;
-    color: #000;
 }
 
 footer {
