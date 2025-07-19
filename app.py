@@ -238,10 +238,13 @@ elif selected == "🧫 Konsentrasi Larutan":
             volume = st.number_input("Volume larutan (L)", min_value=0.0)
             molar_mass = st.number_input("Massa molar zat (g/mol)", min_value=0.0)
             hitung = st.form_submit_button("Hitung Molaritas")
-            if hitung:
+            if molar_mass <= 0:
+                st.error("⚠ Massa molar tidak boleh 0 atau negatif.")
+            else:
                 mol = solute_mass / molar_mass
                 molarity = mol / volume
                 st.success(f"Molaritas: {molarity:.4f} mol/L")
+
         else:
             solute_mass = st.number_input("Massa zat terlarut (g)", min_value=0.0)
             eq_weight = st.number_input("Berat ekuivalen (g/eq)", min_value=0.0)
