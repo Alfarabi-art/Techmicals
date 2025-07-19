@@ -60,23 +60,6 @@ if st.session_state.show_sidebar:
         )
         st.session_state.menu_selected = menu
 
-    # FIX: Suntikkan CSS agar sidebar selalu tampil di mobile
-    st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            display: block !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-    # FIX: Suntikkan JS agar sidebar langsung muncul
-    st.components.v1.html("""
-        <script>
-        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
-        if(sidebar){ sidebar.style.display = "block"; }
-        </script>
-    """, height=0)
-
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 selected = st.session_state.menu_selected
 if selected == "🏠 Home":
