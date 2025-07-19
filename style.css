@@ -135,6 +135,11 @@ button.start-btn:hover {
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
 
+.feature-card h3 {
+    margin: 10px 0;
+    font-size: 1.3rem;
+}
+
 /* Judul dengan gradient animasi */
 h1.gradient-text {
     text-align: center;
