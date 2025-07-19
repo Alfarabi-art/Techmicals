@@ -70,35 +70,7 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.feature-card {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    text-align: center;
-    height: 100%;
-    transition: 0.3s;
-}
-
-.feature-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
-
-.feature-card h3 {
-    margin: 10px 0;
-}
-</style>
-
+    st.markdown("""
 <div class="grid-container">
     <div class="feature-card">
         <h3>⚗ Reaksi Kimia</h3>
@@ -125,14 +97,11 @@ st.markdown("""
         <p>Tampilkan grafik regresi data.</p>
     </div>
 </div>
-        """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-import streamlit.runtime.scriptrunner as scriptrunner
-
-st.markdown('<div class="mulai-btn">', unsafe_allow_html=True)
-if st.button("⚗ Mulai Hitung Sekarang"):
-    st.session_state.show_sidebar = True
-    st.session_state.menu_selected = "⚗ Reaksi Kimia"
+    if st.button("⚗ Mulai Hitung Sekarang"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "⚗ Reaksi Kimia"
 
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
@@ -141,7 +110,7 @@ if st.button("⚗ Mulai Hitung Sekarang"):
             if(sidebar){ sidebar.style.display = "block"; }
             window.scrollTo(0, 0);  // Scroll ke atas
             </script>
-            """, height=0)
+        """, height=0)
 
 # --- About ---
 if selected == "📖 About":
@@ -149,9 +118,10 @@ if selected == "📖 About":
     st.write("""
         <div style='text-align:center;'>
         <p><b>Techmicals</b> adalah kalkulator kimia interaktif yang dibuat untuk mempermudah perhitungan kimia dalam dunia pendidikan dan praktikum.</p>
-        <p>💻 Dibuat dengan oleh <b>Tim Techmicals</b>.</p>
+        <p>💻 Dibuat oleh <b>Tim Techmicals</b>.</p>
         <p style='font-style:italic; color:#555;'>“Sains itu seru kalau kamu punya alat yang tepat.”</p>
         <img src="https://media.giphy.com/media/26AHONQ79FdWZhAI0/giphy.gif" width="250">
+        </div>
     """, unsafe_allow_html=True)
 
     st.markdown("<h3 style='text-align:center;'>👥 Anggota Tim</h3>", unsafe_allow_html=True)
