@@ -130,4 +130,4 @@ st.markdown("""
     margin-bottom: 50px; /* Tambahkan jarak ke bawah */
 }
 </style>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
