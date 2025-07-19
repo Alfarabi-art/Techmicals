@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import streamlit as st
 from pathlib import Path
 from streamlit_option_menu import option_menu
