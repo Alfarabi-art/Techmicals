@@ -19,7 +19,7 @@ with open(css_file) as f:
 # --- CONFIGURASI HALAMAN ---
 st.set_page_config(
     page_title="Techmicals",
-    page_icon="⚗",
+    page_icon="🧪",
     layout="wide",
 )
 
@@ -45,7 +45,7 @@ if st.session_state.show_sidebar:
         menu = option_menu(
             menu_title="🌟 Kebutuhan Kimia",
             options=[
-                "🏠 Home", "🧫 Reaksi Kimia", "🧪 Stoikiometri",
+                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
                 "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
                 "🧬 Tabel Periodik", "🔄 Konversi Satuan",
                 "📈 Regresi Linier", "📖 About"
