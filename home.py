@@ -1,4 +1,4 @@
-import streamlit as st
+uimport streamlit as st
 
 def show():
     st.title("🏠 Selamat Datang di Techmicals")
@@ -57,4 +57,4 @@ def show():
     """, unsafe_allow_html=True)
 
     if st.button("⚗ Mulai Hitung Sekarang"):
-        st.experimental_r_
+        st.experimental_rerun_
