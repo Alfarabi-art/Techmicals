@@ -1,4 +1,4 @@
-uimport streamlit as st
+import streamlit as st
 
 def show():
     st.title("🏠 Selamat Datang di Techmicals")
