@@ -186,18 +186,42 @@ h1.gradient-text {
     to {filter: hue-rotate(360deg);}
 }
 
-/* Subjudul */
-h3.sub-text {
-    font-weight: normal;
-    margin-top: -10px;
-    font-size: 1.4rem;
-    color: #333333;
+/* Sub-judul adaptif */
+.sub-text {
     text-align: center;
+    font-weight: 500;
+    color: #444444; /* default untuk light mode */
 }
+
 @media (prefers-color-scheme: dark) {
     .sub-text {
-        color: #dddddd;
+        color: #cccccc; /* lebih terang saat dark mode */
     }
+}
+
+/* Card container adaptif */
+.feature-card {
+    background: #f8f9fa; /* light mode background */
+    color: #333333;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    .feature-card {
+        background: #2b2b2b; /* lebih gelap untuk dark mode */
+        color: #f1f1f1;
+        box-shadow: 0 4px 8px rgba(255,255,255,0.05);
+    }
+}
+
+.feature-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 footer {
