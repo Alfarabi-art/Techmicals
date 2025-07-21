@@ -195,6 +195,16 @@ h3.sub-text {
     font-size: 1.4rem;
 }
 
+sub-text {
+    color: #333333;
+    text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+    .sub-text {
+        color: #dddddd;
+    }
+}
+
 footer {
     text-align: center;
     color: #555;
