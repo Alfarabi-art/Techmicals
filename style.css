@@ -188,14 +188,9 @@ h1.gradient-text {
 
 /* Subjudul */
 h3.sub-text {
-    text-align: center;
-    color: #3f3d56;
     font-weight: normal;
     margin-top: -10px;
     font-size: 1.4rem;
-}
-
-sub-text {
     color: #333333;
     text-align: center;
 }
