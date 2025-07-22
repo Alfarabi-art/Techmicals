@@ -64,25 +64,33 @@ if selected == "🏠 Home":
     """, unsafe_allow_html=True)
 
     # --- CARD CLICKABLE UNTUK FITUR ---
-    fitur_list = [
-        {"label": "⚗ Reaksi Kimia", "desc": "Setarakan reaksi dengan cepat dan akurat."},
-        {"label": "🧪 Stoikiometri", "desc": "Hitung mol, massa molar, dan lainnya."},
-        {"label": "🧫 Konsentrasi Larutan", "desc": "Hitung dan konversi konsentrasi larutan."},
-        {"label": "💧 pH dan pOH", "desc": "Hitung pH dan pOH larutan."},
-        {"label": "🧬 Tabel Periodik", "desc": "Lihat data unsur periodik."},
-        {"label": "🔄 Konversi Satuan", "desc": "Konversi berbagai satuan kimia."},
-        {"label": "📈 Regresi Linier", "desc": "Tampilkan grafik regresi data."},
-        {"label": "📖 About", "desc": "Tentang aplikasi dan tim pengembang."},
-    ]
+fitur_list = [
+    {"label": "⚗ Reaksi Kimia", "desc": "Setarakan reaksi dengan cepat dan akurat."},
+    {"label": "🧪 Stoikiometri", "desc": "Hitung mol, massa molar, dan lainnya."},
+    {"label": "🧫 Konsentrasi Larutan", "desc": "Hitung dan konversi konsentrasi larutan."},
+    {"label": "💧 pH dan pOH", "desc": "Hitung pH dan pOH larutan."},
+    {"label": "🧬 Tabel Periodik", "desc": "Lihat data unsur periodik."},
+    {"label": "🔄 Konversi Satuan", "desc": "Konversi berbagai satuan kimia."},
+    {"label": "📈 Regresi Linier", "desc": "Tampilkan grafik regresi data."},
+    {"label": "📖 About", "desc": "Tentang aplikasi dan tim pengembang."},
+]
 
-    st.markdown("<div class='grid-container'>", unsafe_allow_html=True)
-    for fitur in fitur_list:
-        if st.button(f"{fitur['label']}\n{fitur['desc']}", key=fitur['label'], use_container_width=True):
-            st.session_state.show_sidebar = True
-            st.session_state.menu_selected = fitur['label']
-            st.experimental_rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
+# Tampilkan cards
+for fitur in fitur_list:
+    card_html = f"""
+    <div class="feature-card" onclick="fetch('/?selected={fitur['label']}').then(() => window.location.reload())">
+        <h3>{fitur['label']}</h3>
+        <p>{fitur['desc']}</p>
+    </div>
+    """
+    st.markdown(card_html, unsafe_allow_html=True)
 
+# Tangkap klik pada card
+query_params = st.experimental_get_query_params()
+if "selected" in query_params:
+    st.session_state.show_sidebar = True
+    st.session_state.menu_selected = query_params["selected"][0]
+    st.experimental_rerun()
 # --- About ---
 if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
