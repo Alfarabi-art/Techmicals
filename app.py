@@ -52,7 +52,7 @@ if st.session_state.show_sidebar:
         )
         st.session_state.menu_selected = menu
 
-# HOME
+# --- HOME PAGE ---
 selected = st.session_state.menu_selected
 if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
@@ -60,12 +60,15 @@ if selected == "🏠 Home":
 
     st.markdown("""<div class="grid-container">""", unsafe_allow_html=True)
 
-    # Function untuk card full klikable
+    # Function card yang bisa di-klik
     def feature_card(title, description, menu_key, emoji):
-        if st.button(f"{emoji} {title}\n{description}", key=menu_key):
-            st.session_state.show_sidebar = True
-            st.session_state.menu_selected = menu_key
-            st.experimental_rerun()
+        card_html = f"""
+        <div class="clickable-card" onclick="fetch('/?menu={menu_key}').then(() => window.location.reload());">
+            <h3>{emoji} {title}</h3>
+            <p>{description}</p>
+        </div>
+        """
+        st.markdown(card_html, unsafe_allow_html=True)
 
     feature_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia", "⚗")
     feature_card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪 Stoikiometri", "🧪")
@@ -75,6 +78,13 @@ if selected == "🏠 Home":
     feature_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈 Regresi Linier", "📈")
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+    # Tangkap klik dan set state
+    query_params = st.experimental_get_query_params()
+    if "menu" in query_params:
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = query_params["menu"][0]
+        st.experimental_rerun()
     
 # --- About ---
 if selected == "📖 About":
