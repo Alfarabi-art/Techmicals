@@ -75,11 +75,13 @@ if selected == "🏠 Home":
         {"label": "📖 About", "desc": "Tentang aplikasi dan tim pengembang."},
     ]
 
+    st.markdown("<div class='grid-container'>", unsafe_allow_html=True)
     for fitur in fitur_list:
-        if st.button(f"{fitur['label']}\n{fitur['desc']}", use_container_width=True):
+        if st.button(f"{fitur['label']}\n{fitur['desc']}", key=fitur['label'], use_container_width=True):
             st.session_state.show_sidebar = True
             st.session_state.menu_selected = fitur['label']
             st.experimental_rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # --- About ---
 if selected == "📖 About":
