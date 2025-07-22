@@ -62,14 +62,20 @@ if selected == "🏠 Home":
     st.markdown("""<div class="grid-container">""", unsafe_allow_html=True)
 
     def feature_card(title, description, menu_key, emoji):
+        # Buat card dengan button hidden supaya bisa klik seluruh card
         card_html = f"""
-        <div class="feature-card" onclick="window.location.search='?menu={menu_key}'">
+        <div class="feature-card" onclick="document.getElementById('{menu_key}').click();">
             <h3>{emoji} {title}</h3>
             <p>{description}</p>
         </div>
         """
         st.markdown(card_html, unsafe_allow_html=True)
+        if st.button(" ", key=menu_key):
+            st.session_state.show_sidebar = True
+            st.session_state.menu_selected = menu_key
+            st.experimental_rerun()
 
+    # Card fitur
     feature_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia", "⚗")
     feature_card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪 Stoikiometri", "🧪")
     feature_card("Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫 Konsentrasi Larutan", "🧫")
@@ -78,13 +84,6 @@ if selected == "🏠 Home":
     feature_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈 Regresi Linier", "📈")
 
     st.markdown("</div>", unsafe_allow_html=True)
-
-    # Tangkap klik
-    query_params = st.query_params
-    if "menu" in query_params:
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = query_params["menu"]
-        st.experimental_rerun()
     
 # --- About ---
 if selected == "📖 About":
