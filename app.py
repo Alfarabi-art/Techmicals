@@ -15,20 +15,20 @@ css_file = Path(__file__).parent / "style.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# --- CONFIGURASI HALAMAN ---
+# Config halaman
 st.set_page_config(
     page_title="Techmicals",
     page_icon="🧪",
     layout="wide",
 )
 
-# --- SESSION STATE ---
+# Session state
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 
-# --- SEMBUNYIKAN SIDEBAR DI AWAL ---
+# Sembunyikan sidebar
 if not st.session_state.show_sidebar:
     st.markdown("""
         <style>
@@ -38,7 +38,7 @@ if not st.session_state.show_sidebar:
         </style>
     """, unsafe_allow_html=True)
 
-# --- SIDEBAR MENU ---
+# Sidebar
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
@@ -52,62 +52,30 @@ if st.session_state.show_sidebar:
         )
         st.session_state.menu_selected = menu
 
-# --- TAMPILAN HOME ---
+# HOME
 selected = st.session_state.menu_selected
 if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
-    st.markdown("""
-        <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.<br>
-        🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
-    """, unsafe_allow_html=True)
 
+    # Grid card
     st.markdown("""<div class="grid-container">""", unsafe_allow_html=True)
 
-    # Card 1: Reaksi Kimia
-    if st.button("⚗ Reaksi Kimia\nSetarakan reaksi dengan cepat dan akurat.", key="card_reaksi"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
-        st.experimental_rerun()
+    def feature_card(title, description, menu_key, emoji):
+        if st.button(f"{emoji} {title}\n{description}", key=menu_key):
+            st.session_state.show_sidebar = True
+            st.session_state.menu_selected = menu_key
+            st.experimental_rerun()
 
-    # Card 2: Stoikiometri
-    if st.button("🧪 Stoikiometri\nHitung mol, massa molar, dan lainnya.", key="card_stoikiometri"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "🧪 Stoikiometri"
-        st.experimental_rerun()
-
-    # Card 3: Konsentrasi Larutan
-    if st.button("🧫 Konsentrasi Larutan\nHitung dan konversi konsentrasi larutan.", key="card_konsentrasi"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "🧫 Konsentrasi Larutan"
-        st.experimental_rerun()
-
-    # Card 4: pH dan pOH
-    if st.button("💧 pH dan pOH\nHitung pH dan pOH larutan.", key="card_ph_poh"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "💧 pH dan pOH"
-        st.experimental_rerun()
-
-    # Card 5: Tabel Periodik
-    if st.button("🧬 Tabel Periodik\nLihat data unsur periodik.", key="card_periodik"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "🧬 Tabel Periodik"
-        st.experimental_rerun()
-
-    # Card 6: Regresi Linier
-    if st.button("📈 Regresi Linier\nTampilkan grafik regresi data.", key="card_regresi"):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "📈 Regresi Linier"
-        st.experimental_rerun()
+    feature_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia", "⚗")
+    feature_card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪 Stoikiometri", "🧪")
+    feature_card("Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫 Konsentrasi Larutan", "🧫")
+    feature_card("pH dan pOH", "Hitung pH dan pOH larutan.", "💧 pH dan pOH", "💧")
+    feature_card("Tabel Periodik", "Lihat data unsur periodik.", "🧬 Tabel Periodik", "🧬")
+    feature_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈 Regresi Linier", "📈")
 
     st.markdown("</div>", unsafe_allow_html=True)
-
-# Tangkap klik pada card
-query_params = st.query_params()
-if "selected" in query_params:
-    st.session_state.show_sidebar = True
-    st.session_state.menu_selected = query_params["selected"][0]
-    st.experimental_rerun()
+    
 # --- About ---
 if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
