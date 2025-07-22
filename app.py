@@ -41,18 +41,19 @@ if not st.session_state.show_sidebar:
 # Sidebar
 if st.session_state.show_sidebar:
     with st.sidebar:
-        menu = option_menu(
-            menu_title="Kebutuhan Kimia 🌟",
-            options=[
+        menu = st.radio(
+            "Kebutuhan Kimia 🌟",
+            [
                 "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
                 "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
                 "🧬 Tabel Periodik", "🔄 Konversi Satuan",
                 "📈 Regresi Linier", "📖 About"
             ],
+            index=0
         )
         st.session_state.menu_selected = menu
 
-# --- HOME PAGE ---
+# Home page
 selected = st.session_state.menu_selected
 if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
@@ -60,10 +61,9 @@ if selected == "🏠 Home":
 
     st.markdown("""<div class="grid-container">""", unsafe_allow_html=True)
 
-    # Function card yang bisa di-klik
     def feature_card(title, description, menu_key, emoji):
         card_html = f"""
-        <div class="clickable-card" onclick="fetch('/?menu={menu_key}').then(() => window.location.reload());">
+        <div class="feature-card" onclick="window.location.search='?menu={menu_key}'">
             <h3>{emoji} {title}</h3>
             <p>{description}</p>
         </div>
@@ -79,11 +79,11 @@ if selected == "🏠 Home":
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # Tangkap klik dan set state
-    query_params = st.experimental_get_query_params()
+    # Tangkap klik
+    query_params = st.query_params
     if "menu" in query_params:
         st.session_state.show_sidebar = True
-        st.session_state.menu_selected = query_params["menu"][0]
+        st.session_state.menu_selected = query_params["menu"]
         st.experimental_rerun()
     
 # --- About ---
