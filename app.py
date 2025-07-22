@@ -58,9 +58,9 @@ if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
 
-    # Grid card
     st.markdown("""<div class="grid-container">""", unsafe_allow_html=True)
 
+    # Function untuk card full klikable
     def feature_card(title, description, menu_key, emoji):
         if st.button(f"{emoji} {title}\n{description}", key=menu_key):
             st.session_state.show_sidebar = True
