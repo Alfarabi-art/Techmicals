@@ -24,13 +24,10 @@ st.set_page_config(
 )
 
 # --- SESSION STATE ---
-if "clicked_card" not in st.session_state:
-    st.session_state.clicked_card = None
-
-if st.session_state.clicked_card:
-    st.session_state.show_sidebar = True
-    st.session_state.menu_selected = st.session_state.clicked_card
-    st.session_state.clicked_card = None
+if "show_sidebar" not in st.session_state:
+    st.session_state.show_sidebar = False
+if "menu_selected" not in st.session_state:
+    st.session_state.menu_selected = "🏠 Home"
 
 # --- SEMBUNYIKAN SIDEBAR DI AWAL ---
 if not st.session_state.show_sidebar:
@@ -46,7 +43,7 @@ if not st.session_state.show_sidebar:
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
-            menu_title="Kebutuhan Kimia 🌟",
+            menu_title="🌟 Kebutuhan Kimia",
             options=[
                 "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
                 "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
@@ -66,51 +63,23 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-<div class="grid-container">
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x2697; Reaksi Kimia'}, '*')">
-        <h3>&#x2697; Reaksi Kimia</h3>
-        <p>Setarakan reaksi dengan cepat dan akurat.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F9EA; Stoikiometri'}, '*')">
-        <h3>&#x1F9EA; Stoikiometri</h3>
-        <p>Hitung mol, massa molar, dan lainnya.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4C8; Konsentrasi Larutan'}, '*')">
-        <h3>&#x1F4C8; Konsentrasi Larutan</h3>
-        <p>Hitung dan konversi konsentrasi larutan.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4A7; pH dan pOH'}, '*')">
-        <h3>&#x1F4A7; pH dan pOH</h3>
-        <p>Hitung pH dan pOH larutan.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F9EC; Tabel Periodik'}, '*')">
-        <h3>&#x1F9EC; Tabel Periodik</h3>
-        <p>Lihat data unsur periodik.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4C8; Regresi Linier'}, '*')">
-        <h3>&#x1F4C8; Regresi Linier</h3>
-        <p>Tampilkan grafik regresi data.</p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    # --- CARD CLICKABLE UNTUK FITUR ---
+    fitur_list = [
+        {"label": "⚗ Reaksi Kimia", "desc": "Setarakan reaksi dengan cepat dan akurat."},
+        {"label": "🧪 Stoikiometri", "desc": "Hitung mol, massa molar, dan lainnya."},
+        {"label": "🧫 Konsentrasi Larutan", "desc": "Hitung dan konversi konsentrasi larutan."},
+        {"label": "💧 pH dan pOH", "desc": "Hitung pH dan pOH larutan."},
+        {"label": "🧬 Tabel Periodik", "desc": "Lihat data unsur periodik."},
+        {"label": "🔄 Konversi Satuan", "desc": "Konversi berbagai satuan kimia."},
+        {"label": "📈 Regresi Linier", "desc": "Tampilkan grafik regresi data."},
+        {"label": "📖 About", "desc": "Tentang aplikasi dan tim pengembang."},
+    ]
 
-    if st.button("⚗ Mulai Hitung Sekarang", key="start", help="Klik untuk memulai fitur", use_container_width=True):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
-    
-        # FIX: Paksa scroll ke atas & sidebar muncul
-        st.components.v1.html("""
-<script>
-window.addEventListener('message', (event) => {
-    if(event.data.type === 'select') {
-        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
-        if(sidebar){ sidebar.style.display = "block"; }
-        window.parent.postMessage({type: 'streamlit:setComponentValue', value: event.data.value}, '*');
-    }
-});
-</script>
-""", height=0)
+    for fitur in fitur_list:
+        if st.button(f"{fitur['label']}\n{fitur['desc']}", use_container_width=True):
+            st.session_state.show_sidebar = True
+            st.session_state.menu_selected = fitur['label']
+            st.experimental_rerun()
 
 # --- About ---
 if selected == "📖 About":
