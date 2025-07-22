@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 import re
 import math
 from sklearn.linear_model import LinearRegression
-from io import BytesIO
 
 # Load custom CSS
 css_file = Path(__file__).parent / "style.css"
@@ -43,7 +42,7 @@ if not st.session_state.show_sidebar:
 if st.session_state.show_sidebar:
     with st.sidebar:
         menu = option_menu(
-            menu_title="🌟 Kebutuhan Kimia",
+            menu_title="Kebutuhan Kimia 🌟",
             options=[
                 "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
                 "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
@@ -53,7 +52,7 @@ if st.session_state.show_sidebar:
         )
         st.session_state.menu_selected = menu
 
-# --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
+# --- TAMPILAN HOME ---
 selected = st.session_state.menu_selected
 if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
@@ -63,27 +62,45 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    # --- CARD CLICKABLE UNTUK FITUR ---
-fitur_list = [
-    {"label": "⚗ Reaksi Kimia", "desc": "Setarakan reaksi dengan cepat dan akurat."},
-    {"label": "🧪 Stoikiometri", "desc": "Hitung mol, massa molar, dan lainnya."},
-    {"label": "🧫 Konsentrasi Larutan", "desc": "Hitung dan konversi konsentrasi larutan."},
-    {"label": "💧 pH dan pOH", "desc": "Hitung pH dan pOH larutan."},
-    {"label": "🧬 Tabel Periodik", "desc": "Lihat data unsur periodik."},
-    {"label": "🔄 Konversi Satuan", "desc": "Konversi berbagai satuan kimia."},
-    {"label": "📈 Regresi Linier", "desc": "Tampilkan grafik regresi data."},
-    {"label": "📖 About", "desc": "Tentang aplikasi dan tim pengembang."},
-]
+    st.markdown("""<div class="grid-container">""", unsafe_allow_html=True)
 
-# Tampilkan cards
-for fitur in fitur_list:
-    card_html = f"""
-    <div class="feature-card" onclick="fetch('/?selected={fitur['label']}').then(() => window.location.reload())">
-        <h3>{fitur['label']}</h3>
-        <p>{fitur['desc']}</p>
-    </div>
-    """
-    st.markdown(card_html, unsafe_allow_html=True)
+    # Card 1: Reaksi Kimia
+    if st.button("⚗ Reaksi Kimia\nSetarakan reaksi dengan cepat dan akurat.", key="card_reaksi"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "⚗ Reaksi Kimia"
+        st.experimental_rerun()
+
+    # Card 2: Stoikiometri
+    if st.button("🧪 Stoikiometri\nHitung mol, massa molar, dan lainnya.", key="card_stoikiometri"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "🧪 Stoikiometri"
+        st.experimental_rerun()
+
+    # Card 3: Konsentrasi Larutan
+    if st.button("🧫 Konsentrasi Larutan\nHitung dan konversi konsentrasi larutan.", key="card_konsentrasi"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "🧫 Konsentrasi Larutan"
+        st.experimental_rerun()
+
+    # Card 4: pH dan pOH
+    if st.button("💧 pH dan pOH\nHitung pH dan pOH larutan.", key="card_ph_poh"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "💧 pH dan pOH"
+        st.experimental_rerun()
+
+    # Card 5: Tabel Periodik
+    if st.button("🧬 Tabel Periodik\nLihat data unsur periodik.", key="card_periodik"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "🧬 Tabel Periodik"
+        st.experimental_rerun()
+
+    # Card 6: Regresi Linier
+    if st.button("📈 Regresi Linier\nTampilkan grafik regresi data.", key="card_regresi"):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "📈 Regresi Linier"
+        st.experimental_rerun()
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # Tangkap klik pada card
 query_params = st.query_params()
