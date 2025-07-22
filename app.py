@@ -86,7 +86,7 @@ for fitur in fitur_list:
     st.markdown(card_html, unsafe_allow_html=True)
 
 # Tangkap klik pada card
-query_params = st.experimental_get_query_params()
+query_params = st.query_params()
 if "selected" in query_params:
     st.session_state.show_sidebar = True
     st.session_state.menu_selected = query_params["selected"][0]
