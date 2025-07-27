@@ -127,13 +127,6 @@ window.addEventListener('message', (event) => {
 });
 </script>
 """, height=0)
-
-    # Tangkap klik dari URL
-    feature_selected = st.query_params.get("feature", [None])[0]
-    if feature_selected:
-        st.session_state.menu_selected = feature_selected
-        st.session_state.show_sidebar = True
-        st.rerun()
     
 # --- About ---
 if selected == "📖 About":
