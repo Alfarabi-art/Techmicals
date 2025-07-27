@@ -437,22 +437,4 @@ elif selected == "📈 Regresi Linier":
             st.error(f"⚠ Error saat menghitung regresi: {e}")
 
 # --- Footer ---
-st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True) 
-
-components.html("""
-<script>
-window.addEventListener("message", (event) => {
-    if (event.data.type === "streamlit:setComponentValue") {
-        const feature = event.data.value;
-        window.parent.postMessage({type: "streamlit:feature_selected", feature: feature}, "*");
-
-        const streamlitDoc = window.parent.document;
-        const input = streamlitDoc.querySelector('iframe[srcdoc]');
-
-        if (input && input.contentWindow) {
-            input.contentWindow.postMessage({type: 'feature_selected', value: feature}, "*");
-        }
-    }
-});
-</script>
-""", height=0)
+st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
