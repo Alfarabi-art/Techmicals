@@ -25,7 +25,7 @@ if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 
 # Navigasi berdasarkan klik card
-clicked_card = st.experimental_get_query_params().get("feature", [None])[0]
+clicked_card = st.query_params.get("feature", [None])[0]
 if clicked_card:
     st.session_state.menu_selected = clicked_card
     st.session_state.show_sidebar = True
