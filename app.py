@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import re
 import math
 from sklearn.linear_model import LinearRegression
+import streamlit.components.v1 as components
 
 # Load custom CSS
 css_file = Path(__file__).parent / "style.css"
