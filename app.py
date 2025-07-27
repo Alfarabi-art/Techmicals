@@ -11,27 +11,39 @@ import math
 from sklearn.linear_model import LinearRegression
 
 # Load custom CSS
-css_file = Path(__file__).parent / "style.css"
+css_file = Path(_file_).parent / "style.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Konfigurasi halaman
 st.set_page_config(page_title="Techmicals", page_icon="🧪", layout="wide")
 
-# Simpan state
+# Inisialisasi state
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 
-# Navigasi berdasarkan klik card
-clicked_card = st.query_params.get("feature", [None])[0]
-if clicked_card:
-    st.session_state.menu_selected = clicked_card
-    st.session_state.show_sidebar = True
-    st.experimental_set_query_params()  # Hapus query param setelah dipakai
+# Sidebar
+if st.session_state.show_sidebar:
+    with st.sidebar:
+        menu = option_menu("Kebutuhan Kimia 🌟", [
+            "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+            "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+            "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+            "📈 Regresi Linier", "📖 About"
+        ], icons=["house", "flask", "beaker", "droplet", "thermometer",
+                  "grid", "arrow-repeat", "graph-up", "book"])
+        st.session_state.menu_selected = menu
 
-# Sembunyikan sidebar jika belum diminta
+# Baca fitur dari URL query (tanpa open tab baru)
+query_params = st.query_params
+if "feature" in query_params:
+    st.session_state.menu_selected = query_params["feature"][0]
+    st.session_state.show_sidebar = True
+    st.experimental_rerun()
+
+# Sembunyikan sidebar jika belum dibuka
 if not st.session_state.show_sidebar:
     st.markdown("""
         <style>
@@ -41,50 +53,29 @@ if not st.session_state.show_sidebar:
         </style>
     """, unsafe_allow_html=True)
 
-# Sidebar
-if st.session_state.show_sidebar:
-    with st.sidebar:
-        menu = st.radio("Navigasi", [
-            "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
-            "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
-            "🧬 Tabel Periodik", "📈 Regresi Linier"
-        ], index=0)
-        st.session_state.menu_selected = menu
-
-# Tampilan Home dan Card
-selected = st.session_state.menu_selected
-if selected == "🏠 Home":
+# HOME
+if st.session_state.menu_selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
 
-    # Card grid
-    st.markdown("<div class='grid-container'>", unsafe_allow_html=True)
-
-    def js_card(title, description, emoji, feature_key):
+    def card(title, description, feature, emoji):
         st.markdown(f"""
-        <div class="feature-card" onclick="window.location.href='?feature={feature_key}'" style="cursor:pointer">
-            <h3>{emoji} {title}</h3>
-            <p>{description}</p>
-        </div>
+        <a href="/?feature={feature}" style="text-decoration:none;">
+            <div class="feature-card">
+                <h3>{emoji} {title}</h3>
+                <p>{description}</p>
+            </div>
+        </a>
         """, unsafe_allow_html=True)
 
-    js_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗", "⚗ Reaksi Kimia")
-    js_card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪", "🧪 Stoikiometri")
-    js_card("Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫", "🧫 Konsentrasi Larutan")
-    js_card("pH dan pOH", "Hitung pH dan pOH larutan.", "💧", "💧 pH dan pOH")
-    js_card("Tabel Periodik", "Lihat data unsur periodik.", "🧬", "🧬 Tabel Periodik")
-    js_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈", "📈 Regresi Linier")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-# Contoh isi fitur
-elif selected == "⚗ Reaksi Kimia":
-    st.title("⚗ Reaksi Kimia")
-    st.write("Halaman fitur reaksi kimia")
-
-elif selected == "🧪 Stoikiometri":
-    st.title("🧪 Stoikiometri")
-    st.write("Halaman fitur stoikiometri")
+    st.markdown('<div class="grid-container">', unsafe_allow_html=True)
+    card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia", "⚗")
+    card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪 Stoikiometri", "🧪")
+    card("Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫 Konsentrasi Larutan", "🧫")
+    card("pH dan pOH", "Hitung pH dan pOH larutan.", "💧 pH dan pOH", "💧")
+    card("Tabel Periodik", "Lihat data unsur periodik.", "🧬 Tabel Periodik", "🧬")
+    card("Regresi Linier", "Tampilkan grafik regresi data.", "📈 Regresi Linier", "📈")
+    st.markdown('</div>', unsafe_allow_html=True)
     
 # --- About ---
 if selected == "📖 About":
