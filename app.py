@@ -19,7 +19,7 @@ if 'feature' not in st.session_state:
     st.session_state.feature = None
 
 # Tangani navigasi dari klik card
-feature_selected = st.experimental_get_query_params().get("feature", [None])[0]
+feature_selected = st.query_params.get("feature", [None])[0]
 if feature_selected:
     st.session_state.menu_selected = feature_selected
     st.session_state.show_sidebar = True
