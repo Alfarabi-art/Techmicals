@@ -15,6 +15,16 @@ css_file = Path(__file__).parent / "style.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+if 'feature' not in st.session_state:
+    st.session_state.feature = None
+
+# Tangani navigasi dari klik card
+feature_selected = st.experimental_get_query_params().get("feature", [None])[0]
+if feature_selected:
+    st.session_state.menu_selected = feature_selected
+    st.session_state.show_sidebar = True
+    st.experimental_rerun()
+
 # Config halaman
 st.set_page_config(
     page_title="Techmicals",
@@ -70,10 +80,32 @@ if selected == "🏠 Home":
         </div>
         """
         st.markdown(card_html, unsafe_allow_html=True)
-        if st.button(" ", key=menu_key):
-            st.session_state.show_sidebar = True
-            st.session_state.menu_selected = menu_key
-            st.experimental_rerun()
+
+    st.markdown("""
+<script>
+    function setFeature(menuKey) {
+        const streamlitEvent = new Event("input", { bubbles: true });
+        const input = window.parent.document.querySelector(input[data-testid="stTextInput"]);
+        if (input) {
+            input.value = menuKey;
+            input.dispatchEvent(streamlitEvent);
+        }
+
+        const form = window.parent.document.createElement('form');
+        form.method = 'POST';
+        form.action = window.location.href;
+
+        const inputField = window.parent.document.createElement('input');
+        inputField.type = 'hidden';
+        inputField.name = 'feature';
+        inputField.value = menuKey;
+
+        form.appendChild(inputField);
+        window.parent.document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+""", unsafe_allow_html=True)
 
     # Card fitur
     feature_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia", "⚗")
