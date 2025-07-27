@@ -11,28 +11,25 @@ import math
 from sklearn.linear_model import LinearRegression
 import streamlit.components.v1 as components
 
-# Load custom CSS
-css_file = Path(__file__).parent / "style.css"
+# Load CSS
+css_file = Path(_file_).parent / "style.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-if 'feature' not in st.session_state:
-    st.session_state.feature = None
 
 # Config halaman
 st.set_page_config(
     page_title="Techmicals",
     page_icon="🧪",
-    layout="wide",
+    layout="wide"
 )
 
-# Session state
-if "show_sidebar" not in st.session_state:
-    st.session_state.show_sidebar = False
+# Setup session state
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
+if "show_sidebar" not in st.session_state:
+    st.session_state.show_sidebar = False
 
-# Sembunyikan sidebar
+# Sidebar tersembunyi dulu
 if not st.session_state.show_sidebar:
     st.markdown("""
         <style>
@@ -45,30 +42,57 @@ if not st.session_state.show_sidebar:
 # Sidebar
 if st.session_state.show_sidebar:
     with st.sidebar:
-        menu = st.radio(
-            "Kebutuhan Kimia 🌟",
-            [
+        selected = option_menu(
+            menu_title="Kebutuhan Kimia 🌟",
+            options=[
                 "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
                 "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
                 "🧬 Tabel Periodik", "🔄 Konversi Satuan",
                 "📈 Regresi Linier", "📖 About"
             ],
-            index=0
+            default_index=0
         )
-        st.session_state.menu_selected = menu
-        
-# Baca input dari JS card klik
-if "clicked_card" not in st.session_state:
-    st.session_state.clicked_card = None
+        st.session_state.menu_selected = selected
 
-if st.session_state.clicked_card:
-    st.session_state.menu_selected = st.session_state.clicked_card
+# JS listener dari klik kartu
+components.html("""
+<script>
+window.addEventListener("message", (event) => {
+    if (event.data.type === "select_feature") {
+        const feature = event.data.value;
+        const streamlitFrame = window.parent.document.querySelector('iframe');
+        if (streamlitFrame) {
+            streamlitFrame.contentWindow.postMessage({type: "select_feature_internal", value: feature}, "*");
+        }
+    }
+});
+</script>
+""", height=0)
+
+# Komunikasi dari iframe kembali ke Python
+components.html("""
+<script>
+window.addEventListener("message", (event) => {
+    if (event.data.type === "select_feature_internal") {
+        const feature = event.data.value;
+        window.parent.postMessage({type: "streamlit:setComponentValue", value: feature}, "*");
+    }
+});
+</script>
+""", height=0)
+
+# Tangani klik dari kartu fitur
+if "selected_card" not in st.session_state:
+    st.session_state.selected_card = None
+
+clicked_card = st.experimental_get_query_params().get("feature", [None])[0]
+if clicked_card and clicked_card != st.session_state.menu_selected:
+    st.session_state.menu_selected = clicked_card
     st.session_state.show_sidebar = True
-    st.session_state.clicked_card = None
+    st.experimental_rerun()
 
-# Home page
-selected = st.session_state.menu_selected
-if selected == "🏠 Home":
+# --- Halaman Home ---
+if st.session_state.menu_selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
 
@@ -76,57 +100,22 @@ if selected == "🏠 Home":
 
     def feature_card(title, description, key, emoji):
         st.markdown(f"""
-        <a href="/?feature={key}" style="text-decoration: none;">
-            <div class="feature-card">
+        <a href="/?feature={key}" style="text-decoration:none;">
+            <div class="feature-card" style="cursor:pointer;">
                 <h3>{emoji} {title}</h3>
                 <p>{description}</p>
             </div>
         </a>
         """, unsafe_allow_html=True)
 
-    st.markdown("""
-<div class="grid-container">
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '⚗ Reaksi Kimia'}, '*')">
-        <h3>⚗ Reaksi Kimia</h3>
-        <p>Setarakan reaksi dengan cepat dan akurat.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '🧪 Stoikiometri'}, '*')">
-        <h3>🧪 Stoikiometri</h3>
-        <p>Hitung mol, massa molar, dan lainnya.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '🧫 Konsentrasi Larutan'}, '*')">
-        <h3>🧫 Konsentrasi Larutan</h3>
-        <p>Hitung dan konversi konsentrasi larutan.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '💧 pH dan pOH'}, '*')">
-        <h3>💧 pH dan pOH</h3>
-        <p>Hitung pH dan pOH larutan.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '🧬 Tabel Periodik'}, '*')">
-        <h3>🧬 Tabel Periodik</h3>
-        <p>Lihat data unsur periodik.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '📈 Regresi Linier'}, '*')">
-        <h3>📈 Regresi Linier</h3>
-        <p>Tampilkan grafik regresi data.</p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    feature_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia", "⚗")
+    feature_card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪 Stoikiometri", "🧪")
+    feature_card("Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫 Konsentrasi Larutan", "🧫")
+    feature_card("pH dan pOH", "Hitung pH dan pOH larutan.", "💧 pH dan pOH", "💧")
+    feature_card("Tabel Periodik", "Lihat data unsur periodik.", "🧬 Tabel Periodik", "🧬")
+    feature_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈 Regresi Linier", "📈")
 
-# Tambahkan listener JS (agar event diterima)
-components.html("""
-<script>
-window.addEventListener('message', (event) => {
-    if (event.data.type === 'select') {
-        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
-        if (sidebar) {
-            sidebar.style.display = "block";
-        }
-        window.parent.postMessage({type: 'streamlit:setComponentValue', value: event.data.value}, '*');
-    }
-});
-</script>
-""", height=0)
+    st.markdown("</div>", unsafe_allow_html=True)
     
 # --- About ---
 if selected == "📖 About":
