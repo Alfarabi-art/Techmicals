@@ -83,7 +83,7 @@ if selected == "🏠 Home":
     function selectFeature(value) {
         const baseUrl = window.location.origin + window.location.pathname;
         const newUrl = baseUrl + "?feature=" + encodeURIComponent(value);
-        window.parent.location.href = newUrl;
+        window.parent.postMessage({ type: "setFeature", feature: value }, "*");
     }
     </script>
     """, height=0)
