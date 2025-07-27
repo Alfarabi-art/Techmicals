@@ -24,13 +24,10 @@ st.set_page_config(
 )
 
 # --- SESSION STATE ---
-if "clicked_card" not in st.session_state:
-    st.session_state.clicked_card = None
-
-if st.session_state.clicked_card:
-    st.session_state.show_sidebar = True
-    st.session_state.menu_selected = st.session_state.clicked_card
-    st.session_state.clicked_card = None
+if "show_sidebar" not in st.session_state:
+    st.session_state.show_sidebar = False
+if "menu_selected" not in st.session_state:
+    st.session_state.menu_selected = "🏠 Home"
 
 # --- SEMBUNYIKAN SIDEBAR DI AWAL ---
 if not st.session_state.show_sidebar:
@@ -67,33 +64,33 @@ if selected == "🏠 Home":
     """, unsafe_allow_html=True)
 
     st.markdown("""
-<div class="grid-container">
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x2697; Reaksi Kimia'}, '*')">
-        <h3>&#x2697; Reaksi Kimia</h3>
-        <p>Setarakan reaksi dengan cepat dan akurat.</p>
+    <div class="grid-container">
+        <div class="feature-card">
+            <h3>&#x2697; Reaksi Kimia</h3>
+            <p>Setarakan reaksi dengan cepat dan akurat.</p>
+        </div>
+        <div class="feature-card">
+            <h3>&#x1F9EA; Stoikiometri</h3>
+            <p>Hitung mol, massa molar, dan lainnya.</p>
+        </div>
+        <div class="feature-card">
+            <h3>&#x1F4C8; Konsentrasi Larutan</h3>
+            <p>Hitung dan konversi konsentrasi larutan.</p>
+        </div>
+        <div class="feature-card">
+            <h3>&#x1F4A7; pH dan pOH</h3>
+            <p>Hitung pH dan pOH larutan.</p>
+        </div>
+        <div class="feature-card">
+            <h3>&#x1F9EC; Tabel Periodik</h3>
+            <p>Lihat data unsur periodik.</p>
+        </div>
+        <div class="feature-card">
+            <h3>&#x1F4C8; Regresi Linier</h3>
+            <p>Tampilkan grafik regresi data.</p>
+        </div>
     </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F9EA; Stoikiometri'}, '*')">
-        <h3>&#x1F9EA; Stoikiometri</h3>
-        <p>Hitung mol, massa molar, dan lainnya.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4C8; Konsentrasi Larutan'}, '*')">
-        <h3>&#x1F4C8; Konsentrasi Larutan</h3>
-        <p>Hitung dan konversi konsentrasi larutan.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4A7; pH dan pOH'}, '*')">
-        <h3>&#x1F4A7; pH dan pOH</h3>
-        <p>Hitung pH dan pOH larutan.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F9EC; Tabel Periodik'}, '*')">
-        <h3>&#x1F9EC; Tabel Periodik</h3>
-        <p>Lihat data unsur periodik.</p>
-    </div>
-    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4C8; Regresi Linier'}, '*')">
-        <h3>&#x1F4C8; Regresi Linier</h3>
-        <p>Tampilkan grafik regresi data.</p>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
     if st.button("⚗ Mulai Hitung Sekarang", key="start", help="Klik untuk memulai fitur", use_container_width=True):
         st.session_state.show_sidebar = True
@@ -101,16 +98,12 @@ if selected == "🏠 Home":
     
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
-<script>
-window.addEventListener('message', (event) => {
-    if(event.data.type === 'select') {
-        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
-        if(sidebar){ sidebar.style.display = "block"; }
-        window.parent.postMessage({type: 'streamlit:setComponentValue', value: event.data.value}, '*');
-    }
-});
-</script>
-""", height=0)
+            <script>
+            const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+            if(sidebar){ sidebar.style.display = "block"; }
+            window.scrollTo(0, 0);  // Scroll ke atas
+            </script>
+        """, height=0)
 
 # --- About ---
 if selected == "📖 About":
