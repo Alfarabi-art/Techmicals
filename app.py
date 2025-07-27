@@ -9,83 +9,111 @@ import matplotlib.pyplot as plt
 import re
 import math
 from sklearn.linear_model import LinearRegression
-import streamlit.components.v1 as components
+from io import BytesIO
 
-# --- Konfigurasi halaman ---
-st.set_page_config(page_title="Techmicals", page_icon="🧪", layout="wide")
-
-# --- Load CSS ---
+# Load custom CSS
 css_file = Path(__file__).parent / "style.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# --- Session State Default ---
-if "menu_selected" not in st.session_state:
-    st.session_state.menu_selected = "🏠 Home"
-if "show_sidebar" not in st.session_state:
-    st.session_state.show_sidebar = False
+# --- CONFIGURASI HALAMAN ---
+st.set_page_config(
+    page_title="Techmicals",
+    page_icon="🧪",
+    layout="wide",
+)
 
-# --- Tangkap query params ---
-query_params = st.query_params
-clicked_feature = query_params.get("feature", [None])[0]
-if clicked_feature:
-    st.session_state.menu_selected = clicked_feature
+# --- SESSION STATE ---
+if "clicked_card" not in st.session_state:
+    st.session_state.clicked_card = None
+
+if st.session_state.clicked_card:
     st.session_state.show_sidebar = True
-    query_params.clear()
+    st.session_state.menu_selected = st.session_state.clicked_card
+    st.session_state.clicked_card = None
 
-# --- Sidebar Dinamis ---
+# --- SEMBUNYIKAN SIDEBAR DI AWAL ---
+if not st.session_state.show_sidebar:
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+# --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
     with st.sidebar:
-        menu = st.radio("🔬 Pilih Fitur", [
-            "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri", "🧫 Konsentrasi Larutan",
-            "💧 pH dan pOH", "🧬 Tabel Periodik", "🔄 Konversi Satuan",
-            "📈 Regresi Linier", "📖 About"
-        ], index=0)
+        menu = option_menu(
+            menu_title="Kebutuhan Kimia 🌟",
+            options=[
+                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+                "📈 Regresi Linier", "📖 About"
+            ],
+        )
         st.session_state.menu_selected = menu
-else:
-    st.markdown("<style>[data-testid='stSidebar'] { display: none; }</style>", unsafe_allow_html=True)
 
-# --- Fungsi Card ---
-def card_html(icon, title, desc, value):
-    return f"""
-    <div class="feature-card" onclick="selectFeature('{value}')">
-        <h3>{icon} {title}</h3>
-        <p>{desc}</p>
-    </div>
-    """
-
-# --- Halaman HOME ---
+# --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 selected = st.session_state.menu_selected
 if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
+    st.markdown("""
+        <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.<br>
+        🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
+    """, unsafe_allow_html=True)
 
-    cards = [
-        card_html("⚗", "Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia"),
-        card_html("🧪", "Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪 Stoikiometri"),
-        card_html("🧫", "Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫 Konsentrasi Larutan"),
-        card_html("💧", "pH dan pOH", "Hitung pH dan pOH larutan.", "💧 pH dan pOH"),
-        card_html("🧬", "Tabel Periodik", "Lihat data unsur periodik.", "🧬 Tabel Periodik"),
-        card_html("🔄", "Konversi Satuan", "Konversi suhu, mol, massa, tekanan.", "🔄 Konversi Satuan"),
-        card_html("📈", "Regresi Linier", "Tampilkan grafik dan hitung regresi.", "📈 Regresi Linier"),
-        card_html("📖", "About", "Tentang tim dan aplikasi Techmicals.", "📖 About")
-    ]
+    st.markdown("""
+<div class="grid-container">
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x2697; Reaksi Kimia'}, '*')">
+        <h3>&#x2697; Reaksi Kimia</h3>
+        <p>Setarakan reaksi dengan cepat dan akurat.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F9EA; Stoikiometri'}, '*')">
+        <h3>&#x1F9EA; Stoikiometri</h3>
+        <p>Hitung mol, massa molar, dan lainnya.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4C8; Konsentrasi Larutan'}, '*')">
+        <h3>&#x1F4C8; Konsentrasi Larutan</h3>
+        <p>Hitung dan konversi konsentrasi larutan.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4A7; pH dan pOH'}, '*')">
+        <h3>&#x1F4A7; pH dan pOH</h3>
+        <p>Hitung pH dan pOH larutan.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F9EC; Tabel Periodik'}, '*')">
+        <h3>&#x1F9EC; Tabel Periodik</h3>
+        <p>Lihat data unsur periodik.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '&#x1F4C8; Regresi Linier'}, '*')">
+        <h3>&#x1F4C8; Regresi Linier</h3>
+        <p>Tampilkan grafik regresi data.</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-    st.markdown('<div class="grid-container">' + ''.join(cards) + '</div>', unsafe_allow_html=True)
-
-    # Komunikasi ke Python via URL param
-    components.html("""
-    <script>
-    function selectFeature(value) {
-        const url = new URL(window.location.href);
-        url.searchParams.set("feature", value);
-        window.parent.postMessage({ type: "setFeature", feature: value }, "*");
-    }
-    </script>
-    """, height=0)
+    if st.button("⚗ Mulai Hitung Sekarang", key="start", help="Klik untuk memulai fitur", use_container_width=True):
+        st.session_state.show_sidebar = True
+        st.session_state.menu_selected = "⚗ Reaksi Kimia"
     
+        # FIX: Paksa scroll ke atas & sidebar muncul
+        st.components.v1.html("""
+<script>
+window.addEventListener('message', (event) => {
+    if(event.data.type === 'select') {
+        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+        if(sidebar){ sidebar.style.display = "block"; }
+        window.parent.postMessage({type: 'streamlit:setComponentValue', value: event.data.value}, '*');
+    }
+});
+</script>
+""", height=0)
+
 # --- About ---
-elif selected == "📖 About":
+if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
     st.write("""
         <div style='text-align:center;'>
@@ -439,4 +467,4 @@ elif selected == "📈 Regresi Linier":
             st.error(f"⚠ Error saat menghitung regresi: {e}")
 
 # --- Footer ---
-st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
+st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True) 
