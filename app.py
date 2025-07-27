@@ -12,7 +12,7 @@ from sklearn.linear_model import LinearRegression
 import streamlit.components.v1 as components
 
 # Load CSS
-css_file = Path(_file_).parent / "style.css"
+css_file = Path(__file__).parent / "style.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
