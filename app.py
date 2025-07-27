@@ -18,13 +18,6 @@ with open(css_file) as f:
 if 'feature' not in st.session_state:
     st.session_state.feature = None
 
-# Tangani navigasi dari klik card
-feature_selected = st.query_params.get("feature", [None])[0]
-if feature_selected:
-    st.session_state.menu_selected = feature_selected
-    st.session_state.show_sidebar = True
-    st.experimental_rerun()
-
 # Config halaman
 st.set_page_config(
     page_title="Techmicals",
@@ -71,15 +64,15 @@ if selected == "🏠 Home":
 
     st.markdown("""<div class="grid-container">""", unsafe_allow_html=True)
 
-    def feature_card(title, description, menu_key, emoji):
-        # Buat card dengan button hidden supaya bisa klik seluruh card
-        card_html = f"""
-        <div class="feature-card" onclick="document.getElementById('{menu_key}').click();">
-            <h3>{emoji} {title}</h3>
-            <p>{description}</p>
-        </div>
-        """
-        st.markdown(card_html, unsafe_allow_html=True)
+    def feature_card(title, description, key, emoji):
+        st.markdown(f"""
+        <a href="/?feature={key}" style="text-decoration: none;">
+            <div class="feature-card">
+                <h3>{emoji} {title}</h3>
+                <p>{description}</p>
+            </div>
+        </a>
+        """, unsafe_allow_html=True)
 
     st.markdown("""
 <script>
@@ -116,6 +109,13 @@ if selected == "🏠 Home":
     feature_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈 Regresi Linier", "📈")
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+    # Tangkap klik dari URL
+    feature_selected = st.query_params.get("feature", [None])[0]
+    if feature_selected:
+        st.session_state.menu_selected = feature_selected
+        st.session_state.show_sidebar = True
+        st.rerun()
     
 # --- About ---
 if selected == "📖 About":
