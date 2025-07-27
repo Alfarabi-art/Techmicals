@@ -54,18 +54,6 @@ else:
         </style>
     """, unsafe_allow_html=True)
 
-# ===== Fungsi Card Klikable =====
-def feature_card(title, description, emoji, key):
-    url = f"/?feature={key.replace(' ', '%20')}"
-    st.markdown(f"""
-        <a href="{url}" style="text-decoration: none;">
-            <div class="feature-card">
-                <h3>{emoji} {title}</h3>
-                <p>{description}</p>
-            </div>
-        </a>
-    """, unsafe_allow_html=True)
-
 # ===== Tampilan Home =====
 if st.session_state.menu_selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
