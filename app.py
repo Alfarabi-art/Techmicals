@@ -11,34 +11,42 @@ import math
 from sklearn.linear_model import LinearRegression
 
 # Load custom CSS
-css_file = Path(__file__).parent / "style.css"
+css_file = Path(_file_).parent / "style.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Konfigurasi halaman
-st.set_page_config(
-    page_title="Techmicals",
-    page_icon="🧪",
-    layout="wide"
-)
+# Set konfigurasi halaman
+st.set_page_config(page_title="Techmicals", page_icon="🧪", layout="wide")
 
-# Inisialisasi session state
-if "menu_selected" not in st.session_state:
-    st.session_state.menu_selected = "🏠 Home"
-if "show_sidebar" not in st.session_state:
-    st.session_state.show_sidebar = False
-
-# Cek query parameter
+# Handle query param untuk fitur
 params = st.query_params
 feature = params.get("feature", [None])[0] if "feature" in params else None
+
+# Session state
+if "show_sidebar" not in st.session_state:
+    st.session_state.show_sidebar = False
+if "menu_selected" not in st.session_state:
+    st.session_state.menu_selected = "🏠 Home"
+
+# Jika ada fitur dari query, ganti menu dan tampilkan sidebar
 if feature:
     st.session_state.menu_selected = feature
     st.session_state.show_sidebar = True
 
+# Sembunyikan sidebar jika belum diminta
+if not st.session_state.show_sidebar:
+    st.markdown("""
+        <style>
+        [data-testid="stSidebar"] {
+            display: none;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
 # Sidebar
 if st.session_state.show_sidebar:
     with st.sidebar:
-        menu = st.radio(
+        menu = option_menu(
             "Kebutuhan Kimia 🌟",
             [
                 "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
@@ -46,41 +54,37 @@ if st.session_state.show_sidebar:
                 "🧬 Tabel Periodik", "🔄 Konversi Satuan",
                 "📈 Regresi Linier", "📖 About"
             ],
-            index=0
+            icons=["house", "flask", "droplet-half", "beaker", "water", "grid", "repeat", "graph-up", "info-circle"],
+            menu_icon="cast", default_index=0
         )
         st.session_state.menu_selected = menu
 
-# Tombol Navigasi Card → Sidebar
-def navigate_to_feature(fitur):
-    st.query_params.clear()
-    st.query_params.update({"feature": fitur})
-    st.rerun()
-
-# Tampilan Halaman Home
+# HOME Page
 selected = st.session_state.menu_selected
 if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
+    st.markdown("<div class='grid-container'>", unsafe_allow_html=True)
 
-    with col1:
-        if st.button("⚗ Reaksi Kimia\nSetarakan reaksi", use_container_width=True):
-            navigate_to_feature("⚗ Reaksi Kimia")
-        if st.button("🧫 Konsentrasi Larutan\nHitung konsentrasi", use_container_width=True):
-            navigate_to_feature("🧫 Konsentrasi Larutan")
+    def feature_card(title, desc, emoji, menu_key):
+        st.markdown(f"""
+        <a href='?feature={menu_key}' style='text-decoration: none; color: inherit;'>
+            <div class='feature-card'>
+                <h3>{emoji} {title}</h3>
+                <p>{desc}</p>
+            </div>
+        </a>
+        """, unsafe_allow_html=True)
 
-    with col2:
-        if st.button("🧪 Stoikiometri\nHitung mol & massa", use_container_width=True):
-            navigate_to_feature("🧪 Stoikiometri")
-        if st.button("💧 pH dan pOH\nCek keasaman", use_container_width=True):
-            navigate_to_feature("💧 pH dan pOH")
+    feature_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗", "⚗ Reaksi Kimia")
+    feature_card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪", "🧪 Stoikiometri")
+    feature_card("Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫", "🧫 Konsentrasi Larutan")
+    feature_card("pH dan pOH", "Hitung pH dan pOH larutan.", "💧", "💧 pH dan pOH")
+    feature_card("Tabel Periodik", "Lihat data unsur periodik.", "🧬", "🧬 Tabel Periodik")
+    feature_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈", "📈 Regresi Linier")
 
-    with col3:
-        if st.button("🧬 Tabel Periodik\nData unsur lengkap", use_container_width=True):
-            navigate_to_feature("🧬 Tabel Periodik")
-        if st.button("📈 Regresi Linier\nGrafik dan analisis", use_container_width=True):
-            navigate_to_feature("📈 Regresi Linier")
+    st.markdown("</div>", unsafe_allow_html=True)
     
 # --- About ---
 if selected == "📖 About":
