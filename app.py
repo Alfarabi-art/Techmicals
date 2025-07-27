@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import re
 import math
 from sklearn.linear_model import LinearRegression
+import streamlit.components.v1 as components
 
 # Load custom CSS
 css_file = Path(__file__).parent / "style.css"
@@ -55,6 +56,15 @@ if st.session_state.show_sidebar:
             index=0
         )
         st.session_state.menu_selected = menu
+        
+# Baca input dari JS card klik
+if "clicked_card" not in st.session_state:
+    st.session_state.clicked_card = None
+
+if st.session_state.clicked_card:
+    st.session_state.menu_selected = st.session_state.clicked_card
+    st.session_state.show_sidebar = True
+    st.session_state.clicked_card = None
 
 # Home page
 selected = st.session_state.menu_selected
@@ -75,40 +85,48 @@ if selected == "🏠 Home":
         """, unsafe_allow_html=True)
 
     st.markdown("""
-<script>
-    function setFeature(menuKey) {
-        const streamlitEvent = new Event("input", { bubbles: true });
-        const input = window.parent.document.querySelector(input[data-testid="stTextInput"]);
-        if (input) {
-            input.value = menuKey;
-            input.dispatchEvent(streamlitEvent);
-        }
-
-        const form = window.parent.document.createElement('form');
-        form.method = 'POST';
-        form.action = window.location.href;
-
-        const inputField = window.parent.document.createElement('input');
-        inputField.type = 'hidden';
-        inputField.name = 'feature';
-        inputField.value = menuKey;
-
-        form.appendChild(inputField);
-        window.parent.document.body.appendChild(form);
-        form.submit();
-    }
-</script>
+<div class="grid-container">
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '⚗ Reaksi Kimia'}, '*')">
+        <h3>⚗ Reaksi Kimia</h3>
+        <p>Setarakan reaksi dengan cepat dan akurat.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '🧪 Stoikiometri'}, '*')">
+        <h3>🧪 Stoikiometri</h3>
+        <p>Hitung mol, massa molar, dan lainnya.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '🧫 Konsentrasi Larutan'}, '*')">
+        <h3>🧫 Konsentrasi Larutan</h3>
+        <p>Hitung dan konversi konsentrasi larutan.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '💧 pH dan pOH'}, '*')">
+        <h3>💧 pH dan pOH</h3>
+        <p>Hitung pH dan pOH larutan.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '🧬 Tabel Periodik'}, '*')">
+        <h3>🧬 Tabel Periodik</h3>
+        <p>Lihat data unsur periodik.</p>
+    </div>
+    <div class="feature-card" onclick="window.parent.postMessage({type: 'select', value: '📈 Regresi Linier'}, '*')">
+        <h3>📈 Regresi Linier</h3>
+        <p>Tampilkan grafik regresi data.</p>
+    </div>
+</div>
 """, unsafe_allow_html=True)
 
-    # Card fitur
-    feature_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia", "⚗")
-    feature_card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪 Stoikiometri", "🧪")
-    feature_card("Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫 Konsentrasi Larutan", "🧫")
-    feature_card("pH dan pOH", "Hitung pH dan pOH larutan.", "💧 pH dan pOH", "💧")
-    feature_card("Tabel Periodik", "Lihat data unsur periodik.", "🧬 Tabel Periodik", "🧬")
-    feature_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈 Regresi Linier", "📈")
-
-    st.markdown("</div>", unsafe_allow_html=True)
+# Tambahkan listener JS (agar event diterima)
+components.html("""
+<script>
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'select') {
+        const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+        if (sidebar) {
+            sidebar.style.display = "block";
+        }
+        window.parent.postMessage({type: 'streamlit:setComponentValue', value: event.data.value}, '*');
+    }
+});
+</script>
+""", height=0)
 
     # Tangkap klik dari URL
     feature_selected = st.query_params.get("feature", [None])[0]
@@ -473,3 +491,32 @@ elif selected == "📈 Regresi Linier":
 
 # --- Footer ---
 st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True) 
+
+components.html("""
+<script>
+window.addEventListener("message", (event) => {
+    if (event.data.type === "streamlit:setComponentValue") {
+        const feature = event.data.value;
+        window.parent.postMessage({type: "streamlit:feature_selected", feature: feature}, "*");
+
+        const streamlitDoc = window.parent.document;
+        const input = streamlitDoc.querySelector('iframe[srcdoc]');
+
+        if (input && input.contentWindow) {
+            input.contentWindow.postMessage({type: 'feature_selected', value: feature}, "*");
+        }
+    }
+});
+</script>
+""", height=0)
+
+# Tangkap event dari JS (dijalankan di awal saat render)
+import streamlit.runtime.scriptrunner.script_run_context as sctx
+ctx = sctx.get_script_run_ctx()
+if ctx and ctx.query_string:
+    from urllib.parse import parse_qs
+    qs = parse_qs(ctx.query_string)
+    if "feature" in qs:
+        st.session_state.menu_selected = qs["feature"][0]
+        st.session_state.show_sidebar = True
+        st.rerun()
