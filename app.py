@@ -9,113 +9,78 @@ import matplotlib.pyplot as plt
 import re
 import math
 from sklearn.linear_model import LinearRegression
-import streamlit.components.v1 as components
 
-# Load CSS
-css_file = Path(__file__).parent / "style.css"
+# Load custom CSS
+css_file = Path(_file_).parent / "style.css"
 with open(css_file) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Config halaman
+# Konfigurasi halaman
 st.set_page_config(
     page_title="Techmicals",
     page_icon="🧪",
     layout="wide"
 )
 
-# Setup session state
+# Inisialisasi session state
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 
-# Sidebar tersembunyi dulu
-if not st.session_state.show_sidebar:
-    st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            display: none;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+# Cek query parameter
+params = st.query_params
+feature = params.get("feature", [None])[0] if "feature" in params else None
+if feature:
+    st.session_state.menu_selected = feature
+    st.session_state.show_sidebar = True
 
 # Sidebar
 if st.session_state.show_sidebar:
     with st.sidebar:
-        selected = option_menu(
-            menu_title="Kebutuhan Kimia 🌟",
-            options=[
+        menu = st.radio(
+            "Kebutuhan Kimia 🌟",
+            [
                 "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
                 "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
                 "🧬 Tabel Periodik", "🔄 Konversi Satuan",
                 "📈 Regresi Linier", "📖 About"
             ],
-            default_index=0
+            index=0
         )
-        st.session_state.menu_selected = selected
+        st.session_state.menu_selected = menu
 
-# JS listener dari klik kartu
-components.html("""
-<script>
-window.addEventListener("message", (event) => {
-    if (event.data.type === "select_feature") {
-        const feature = event.data.value;
-        const streamlitFrame = window.parent.document.querySelector('iframe');
-        if (streamlitFrame) {
-            streamlitFrame.contentWindow.postMessage({type: "select_feature_internal", value: feature}, "*");
-        }
-    }
-});
-</script>
-""", height=0)
+# Tombol Navigasi Card → Sidebar
+def navigate_to_feature(fitur):
+    st.query_params.clear()
+    st.query_params.update({"feature": fitur})
+    st.rerun()
 
-# Komunikasi dari iframe kembali ke Python
-components.html("""
-<script>
-window.addEventListener("message", (event) => {
-    if (event.data.type === "select_feature_internal") {
-        const feature = event.data.value;
-        window.parent.postMessage({type: "streamlit:setComponentValue", value: feature}, "*");
-    }
-});
-</script>
-""", height=0)
-
-# Tangani klik dari kartu fitur
-if "selected_card" not in st.session_state:
-    st.session_state.selected_card = None
-
-clicked_card = st.experimental_get_query_params().get("feature", [None])[0]
-if clicked_card and clicked_card != st.session_state.menu_selected:
-    st.session_state.menu_selected = clicked_card
-    st.session_state.show_sidebar = True
-    st.experimental_rerun()
-
-# --- Halaman Home ---
-if st.session_state.menu_selected == "🏠 Home":
+# Tampilan Halaman Home
+selected = st.session_state.menu_selected
+if selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
 
-    st.markdown("""<div class="grid-container">""", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns(3)
 
-    def feature_card(title, description, key, emoji):
-        st.markdown(f"""
-        <a href="/?feature={key}" style="text-decoration:none;">
-            <div class="feature-card" style="cursor:pointer;">
-                <h3>{emoji} {title}</h3>
-                <p>{description}</p>
-            </div>
-        </a>
-        """, unsafe_allow_html=True)
+    with col1:
+        if st.button("⚗ Reaksi Kimia\nSetarakan reaksi", use_container_width=True):
+            navigate_to_feature("⚗ Reaksi Kimia")
+        if st.button("🧫 Konsentrasi Larutan\nHitung konsentrasi", use_container_width=True):
+            navigate_to_feature("🧫 Konsentrasi Larutan")
 
-    feature_card("Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat.", "⚗ Reaksi Kimia", "⚗")
-    feature_card("Stoikiometri", "Hitung mol, massa molar, dan lainnya.", "🧪 Stoikiometri", "🧪")
-    feature_card("Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan.", "🧫 Konsentrasi Larutan", "🧫")
-    feature_card("pH dan pOH", "Hitung pH dan pOH larutan.", "💧 pH dan pOH", "💧")
-    feature_card("Tabel Periodik", "Lihat data unsur periodik.", "🧬 Tabel Periodik", "🧬")
-    feature_card("Regresi Linier", "Tampilkan grafik regresi data.", "📈 Regresi Linier", "📈")
+    with col2:
+        if st.button("🧪 Stoikiometri\nHitung mol & massa", use_container_width=True):
+            navigate_to_feature("🧪 Stoikiometri")
+        if st.button("💧 pH dan pOH\nCek keasaman", use_container_width=True):
+            navigate_to_feature("💧 pH dan pOH")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    with col3:
+        if st.button("🧬 Tabel Periodik\nData unsur lengkap", use_container_width=True):
+            navigate_to_feature("🧬 Tabel Periodik")
+        if st.button("📈 Regresi Linier\nGrafik dan analisis", use_container_width=True):
+            navigate_to_feature("📈 Regresi Linier")
     
 # --- About ---
 if selected == "📖 About":
