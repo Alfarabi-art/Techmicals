@@ -10,7 +10,6 @@ import re
 import math
 from sklearn.linear_model import LinearRegression
 import streamlit.components.v1 as components
-import streamlit.runtime.scriptrunner.script_run_context as sctx
 
 # Load custom CSS
 css_file = Path(__file__).parent / "style.css"
