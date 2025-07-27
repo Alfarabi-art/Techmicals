@@ -502,13 +502,3 @@ window.addEventListener("message", (event) => {
 });
 </script>
 """, height=0)
-
-# Tangkap event dari JS (dijalankan di awal saat render)
-ctx = sctx.get_script_run_ctx()
-if ctx and ctx.query_string:
-    from urllib.parse import parse_qs
-    qs = parse_qs(ctx.query_string)
-    if "feature" in qs:
-        st.session_state.menu_selected = qs["feature"][0]
-        st.session_state.show_sidebar = True
-        st.rerun()
