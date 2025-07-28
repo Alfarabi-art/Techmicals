@@ -24,43 +24,48 @@ st.set_page_config(
     layout="wide",
 )
 
-# --- Inisialisasi session_state ---
+# --- Inisialisasi Session ---
 if "menu_selected" not in st.session_state:
-    st.session_state.menu_selected = "Home"
+    st.session_state.menu_selected = "🏠 Home"
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 
-# --- Sidebar ---
+# --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
     with st.sidebar:
-        pilihan = ["Home", "Reaksi Kimia", "Stoikiometri", "Konsentrasi Larutan", "pH dan pOH", "Tabel Periodik", "Regresi Linier"]
-        selected = st.selectbox("Pilih fitur", options=pilihan, index=pilihan.index(st.session_state.menu_selected))
-        st.session_state.menu_selected = selected
+        menu = option_menu(
+            menu_title="Kebutuhan Kimia 🌟",
+            options=[
+                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+                "📈 Regresi Linier", "📖 About"
+            ],
+        )
+        st.session_state.menu_selected = menu
 
-# Ambil menu yang dipilih
-menu_selected = st.session_state.menu_selected
-
-# --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
-# --- Card Home ---
-if st.session_state.menu_selected == "Home":
+# --- HOMEPAGE: CARD NAVIGASI ---
+if st.session_state.menu_selected == "🏠 Home":
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     fitur = [
-        ("Reaksi Kimia", "⚗ Setarakan reaksi secara otomatis."),
-        ("Stoikiometri", "🧪 Hitung mol, massa, volume."),
-        ("Konsentrasi Larutan", "🧫 Hitung molaritas dan lainnya."),
-        ("pH dan pOH", "💧 Hitung pH/pOH dari konsentrasi."),
-        ("Tabel Periodik", "🧬 Informasi unsur lengkap."),
-        ("Regresi Linier", "📈 Hitung regresi dan grafik.")
+        ("⚗ Reaksi Kimia", "Setarakan reaksi secara otomatis."),
+        ("🧪 Stoikiometri", "Hitung mol, massa, volume."),
+        ("🧫 Konsentrasi Larutan", "Hitung molaritas dan lainnya."),
+        ("💧 pH dan pOH", "Hitung pH/pOH dari konsentrasi."),
+        ("🧬 Tabel Periodik", "Informasi unsur lengkap."),
+        ("🔄 Konversi Satuan", "Konversi suhu, massa, volume."),
+        ("📈 Regresi Linier", "Hitung regresi dan tampilkan grafik."),
+        ("📖 About", "Tentang aplikasi Techmicals.")
     ]
 
     cols = st.columns(3)
     for i, (label, desc) in enumerate(fitur):
         with cols[i % 3]:
-            if st.button(desc.split()[0] + " " + label, key=label, use_container_width=True):
+            if st.button(label + "\n" + desc, key=label, use_container_width=True):
                 st.session_state.menu_selected = label
                 st.session_state.show_sidebar = True
-                st.rerun()  # rerun aman
+                st.rerun()
 
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
