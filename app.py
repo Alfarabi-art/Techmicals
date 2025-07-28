@@ -49,7 +49,6 @@ menu = st.session_state.menu_selected
 
 # --- Card Home ---
 if menu == "🏠 Home":
-    home()
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     fitur = [
