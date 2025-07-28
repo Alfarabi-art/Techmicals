@@ -56,8 +56,6 @@ if st.session_state.menu_selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
-
     # Mapping nama card ke menu dengan emoji
     label_map = {
         "Reaksi Kimia": "⚗ Reaksi Kimia",
