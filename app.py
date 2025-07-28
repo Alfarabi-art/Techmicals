@@ -155,9 +155,10 @@ elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
 
 # --- FITUR STOIKIOMETRI ---
 elif st.session_state.menu_selected == "🧪 Stoikiometri":
-     if st.button("← Kembali ke Beranda"):
-        st.session_state.menu_selected = "🏠 Home"
-        st.experimental_rerun()
+    if st.button("← Kembali ke Beranda"):
+       st.session_state.menu_selected = "🏠 Home"
+       st.experimental_rerun()
+         
     st.title("🧪 Hitung Mol")
     formula = st.text_input("Rumus Kimia", "H2O")
     mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")
