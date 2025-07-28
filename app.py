@@ -30,13 +30,6 @@ if "menu_selected" not in st.session_state:
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 
-# --- Sidebar ---
-if st.session_state.show_sidebar:
-    with st.sidebar:
-        pilihan = ["Home", "Reaksi Kimia", "Stoikiometri", "Konsentrasi Larutan", "pH dan pOH", "Tabel Periodik", "Regresi Linier"]
-        selected = st.selectbox("Pilih fitur", options=pilihan, index=pilihan.index(st.session_state.menu_selected))
-        st.session_state.menu_selected = selected
-
 # --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
     with st.sidebar:
@@ -49,7 +42,7 @@ if st.session_state.show_sidebar:
                 "📈 Regresi Linier", "📖 About"
             ],
         )
-        st.session_state.menu_selected = menu
+        st.session_state.menu_selected = selected
 
 # Ambil menu yang dipilih
 menu_selected = st.session_state.menu_selected
