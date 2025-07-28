@@ -24,87 +24,69 @@ st.set_page_config(
     layout="wide",
 )
 
-# Inisialisasi session_state
+# --- Inisialisasi session_state ---
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "Home"
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
-if "_rerun" not in st.session_state:
-    st.session_state._rerun = False
 
-# Sidebar tetap tampil kalau show_sidebar True
+# --- Sidebar ---
 if st.session_state.show_sidebar:
     with st.sidebar:
-        menu_selected = st.selectbox("Pilih fitur", ["Home", "Reaksi Kimia", "Stoikiometri", "Konsentrasi Larutan", "pH dan pOH", "Tabel Periodik", "Regresi Linier"])
-        st.session_state.menu_selected = menu_selected
-else:
-    menu_selected = st.session_state.menu_selected
-
-# Tampilkan sidebar jika diaktifkan
-if st.session_state.show_sidebar:
-    with st.sidebar:
-        menu_selected = option_menu(
-            menu_title="Techmicals",
-            options=[
-                "Home",
-                "⚗ Reaksi Kimia",
-                "🧪 Stoikiometri",
-                "🧫 Konsentrasi Larutan",
-                "💧 pH dan pOH",
-                "🧬 Tabel Periodik",
-                "📈 Regresi Linier"
-                "📖 About"
-            ],
-            default_index=0,
-        )
-        st.session_state.menu_selected = menu_selected
+        pilihan = ["Home", "Reaksi Kimia", "Stoikiometri", "Konsentrasi Larutan", "pH dan pOH", "Tabel Periodik", "Regresi Linier"]
+        selected = st.selectbox("Pilih fitur", options=pilihan, index=pilihan.index(st.session_state.menu_selected))
+        st.session_state.menu_selected = selected
 
 # Ambil menu yang dipilih
 menu_selected = st.session_state.menu_selected
 
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
-# Halaman Home (tampilkan kartu)
-if menu_selected == "Home":
+# --- Card Home ---
+if st.session_state.menu_selected == "Home":
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     fitur = [
-        ("⚗ Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat."),
-        ("🧪 Stoikiometri", "Hitung mol, massa molar, dan lainnya."),
-        ("🧫 Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan."),
-        ("💧 pH dan pOH", "Hitung pH dan pOH larutan."),
-        ("🧬 Tabel Periodik", "Lihat data unsur periodik."),
-        ("📈 Regresi Linier", "Tampilkan grafik regresi data.")
+        ("Reaksi Kimia", "⚗ Setarakan reaksi secara otomatis."),
+        ("Stoikiometri", "🧪 Hitung mol, massa, volume."),
+        ("Konsentrasi Larutan", "🧫 Hitung molaritas dan lainnya."),
+        ("pH dan pOH", "💧 Hitung pH/pOH dari konsentrasi."),
+        ("Tabel Periodik", "🧬 Informasi unsur lengkap."),
+        ("Regresi Linier", "📈 Hitung regresi dan grafik.")
     ]
 
     cols = st.columns(3)
-
     for i, (label, desc) in enumerate(fitur):
         with cols[i % 3]:
-            if st.button(label, key=f"btn_{i}", use_container_width=True):
+            if st.button(f"{desc.split()[0]} {label}", key=label, use_container_width=True):
                 st.session_state.menu_selected = label
                 st.session_state.show_sidebar = True
-                st.session_state._rerun = True
-            st.caption(desc)
+                st.rerun()  # rerun aman dan langsung ke fitur
 
-# Jalankan fitur berdasarkan menu terpilih
-elif menu_selected == "Reaksi Kimia":
-    st.write("⚗ Halaman Reaksi Kimia aktif")
-elif menu_selected == "Stoikiometri":
-    st.write("🧪 Halaman Stoikiometri aktif")
-elif menu_selected == "Konsentrasi Larutan":
-    st.write("🧫 Halaman Konsentrasi aktif")
-elif menu_selected == "pH dan pOH":
-    st.write("💧 Halaman pH dan pOH aktif")
-elif menu_selected == "Tabel Periodik":
-    st.write("🧬 Halaman Tabel Periodik aktif")
-elif menu_selected == "Regresi Linier":
-    st.write("📈 Halaman Regresi aktif")
+# --- Konten Fitur Berdasarkan menu_selected ---
+elif st.session_state.menu_selected == "Reaksi Kimia":
+    st.title("⚗ Reaksi Kimia")
+    st.write("Ini fitur reaksi kimia...")
 
-# Rerun aman (paling akhir, setelah semua)
-if st.session_state._rerun:
-    st.session_state._rerun = False
-    st.rerun()
+elif st.session_state.menu_selected == "Stoikiometri":
+    st.title("🧪 Stoikiometri")
+    st.write("Ini fitur stoikiometri...")
 
+elif st.session_state.menu_selected == "Konsentrasi Larutan":
+    st.title("🧫 Konsentrasi Larutan")
+    st.write("Ini fitur konsentrasi larutan...")
+
+elif st.session_state.menu_selected == "pH dan pOH":
+    st.title("💧 pH dan pOH")
+    st.write("Ini fitur pH dan pOH...")
+
+elif st.session_state.menu_selected == "Tabel Periodik":
+    st.title("🧬 Tabel Periodik")
+    st.write("Ini fitur tabel periodik...")
+
+elif st.session_state.menu_selected == "Regresi Linier":
+    st.title("📈 Regresi Linier")
+    st.write("Ini fitur regresi linier...")
+    
     if st.button("⚗ Mulai Hitung Sekarang", key="start", help="Klik untuk memulai fitur", use_container_width=True):
         st.session_state.show_sidebar = True
         st.session_state.menu_selected = "⚗ Reaksi Kimia"
