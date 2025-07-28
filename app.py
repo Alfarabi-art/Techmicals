@@ -64,20 +64,31 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h4 style='text-align:center;'>Klik salah satu fitur di bawah:</h4>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
-# Buat layout grid responsif pakai kolom
-cols = st.columns(3)
+    fitur = [
+        ("⚗ Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat."),
+        ("🧪 Stoikiometri", "Hitung mol, massa molar, dan lainnya."),
+        ("🧫 Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan."),
+        ("💧 pH dan pOH", "Hitung pH dan pOH larutan."),
+        ("🧬 Tabel Periodik", "Lihat data unsur periodik."),
+        ("📈 Regresi Linier", "Tampilkan grafik regresi data.")
+    ]
 
-fitur = [
-    ("⚗ Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat."),
-    ("🧪 Stoikiometri", "Hitung mol, massa molar, dan lainnya."),
-    ("🧫 Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan."),
-    ("💧 pH dan pOH", "Hitung pH dan pOH larutan."),
-    ("🧬 Tabel Periodik", "Lihat data unsur periodik."),
-    ("📈 Regresi Linier", "Tampilkan grafik regresi data.")
-]
+    cols = st.columns(3)
 
+    for i, (label, desc) in enumerate(fitur):
+        with cols[i % 3]:
+            if st.button(label, key=label, use_container_width=True):
+                st.session_state.menu_selected = label
+                st.session_state.show_sidebar = True
+                st.session_state._rerun = True
+            st.caption(desc)
+
+    if st.session_state.get("_rerun"):
+        st.session_state._rerun = False
+        st.experimental_rerun()
+        
 # Tampilkan tombol fitur sebagai card
 for i, (label, desc) in enumerate(fitur):
     with cols[i % 3]:
