@@ -122,6 +122,9 @@ elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
             except Exception as e:
                 st.error(f"⚠ Error: {e}")
 
+# Ambil menu yang dipilih
+menu_selected = st.session_state.menu_selected
+
 # --- FITUR STOIKIOMETRI ---
 elif st.session_state.menu_selected == "🧪 Stoikiometri":
     st.title("🧪 Hitung Mol")
