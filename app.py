@@ -50,6 +50,7 @@ if st.session_state.show_sidebar:
                 "💧 pH dan pOH",
                 "🧬 Tabel Periodik",
                 "📈 Regresi Linier"
+                "📖 About"
             ],
             default_index=0,
         )
@@ -116,7 +117,7 @@ if feature:
         """, height=0)
 
 # --- About ---
-elif selected == "📖 About":
+if selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
     st.write("""
         <div style='text-align:center;'>
