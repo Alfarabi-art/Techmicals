@@ -316,23 +316,19 @@ button[kind="secondary"]:hover {
     color: #fff;
 }
 
-/* Sembunyikan tombol dummy */
-button[title=" "],
-button[data-testid="baseButton"]:has(span:empty) {
-    position: absolute !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    overflow: hidden;
-    z-index: -1;
+button[kind="primary"] {
+    background-color: #1f1f2e;
+    border: 1px solid #444;
+    color: white;
+    padding: 1em;
+    font-size: 1em;
+    border-radius: 10px;
+    margin-bottom: 0.5em;
+    transition: all 0.2s ease-in-out;
 }
 
-.clickable {
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.clickable:hover {
+button[kind="primary"]:hover {
+    background-color: #3b3b50;
     transform: scale(1.03);
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
