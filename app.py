@@ -24,81 +24,84 @@ st.set_page_config(
     layout="wide",
 )
 
-# --- Inisialisasi Session State ---
+# Inisialisasi state
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
-if "show_sidebar" not in st.session_state:
-    st.session_state.show_sidebar = True
 
-# --- Sidebar ---
-if st.session_state.show_sidebar:
-    with st.sidebar:
-        selected = option_menu(
-            menu_title="Kebutuhan Kimia 🌟",
-            options=[
-                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
-                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
-                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
-                "📈 Regresi Linier", "📖 About"
-            ],
-            default_index=[
-                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
-                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
-                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
-                "📈 Regresi Linier", "📖 About"
-            ].index(st.session_state.menu_selected)
-        )
-        st.session_state.menu_selected = selected
+# --- SIDEBAR MENU ---
+with st.sidebar:
+    menu = option_menu(
+        menu_title="Kebutuhan Kimia 🌟",
+        options=[
+            "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+            "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+            "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+            "📈 Regresi Linier", "📖 About"
+        ],
+        icons=[
+            "house", "flask", "calculator", "beaker", "droplet-half",
+            "table", "arrow-repeat", "graph-up", "info-circle"
+        ],
+        default_index=0,
+    )
+    st.session_state.menu_selected = menu
 
-# --- Fungsi Menampilkan Home ---
+# --- HALAMAN HOME ---
 def show_home():
-    st.markdown("<h2 style='text-align: center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
     fitur = [
-        ("⚗ Reaksi Kimia", "Hitung reaksi kimia dan penyeimbangannya"),
-        ("💧 pH dan pOH", "Hitung pH atau pOH larutan berdasarkan H+ atau OH-"),
-        ("🧪 Stoikiometri", "Hitung stoikiometri berdasarkan reaksi kimia"),
-        ("🧬 Tabel Periodik", "Lihat dan cari data unsur kimia"),
-        ("🧫 Konsentrasi Larutan", "Hitung molaritas, mol, volume, massa"),
-        ("📈 Regresi Linier", "Masukkan data x dan y, dan lihat grafik regresi")
+        ("⚗ Reaksi Kimia", "Hitung dan setarakan reaksi kimia."),
+        ("💧 pH dan pOH", "Hitung nilai pH dan pOH larutan."),
+        ("🧪 Stoikiometri", "Hitung perbandingan zat dalam reaksi."),
+        ("🧬 Tabel Periodik", "Lihat data unsur kimia."),
+        ("🧫 Konsentrasi Larutan", "Hitung konsentrasi molaritas, normalitas, dsb."),
+        ("📈 Regresi Linier", "Analisis regresi linier data kalibrasi.")
     ]
 
     for label, desc in fitur:
-        if st.button(label, use_container_width=True):
+        if st.button(label):
             st.session_state.menu_selected = label
             st.experimental_rerun()
 
-# --- Fungsi untuk Tiap Fitur (Isi Dummy Sementara) ---
+        st.caption(desc)
+
+# --- FITUR-FITUR ---
 def show_reaksi_kimia():
     st.header("⚗ Reaksi Kimia")
-    st.write("Masukkan reaksi kimia untuk dihitung.")
+    st.write("Halaman ini akan berisi fitur reaksi kimia.")
 
 def show_stoikiometri():
     st.header("🧪 Stoikiometri")
-    st.write("Perhitungan stoikiometri berdasarkan reaksi kimia.")
+    st.write("Halaman ini akan berisi fitur stoikiometri.")
 
 def show_konsentrasi():
     st.header("🧫 Konsentrasi Larutan")
-    st.write("Hitung konsentrasi larutan seperti molaritas.")
+    st.write("Halaman ini akan berisi fitur konsentrasi larutan.")
 
-def show_ph_poh():
+def show_ph():
     st.header("💧 pH dan pOH")
-    st.write("Hitung pH atau pOH dari larutan.")
+    st.write("Halaman ini akan berisi fitur pH dan pOH.")
 
-def show_periodik():
+def show_tabel_periodik():
     st.header("🧬 Tabel Periodik")
-    st.write("Tampilkan data unsur kimia.")
+    st.write("Halaman ini akan berisi data tabel periodik.")
 
 def show_konversi():
     st.header("🔄 Konversi Satuan")
-    st.write("Konversi satuan massa, volume, energi, dll.")
+    st.write("Halaman ini akan berisi fitur konversi satuan.")
 
 def show_regresi():
     st.header("📈 Regresi Linier")
-    st.write("Masukkan data untuk analisis regresi.")
+    st.write("Halaman ini akan berisi fitur regresi linier.")
 
 def show_about():
-    st.header("📖 About")
-    st.write("Techmicals adalah aplikasi kimia interaktif untuk pelajar dan mahasiswa.")
+    st.header("📖 Tentang Aplikasi")
+    st.markdown("""
+    *Techmicals* adalah aplikasi kimia interaktif yang dikembangkan untuk membantu pelajar dan mahasiswa memahami konsep kimia melalui fitur-fitur seperti stoikiometri, pH, tabel periodik, dan lainnya.
+    
+    Dibuat oleh: *Kelompok 10*  
+    Tahun: 2025
+    """)
 
 # --- Konten Fitur Berdasarkan menu_selected ---
 menu = st.session_state.menu_selected
