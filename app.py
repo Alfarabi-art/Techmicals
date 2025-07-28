@@ -26,7 +26,7 @@ st.set_page_config(
 
 # --- Inisialisasi session_state ---
 if "menu_selected" not in st.session_state:
-    st.session_state.menu_selected = "Home"
+    st.session_state.menu_selected = "🏠 Home"
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 
@@ -49,7 +49,7 @@ menu_selected = st.session_state.menu_selected
 
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 # --- Card Home ---
-if st.session_state.menu_selected == "Home":
+if st.session_state.menu_selected == "🏠 Home":
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     fitur = [
