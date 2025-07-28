@@ -10,6 +10,7 @@ import re
 import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
+import streamlit.components.v1 as components
 
 # Load custom CSS
 css_file = Path(__file__).parent / "style.css"
@@ -46,9 +47,8 @@ if st.session_state.show_sidebar:
             st.session_state.menu_selected = menu
             st.rerun()
 
-# --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
-selected = st.session_state.menu_selected
-if selected == "🏠 Home":
+# --- HOME PAGE ---
+if st.session_state.menu_selected == "🏠 Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
     st.markdown("""
@@ -56,36 +56,33 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="grid-container">
-        <div class="feature-card">
-            <h3>&#x2697; Reaksi Kimia</h3>
-            <p>Setarakan reaksi dengan cepat dan akurat.</p>
-        </div>
-        <div class="feature-card">
-            <h3>&#x1F9EA; Stoikiometri</h3>
-            <p>Hitung mol, massa molar, dan lainnya.</p>
-        </div>
-        <div class="feature-card">
-            <h3>&#x1F4C8; Konsentrasi Larutan</h3>
-            <p>Hitung dan konversi konsentrasi larutan.</p>
-        </div>
-        <div class="feature-card">
-            <h3>&#x1F4A7; pH dan pOH</h3>
-            <p>Hitung pH dan pOH larutan.</p>
-        </div>
-        <div class="feature-card">
-            <h3>&#x1F9EC; Tabel Periodik</h3>
-            <p>Lihat data unsur periodik.</p>
-        </div>
-        <div class="feature-card">
-            <h3>&#x1F4C8; Regresi Linier</h3>
-            <p>Tampilkan grafik regresi data.</p>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
-    st.session_state.show_sidebar = True
+    # Mapping nama card ke menu dengan emoji
+    label_map = {
+        "Reaksi Kimia": "⚗ Reaksi Kimia",
+        "Stoikiometri": "🧪 Stoikiometri",
+        "Konsentrasi Larutan": "🧫 Konsentrasi Larutan",
+        "pH dan pOH": "💧 pH dan pOH",
+        "Tabel Periodik": "🧬 Tabel Periodik",
+        "Regresi Linier": "📈 Regresi Linier"
+    }
+
+    fitur = [
+        ("Reaksi Kimia", "⚗ Setarakan reaksi secara otomatis."),
+        ("Stoikiometri", "🧪 Hitung mol, massa, volume."),
+        ("Konsentrasi Larutan", "🧫 Hitung molaritas dan lainnya."),
+        ("pH dan pOH", "💧 Hitung pH/pOH dari konsentrasi."),
+        ("Tabel Periodik", "🧬 Informasi unsur lengkap."),
+        ("Regresi Linier", "📈 Hitung regresi dan grafik.")
+    ]
+
+    cols = st.columns(3)
+    for i, (label, desc) in enumerate(fitur):
+        with cols[i % 3]:
+            if st.button(desc.split()[0] + " " + label, key=label, use_container_width=True):
+                st.session_state.menu_selected = label_map[label]
+                st.session_state.show_sidebar = True
                 st.rerun()
 
         st.components.v1.html("""
@@ -95,7 +92,7 @@ if selected == "🏠 Home":
             window.scrollTo(0, 0);
             </script>
         """, height=0)
-    
+
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
             <script>
@@ -105,8 +102,12 @@ if selected == "🏠 Home":
             </script>
         """, height=0)
 
+# Ambil menu yang dipilih
+menu_selected = st.session_state.menu_selected
+
+# --- Konten Fitur Berdasarkan menu_selected ---
 # --- About ---
-if selected == "📖 About":
+if menu_selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
     st.write("""
         <div style='text-align:center;'>
@@ -129,7 +130,7 @@ if selected == "📖 About":
         st.markdown("<div class='feature-card'><h4>👩‍🔬 Widya Aulia Putri</h4><p>NIM - 2460534</p></div>", unsafe_allow_html=True)
 
 # --- FITUR REAKSI KIMIA ---
-elif selected == "⚗ Reaksi Kimia":
+elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
@@ -149,7 +150,7 @@ elif selected == "⚗ Reaksi Kimia":
                 st.error(f"⚠ Error: {e}")
 
 # --- FITUR STOIKIOMETRI ---
-elif selected == "🧪 Stoikiometri":
+elif st.session_state.menu_selected == "🧪 Stoikiometri":
     st.title("🧪 Hitung Mol")
     formula = st.text_input("Rumus Kimia", "H2O")
     mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")
@@ -176,7 +177,7 @@ elif selected == "🧪 Stoikiometri":
             st.error("⚠ Masukkan angka yang valid.")
 
 # --- FITUR KONSENTRASI LARUTAN ---
-elif selected == "🧫 Konsentrasi Larutan":
+elif st.session_state.menu_selected == "🧫 Konsentrasi Larutan":
     st.title("🧫 Hitung Konsentrasi Larutan")
     metode = st.selectbox("Pilih Metode", ["Molaritas", "Normalitas"])
     with st.form(key="konsentrasi_form"):
@@ -207,7 +208,7 @@ elif selected == "🧫 Konsentrasi Larutan":
                 st.success(f"Normalitas: {normality:.4f} eq/L")
 
 # --- FITUR pH DAN pOH ---
-elif selected == "💧 pH dan pOH":
+elif st.session_state.menu_selected == "💧 pH dan pOH":
     st.title("💧 Hitung pH dan pOH")
     conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
     acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
@@ -224,7 +225,7 @@ elif selected == "💧 pH dan pOH":
             st.error("Konsentrasi harus lebih dari 0.")
 
 # --- FITUR TABEL PERIODIK ---
-elif selected == "🧬 Tabel Periodik":
+elif st.session_state.menu_selected == "🧬 Tabel Periodik":
     st.title("🧬 Tabel Periodik Interaktif")
     periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
                      for el in elements if el.number <= 118]
@@ -238,7 +239,7 @@ elif selected == "🧬 Tabel Periodik":
         st.write(f"Massa Atom: {el.mass} g/mol")
 
 # --- FITUR KONVERSI SATUAN ---
-elif selected == "🔄 Konversi Satuan":
+elif st.session_state.menu_selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
     kategori = st.selectbox("Pilih Kategori", [
         "Mol ↔ Gram",
@@ -383,7 +384,7 @@ elif selected == "🔄 Konversi Satuan":
                     st.success(f"{nilai_awal:.4f}% w/v = {hasil:.2f} ppm")
 
 # --- FITUR REGRESI LINIER ---
-elif selected == "📈 Regresi Linier":
+elif st.session_state.menu_selected == "📈 Regresi Linier":
     st.title("📈 Kalkulator Regresi Linier")
     st.write("Hitung slope, intercept, persamaan garis regresi, dan tampilkan grafik.")
 
@@ -460,4 +461,4 @@ elif selected == "📈 Regresi Linier":
             st.error(f"⚠ Error saat menghitung regresi: {e}")
 
 # --- Footer ---
-st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True)
+st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True) 
