@@ -64,7 +64,7 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
+     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     fitur = [
         ("⚗ Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat."),
@@ -79,7 +79,7 @@ if selected == "🏠 Home":
 
     for i, (label, desc) in enumerate(fitur):
         with cols[i % 3]:
-            if st.button(label, key=label, use_container_width=True):
+            if st.button(label, key=f"btn_{i}", use_container_width=True):
                 st.session_state.menu_selected = label
                 st.session_state.show_sidebar = True
                 st.session_state._rerun = True
