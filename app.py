@@ -461,4 +461,11 @@ elif st.session_state.menu_selected == "📈 Regresi Linier":
             st.error(f"⚠ Error saat menghitung regresi: {e}")
 
 # --- Footer ---
-st.markdown("<footer>© 2025 Techmicals by Kelompok 10 | All rights reserved.</footer>", unsafe_allow_html=True) 
+st.markdown(
+    """
+    <footer style='text-align:center; color: #888; padding: 1rem 0; margin-top: 2rem;'>
+        &copy; 2025 Techmicals — Semua Hak Dilindungi
+    </footer>
+    """,
+    unsafe_allow_html=True
+)
