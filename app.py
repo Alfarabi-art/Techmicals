@@ -45,7 +45,7 @@ if st.session_state.show_sidebar:
         st.session_state.menu_selected = menu
 
 # Ambil menu yang dipilih
-menu = st.session_state.menu_selected
+menu_selected = st.session_state.menu_selected
 
 # --- Card Home ---
 if st.session_state.menu_selected == "🏠 Home":
