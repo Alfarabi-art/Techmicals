@@ -33,27 +33,24 @@ if "show_sidebar" not in st.session_state:
 # --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
     with st.sidebar:
+        options = [
+            "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+            "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+            "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+            "📈 Regresi Linier", "📖 About"
+        ]
+
         menu = option_menu(
-    menu_title="Kebutuhan Kimia 🌟",
-    options=[
-        "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
-        "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
-        "🧬 Tabel Periodik", "🔄 Konversi Satuan",
-        "📈 Regresi Linier", "📖 About"
-    ],
-    default_index=[
-        "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
-        "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
-        "🧬 Tabel Periodik", "🔄 Konversi Satuan",
-        "📈 Regresi Linier", "📖 About"
-    ].index(st.session_state.menu_selected)  # agar tidak reset ke Home
-)
+            menu_title="Kebutuhan Kimia 🌟",
+            options=options,
+            default_index=options.index(st.session_state.menu_selected),
+        )
 
-# Update hanya jika ada perubahan
-if menu != st.session_state.menu_selected:
-    st.session_state.menu_selected = menu
-    st.rerun()
-
+        # Update hanya jika user klik menu baru
+        if menu != st.session_state.menu_selected:
+            st.session_state.menu_selected = menu
+            st.rerun()
+            
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 # --- Card Home ---
 if st.session_state.menu_selected == "🏠 Home":
