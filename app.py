@@ -117,7 +117,7 @@ if feature:
         """, height=0)
 
 # --- About ---
-if selected == "📖 About":
+if menu_selected == "📖 About":
     st.markdown("<h1 style='text-align:center;'>📖 Tentang Aplikasi</h1>", unsafe_allow_html=True)
     st.write("""
         <div style='text-align:center;'>
