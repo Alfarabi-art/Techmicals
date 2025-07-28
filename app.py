@@ -37,6 +37,20 @@ if st.session_state.show_sidebar:
         selected = st.selectbox("Pilih fitur", options=pilihan, index=pilihan.index(st.session_state.menu_selected))
         st.session_state.menu_selected = selected
 
+# --- SIDEBAR MENU ---
+if st.session_state.show_sidebar:
+    with st.sidebar:
+        menu = option_menu(
+            menu_title="Kebutuhan Kimia 🌟",
+            options=[
+                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+                "📈 Regresi Linier", "📖 About"
+            ],
+        )
+        st.session_state.menu_selected = menu
+
 # Ambil menu yang dipilih
 menu_selected = st.session_state.menu_selected
 
