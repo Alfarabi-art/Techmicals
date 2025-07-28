@@ -86,15 +86,6 @@ if menu_selected == "Home":
 if st.session_state.get("_rerun", False):
     st.session_state._rerun = False  # matikan flag
     st.experimental_rerun()
-    
-# Tampilkan tombol fitur sebagai card
-for i, (label, desc) in enumerate(fitur):
-    with cols[i % 3]:
-        if st.button(label, key=label, use_container_width=True):
-            st.session_state.menu_selected = label
-            st.session_state.show_sidebar = True
-            st.experimental_rerun()
-        st.caption(desc)
 
 # Tangkap fitur dari komponen HTML (jika ada)
 feature = st.query_params.get("feature")
