@@ -28,7 +28,7 @@ st.set_page_config(
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 if "show_sidebar" not in st.session_state:
-    st.session_state.show_sidebar = True
+    st.session_state.show_sidebar = False
 
 # --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
