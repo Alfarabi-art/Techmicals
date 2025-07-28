@@ -48,7 +48,7 @@ if st.session_state.show_sidebar:
 menu_selected = st.session_state.menu_selected
 
 # --- Card Home ---
-if st.session_state.menu_selected == "Home":
+if st.session_state.menu_selected == "🏠 Home":
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     fitur = [
