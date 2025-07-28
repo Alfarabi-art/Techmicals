@@ -96,15 +96,6 @@ def about():
     st.title("📖 Tentang Aplikasi")
     st.write("Techmicals adalah aplikasi kimia interaktif buatan ...")
 
-        # FIX: Paksa scroll ke atas & sidebar muncul
-        st.components.v1.html("""
-            <script>
-            const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
-            if(sidebar){ sidebar.style.display = "block"; }
-            window.scrollTo(0, 0);  // Scroll ke atas
-            </script>
-        """, height=0)
-
 # --- Konten Fitur Berdasarkan menu_selected ---
 menu = st.session_state.menu_selected
 
