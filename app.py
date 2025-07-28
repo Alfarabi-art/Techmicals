@@ -42,7 +42,7 @@ if st.session_state.show_sidebar:
                 "📈 Regresi Linier", "📖 About"
             ],
         )
-        st.session_state.menu_selected = selected
+        st.session_state.menu_selected = menu
 
 # Ambil menu yang dipilih
 menu_selected = st.session_state.menu_selected
