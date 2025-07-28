@@ -210,7 +210,7 @@ elif st.session_state.menu_selected == "Tabel Periodik":
         st.write(f"Massa Atom: {el.mass} g/mol")
 
 # --- FITUR KONVERSI SATUAN ---
-elif menu_selected == "🔄 Konversi Satuan":
+elif st.session_state.menu_selected == "🔄 Konversi Satuan":
     st.title("🔄 Konversi Satuan Kimia")
     kategori = st.selectbox("Pilih Kategori", [
         "Mol ↔ Gram",
