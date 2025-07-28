@@ -79,14 +79,14 @@ if menu_selected == "Home":
             if st.button(label, key=f"btn_{i}", use_container_width=True):
                 st.session_state.menu_selected = label
                 st.session_state.show_sidebar = True
-                st.session_state._rerun = True
+                st.session_state._rerun = True  # nyalakan flag rerun
             st.caption(desc)
 
-    # Rerun jika tombol ditekan
-    if st.session_state.get("_rerun"):
-        st.session_state._rerun = False
-        st.experimental_rerun()
-
+# Pastikan ini di luar blok if Home
+if st.session_state.get("_rerun", False):
+    st.session_state._rerun = False  # matikan flag
+    st.experimental_rerun()
+    
 # Tampilkan tombol fitur sebagai card
 for i, (label, desc) in enumerate(fitur):
     with cols[i % 3]:
