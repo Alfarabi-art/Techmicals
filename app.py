@@ -106,7 +106,7 @@ components.html(f"""
             input.dispatchEvent(new Event('change'));
         }}
     </script>
-""", height=600)
+""", height=600)
 
 # Tangkap fitur dari komponen HTML (jika ada)
 feature = st.query_params.get("feature")
