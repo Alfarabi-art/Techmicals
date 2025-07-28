@@ -65,7 +65,7 @@ def show_home():
     for label, desc in fitur:
         if st.button(label, use_container_width=True):
             st.session_state.menu_selected = label
-            st.rerun()
+            st.experimental_rerun()
 
 # --- Fungsi untuk Tiap Fitur (Isi Dummy Sementara) ---
 def show_reaksi_kimia():
