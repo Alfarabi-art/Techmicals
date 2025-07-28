@@ -44,9 +44,6 @@ if st.session_state.show_sidebar:
         )
         st.session_state.menu_selected = menu
 
-# Ambil menu yang dipilih
-menu_selected = st.session_state.menu_selected
-
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 # --- Card Home ---
 if st.session_state.menu_selected == "🏠 Home":
@@ -77,6 +74,9 @@ if st.session_state.menu_selected == "🏠 Home":
             window.scrollTo(0, 0);  // Scroll ke atas
             </script>
         """, height=0)
+
+# Ambil menu yang dipilih
+menu_selected = st.session_state.menu_selected
 
 # --- Konten Fitur Berdasarkan menu_selected ---
 # --- About ---
