@@ -131,7 +131,7 @@ if menu_selected == "📖 About":
 
 # --- FITUR REAKSI KIMIA ---
 elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
-    if st.button('<button class="back-button">← Kembali ke Beranda</button>'):
+    if st.button("← Kembali ke Beranda"):
         st.session_state.menu_selected = "🏠 Home"
         st.rerun()
 
