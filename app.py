@@ -44,28 +44,29 @@ if st.session_state.show_sidebar:
         )
         st.session_state.menu_selected = menu
 
-# --- HOMEPAGE: CARD NAVIGASI ---
-if st.session_state.menu_selected == "🏠 Home":
+# Ambil menu yang dipilih
+menu_selected = st.session_state.menu_selected
+
+# --- Card Home ---
+if st.session_state.menu_selected == "Home":
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     fitur = [
-        ("⚗ Reaksi Kimia", "Setarakan reaksi secara otomatis."),
-        ("🧪 Stoikiometri", "Hitung mol, massa, volume."),
-        ("🧫 Konsentrasi Larutan", "Hitung molaritas dan lainnya."),
-        ("💧 pH dan pOH", "Hitung pH/pOH dari konsentrasi."),
-        ("🧬 Tabel Periodik", "Informasi unsur lengkap."),
-        ("🔄 Konversi Satuan", "Konversi suhu, massa, volume."),
-        ("📈 Regresi Linier", "Hitung regresi dan tampilkan grafik."),
-        ("📖 About", "Tentang aplikasi Techmicals.")
+        ("Reaksi Kimia", "⚗ Setarakan reaksi secara otomatis."),
+        ("Stoikiometri", "🧪 Hitung mol, massa, volume."),
+        ("Konsentrasi Larutan", "🧫 Hitung molaritas dan lainnya."),
+        ("pH dan pOH", "💧 Hitung pH/pOH dari konsentrasi."),
+        ("Tabel Periodik", "🧬 Informasi unsur lengkap."),
+        ("Regresi Linier", "📈 Hitung regresi dan grafik.")
     ]
 
     cols = st.columns(3)
     for i, (label, desc) in enumerate(fitur):
         with cols[i % 3]:
-            if st.button(label + "\n" + desc, key=label, use_container_width=True):
+            if st.button(desc.split()[0] + " " + label, key=label, use_container_width=True):
                 st.session_state.menu_selected = label
                 st.session_state.show_sidebar = True
-                st.rerun()
+                st.rerun()  # rerun aman
 
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
