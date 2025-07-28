@@ -49,6 +49,13 @@ if st.session_state.show_sidebar:
 
 # --- HOME PAGE ---
 if st.session_state.menu_selected == "🏠 Home":
+    st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
+    st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
+    st.markdown("""
+        <p style='text-align:center;'>Selamat datang di <b>Techmicals</b>, aplikasi all-in-one untuk semua kebutuhan kimia kamu.<br>
+        🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
+    """, unsafe_allow_html=True)
+
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     # Mapping nama card ke menu dengan emoji
