@@ -103,14 +103,7 @@ elif menu_selected == "Regresi Linier":
 # Rerun aman (paling akhir, setelah semua)
 if st.session_state._rerun:
     st.session_state._rerun = False
-    st.experimental_rerun()
-    
-# Tangkap fitur dari komponen HTML (jika ada)
-feature = st.query_params.get("feature")
-if feature:
-    st.session_state.menu_selected = feature[0]
-    st.session_state.show_sidebar = True
-    st.rerun()  # Rerun untuk mengubah tampilan sesuai fitur
+    st.rerun()
 
     if st.button("⚗ Mulai Hitung Sekarang", key="start", help="Klik untuk memulai fitur", use_container_width=True):
         st.session_state.show_sidebar = True
