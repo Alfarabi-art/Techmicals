@@ -50,7 +50,7 @@ if st.session_state.show_sidebar:
 )
 
 # Update hanya jika ada perubahan
-if menu = st.session_state.menu_selected:
+if menu ! = st.session_state.menu_selected:
     st.session_state.menu_selected = menu
     st.rerun()
 
