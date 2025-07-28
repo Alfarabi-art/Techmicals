@@ -50,17 +50,17 @@ if st.session_state.menu_selected == "Home":
         ("Stoikiometri", "🧪 Hitung mol, massa, volume."),
         ("Konsentrasi Larutan", "🧫 Hitung molaritas dan lainnya."),
         ("pH dan pOH", "💧 Hitung pH/pOH dari konsentrasi."),
-        ("Konversi Satuan", "🧬 Hitung Konversi Satuan."),
+        ("Tabel Periodik", "🧬 Informasi unsur lengkap."),
         ("Regresi Linier", "📈 Hitung regresi dan grafik.")
     ]
 
     cols = st.columns(3)
     for i, (label, desc) in enumerate(fitur):
         with cols[i % 3]:
-            if st.button(f"{desc.split()[0]} {label}", key=label, use_container_width=True):
+            if st.button(desc.split()[0] + " " + label, key=label, use_container_width=True):
                 st.session_state.menu_selected = label
                 st.session_state.show_sidebar = True
-                st.rerun()  # rerun aman dan langsung ke fitur
+                st.rerun()  # rerun aman
 
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
