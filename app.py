@@ -24,7 +24,7 @@ st.set_page_config(
     layout="wide",
 )
 
-# Inisialisasi session state
+# Inisialisasi session_state
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "Home"
 if "show_sidebar" not in st.session_state:
@@ -32,10 +32,13 @@ if "show_sidebar" not in st.session_state:
 if "_rerun" not in st.session_state:
     st.session_state._rerun = False
 
-# Fungsi untuk menampilkan fitur berdasarkan menu
-def show_selected_feature(menu):
-    st.markdown(f"<h2 style='text-align:center;'>{menu}</h2>", unsafe_allow_html=True)
-    st.info(f"Konten untuk fitur '{menu}' akan ditampilkan di sini.")
+# Sidebar tetap tampil kalau show_sidebar True
+if st.session_state.show_sidebar:
+    with st.sidebar:
+        menu_selected = st.selectbox("Pilih fitur", ["Home", "Reaksi Kimia", "Stoikiometri", "Konsentrasi Larutan", "pH dan pOH", "Tabel Periodik", "Regresi Linier"])
+        st.session_state.menu_selected = menu_selected
+else:
+    menu_selected = st.session_state.menu_selected
 
 # Tampilkan sidebar jika diaktifkan
 if st.session_state.show_sidebar:
@@ -60,6 +63,7 @@ if st.session_state.show_sidebar:
 menu_selected = st.session_state.menu_selected
 
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
+# Halaman Home (tampilkan kartu)
 if menu_selected == "Home":
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
@@ -79,14 +83,28 @@ if menu_selected == "Home":
             if st.button(label, key=f"btn_{i}", use_container_width=True):
                 st.session_state.menu_selected = label
                 st.session_state.show_sidebar = True
-                st.session_state._rerun = True  # nyalakan flag rerun
+                st.session_state._rerun = True
             st.caption(desc)
 
-# Pastikan ini di luar blok if Home
-if st.session_state.get("_rerun", False):
-    st.session_state._rerun = False  # matikan flag
-    st.experimental_rerun()
+# Jalankan fitur berdasarkan menu terpilih
+elif menu_selected == "Reaksi Kimia":
+    st.write("⚗ Halaman Reaksi Kimia aktif")
+elif menu_selected == "Stoikiometri":
+    st.write("🧪 Halaman Stoikiometri aktif")
+elif menu_selected == "Konsentrasi Larutan":
+    st.write("🧫 Halaman Konsentrasi aktif")
+elif menu_selected == "pH dan pOH":
+    st.write("💧 Halaman pH dan pOH aktif")
+elif menu_selected == "Tabel Periodik":
+    st.write("🧬 Halaman Tabel Periodik aktif")
+elif menu_selected == "Regresi Linier":
+    st.write("📈 Halaman Regresi aktif")
 
+# Rerun aman (paling akhir, setelah semua)
+if st.session_state._rerun:
+    st.session_state._rerun = False
+    st.experimental_rerun()
+    
 # Tangkap fitur dari komponen HTML (jika ada)
 feature = st.query_params.get("feature")
 if feature:
