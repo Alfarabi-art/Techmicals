@@ -157,7 +157,7 @@ elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
 elif st.session_state.menu_selected == "🧪 Stoikiometri":
     if st.button("← Kembali ke Beranda"):
        st.session_state.menu_selected = "🏠 Home"
-       st.experimental_rerun()
+       st.rerun()
          
     st.title("🧪 Hitung Mol")
     formula = st.text_input("Rumus Kimia", "H2O")
