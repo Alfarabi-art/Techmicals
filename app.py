@@ -135,7 +135,7 @@ elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
        st.session_state.menu_selected = "🏠 Home"
        st.rerun()
     st.title("⚗ Setarakan Reaksi Kimia")
-    equation = st.text_input("Masukkan persamaan reaksi:", "CONTOH : H2 + O2 > H2O")
+    equation = st.text_input("Masukkan persamaan reaksi, Contoh :", "H2 + O2 > H2O")
     if st.button("Setarakan"):
         if ">" not in equation:
             st.error("⚠ Format reaksi harus mengandung '>'")
