@@ -60,7 +60,7 @@ menu_selected = st.session_state.menu_selected
 
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 selected = st.session_state.menu_selected
-if selected == "🏠 Home":
+if menu_selected == "Home":
     st.markdown("<h1 class='gradient-text'>TECHMICALS</h1>", unsafe_allow_html=True)
     st.markdown("<h3 class='sub-text'>Teman Asik Kimia-mu – Seru, Modern, dan Mudah!</h3>", unsafe_allow_html=True)
     st.markdown("""
