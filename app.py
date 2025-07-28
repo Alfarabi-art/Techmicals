@@ -23,35 +23,28 @@ st.set_page_config(
     layout="wide",
 )
 
-# --- SESSION STATE ---
-if "show_sidebar" not in st.session_state:
-    st.session_state.show_sidebar = False
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
-
-# --- SEMBUNYIKAN SIDEBAR DI AWAL ---
-if not st.session_state.show_sidebar:
-    st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            display: none;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+if "show_sidebar" not in st.session_state:
+    st.session_state.show_sidebar = False
 
 # --- SIDEBAR MENU ---
 if st.session_state.show_sidebar:
     with st.sidebar:
+        options = [
+            "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+            "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+            "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+            "📈 Regresi Linier", "📖 About"
+        ]
         menu = option_menu(
             menu_title="Kebutuhan Kimia 🌟",
-            options=[
-                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
-                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
-                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
-                "📈 Regresi Linier", "📖 About"
-            ],
+            options=options,
+            default_index=options.index(st.session_state.menu_selected)
         )
-        st.session_state.menu_selected = menu
+        if menu != st.session_state.menu_selected:
+            st.session_state.menu_selected = menu
+            st.rerun()
 
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 selected = st.session_state.menu_selected
