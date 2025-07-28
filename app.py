@@ -30,6 +30,20 @@ if "menu_selected" not in st.session_state:
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
 
+# --- SIDEBAR MENU ---
+if st.session_state.show_sidebar:
+    with st.sidebar:
+        selected = option_menu(
+            menu_title="Kebutuhan Kimia 🌟",
+            options=[
+                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
+                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
+                "📈 Regresi Linier", "📖 About"
+            ],
+        )
+        st.session_state.menu_selected = selected
+
 # Ambil menu yang dipilih
 menu_selected = st.session_state.menu_selected
 
