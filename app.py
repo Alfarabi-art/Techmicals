@@ -24,35 +24,39 @@ st.set_page_config(
     layout="wide",
 )
 
-# --- SESSION STATE ---
+# Inisialisasi session state
+if "menu_selected" not in st.session_state:
+    st.session_state.menu_selected = "Home"
 if "show_sidebar" not in st.session_state:
     st.session_state.show_sidebar = False
-if "menu_selected" not in st.session_state:
-    st.session_state.menu_selected = "🏠 Home"
+if "_rerun" not in st.session_state:
+    st.session_state._rerun = False
 
-# --- SEMBUNYIKAN SIDEBAR DI AWAL ---
-if not st.session_state.show_sidebar:
-    st.markdown("""
-        <style>
-        [data-testid="stSidebar"] {
-            display: none;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+# Fungsi untuk menampilkan fitur berdasarkan menu
+def show_selected_feature(menu):
+    st.markdown(f"<h2 style='text-align:center;'>{menu}</h2>", unsafe_allow_html=True)
+    st.info(f"Konten untuk fitur '{menu}' akan ditampilkan di sini.")
 
-# --- SIDEBAR MENU ---
+# Tampilkan sidebar jika diaktifkan
 if st.session_state.show_sidebar:
     with st.sidebar:
-        menu = option_menu(
-            menu_title="Kebutuhan Kimia 🌟",
+        menu_selected = option_menu(
+            menu_title="Techmicals",
             options=[
-                "🏠 Home", "⚗ Reaksi Kimia", "🧪 Stoikiometri",
-                "🧫 Konsentrasi Larutan", "💧 pH dan pOH",
-                "🧬 Tabel Periodik", "🔄 Konversi Satuan",
-                "📈 Regresi Linier", "📖 About"
+                "Home",
+                "⚗ Reaksi Kimia",
+                "🧪 Stoikiometri",
+                "🧫 Konsentrasi Larutan",
+                "💧 pH dan pOH",
+                "🧬 Tabel Periodik",
+                "📈 Regresi Linier"
             ],
+            default_index=0,
         )
-        st.session_state.menu_selected = menu
+        st.session_state.menu_selected = menu_selected
+
+# Ambil menu yang dipilih
+menu_selected = st.session_state.menu_selected
 
 # --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
 selected = st.session_state.menu_selected
@@ -85,9 +89,14 @@ if selected == "🏠 Home":
                 st.session_state._rerun = True
             st.caption(desc)
 
+    # Rerun jika dibutuhkan
     if st.session_state.get("_rerun"):
         st.session_state._rerun = False
         st.experimental_rerun()
+
+# Halaman fitur selain Home
+else:
+    show_selected_feature(menu_selected)
         
 # Tampilkan tombol fitur sebagai card
 for i, (label, desc) in enumerate(fitur):
