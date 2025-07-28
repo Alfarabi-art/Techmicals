@@ -24,7 +24,7 @@ st.set_page_config(
     layout="wide",
 )
 
-# --- Inisialisasi session_state ---
+ --- INISIALISASI SESSION STATE ---
 if "menu_selected" not in st.session_state:
     st.session_state.menu_selected = "🏠 Home"
 if "show_sidebar" not in st.session_state:
@@ -39,22 +39,28 @@ if st.session_state.show_sidebar:
             "🧬 Tabel Periodik", "🔄 Konversi Satuan",
             "📈 Regresi Linier", "📖 About"
         ]
-
         menu = option_menu(
             menu_title="Kebutuhan Kimia 🌟",
             options=options,
-            default_index=options.index(st.session_state.menu_selected),
+            default_index=options.index(st.session_state.menu_selected)
         )
-
-        # Update hanya jika user klik menu baru
         if menu != st.session_state.menu_selected:
             st.session_state.menu_selected = menu
             st.rerun()
-            
-# --- TOMBOL UNTUK MEMUNCULKAN SIDEBAR ---
-# --- Card Home ---
+
+# --- HOME PAGE ---
 if st.session_state.menu_selected == "🏠 Home":
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
+
+    # Mapping nama card ke menu dengan emoji
+    label_map = {
+        "Reaksi Kimia": "⚗ Reaksi Kimia",
+        "Stoikiometri": "🧪 Stoikiometri",
+        "Konsentrasi Larutan": "🧫 Konsentrasi Larutan",
+        "pH dan pOH": "💧 pH dan pOH",
+        "Tabel Periodik": "🧬 Tabel Periodik",
+        "Regresi Linier": "📈 Regresi Linier"
+    }
 
     fitur = [
         ("Reaksi Kimia", "⚗ Setarakan reaksi secara otomatis."),
@@ -69,9 +75,17 @@ if st.session_state.menu_selected == "🏠 Home":
     for i, (label, desc) in enumerate(fitur):
         with cols[i % 3]:
             if st.button(desc.split()[0] + " " + label, key=label, use_container_width=True):
-                st.session_state.menu_selected = label
+                st.session_state.menu_selected = label_map[label]
                 st.session_state.show_sidebar = True
-                st.rerun()  # rerun aman
+                st.rerun()
+
+        st.components.v1.html("""
+            <script>
+            const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+            if(sidebar){ sidebar.style.display = "block"; }
+            window.scrollTo(0, 0);
+            </script>
+        """, height=0)
 
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
