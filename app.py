@@ -86,10 +86,6 @@ if menu_selected == "Home":
         st.session_state._rerun = False
         st.experimental_rerun()
 
-# Halaman fitur selain Home
-else:
-    show_selected_feature(menu_selected)
-        
 # Tampilkan tombol fitur sebagai card
 for i, (label, desc) in enumerate(fitur):
     with cols[i % 3]:
