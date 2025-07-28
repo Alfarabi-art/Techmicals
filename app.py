@@ -131,9 +131,10 @@ if menu_selected == "📖 About":
 
 # --- FITUR REAKSI KIMIA ---
 elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
-    st.markdown('<button class="back-button">← Kembali ke Beranda</button>', unsafe_allow_html=True)
-    st.session_state.menu_selected = "🏠 Home"
-    st.rerun()
+    if st.button("← Kembali ke Beranda"):
+        st.session_state.menu_selected = "🏠 Home"
+        st.experimental_rerun()
+
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi, Contoh :", "H2 + O2 > H2O")
     if st.button("Setarakan"):
