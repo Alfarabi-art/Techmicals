@@ -135,13 +135,13 @@ elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
        st.session_state.menu_selected = "🏠 Home"
        st.rerun()
     st.title("⚗ Setarakan Reaksi Kimia")
-    equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
+    equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 > H2O")
     if st.button("Setarakan"):
-        if "->" not in equation:
-            st.error("⚠ Format reaksi harus mengandung '->'")
+        if ">" not in equation:
+            st.error("⚠ Format reaksi harus mengandung '>'")
         else:
             try:
-                reac, prod = equation.split("->")
+                reac, prod = equation.split(">")
                 reac_set = set(reac.strip().split('+'))
                 prod_set = set(prod.strip().split('+'))
                 reac_bal, prod_bal = balance_stoichiometry(reac_set, prod_set)
