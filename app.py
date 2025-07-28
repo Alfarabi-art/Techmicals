@@ -133,8 +133,7 @@ if menu_selected == "📖 About":
 elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
     if st.button("← Kembali ke Beranda"):
        st.session_state.menu_selected = "🏠 Home"
-       st.experimental_rerun()
-    
+       st.rerun()
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
@@ -158,7 +157,6 @@ elif st.session_state.menu_selected == "🧪 Stoikiometri":
     if st.button("← Kembali ke Beranda"):
        st.session_state.menu_selected = "🏠 Home"
        st.rerun()
-         
     st.title("🧪 Hitung Mol")
     formula = st.text_input("Rumus Kimia", "H2O")
     mass_input = st.text_input("Massa (gram)", "0.03").replace(",", ".")
@@ -186,6 +184,9 @@ elif st.session_state.menu_selected == "🧪 Stoikiometri":
 
 # --- FITUR KONSENTRASI LARUTAN ---
 elif st.session_state.menu_selected == "🧫 Konsentrasi Larutan":
+    if st.button("← Kembali ke Beranda"):
+       st.session_state.menu_selected = "🏠 Home"
+       st.rerun()
     st.title("🧫 Hitung Konsentrasi Larutan")
     metode = st.selectbox("Pilih Metode", ["Molaritas", "Normalitas"])
     with st.form(key="konsentrasi_form"):
@@ -217,6 +218,9 @@ elif st.session_state.menu_selected == "🧫 Konsentrasi Larutan":
 
 # --- FITUR pH DAN pOH ---
 elif st.session_state.menu_selected == "💧 pH dan pOH":
+    if st.button("← Kembali ke Beranda"):
+       st.session_state.menu_selected = "🏠 Home"
+       st.rerun()
     st.title("💧 Hitung pH dan pOH")
     conc = st.number_input("Konsentrasi (mol/L)", min_value=0.0, value=0.01)
     acid_base = st.selectbox("Jenis Larutan", ["Asam", "Basa"])
@@ -234,6 +238,9 @@ elif st.session_state.menu_selected == "💧 pH dan pOH":
 
 # --- FITUR TABEL PERIODIK ---
 elif st.session_state.menu_selected == "🧬 Tabel Periodik":
+    if st.button("← Kembali ke Beranda"):
+       st.session_state.menu_selected = "🏠 Home"
+       st.rerun()
     st.title("🧬 Tabel Periodik Interaktif")
     periodic_data = [{"Symbol": el.symbol, "Name": el.name, "Atomic Number": el.number, "Atomic Mass": el.mass}
                      for el in elements if el.number <= 118]
@@ -248,6 +255,9 @@ elif st.session_state.menu_selected == "🧬 Tabel Periodik":
 
 # --- FITUR KONVERSI SATUAN ---
 elif st.session_state.menu_selected == "🔄 Konversi Satuan":
+    if st.button("← Kembali ke Beranda"):
+       st.session_state.menu_selected = "🏠 Home"
+       st.rerun()
     st.title("🔄 Konversi Satuan Kimia")
     kategori = st.selectbox("Pilih Kategori", [
         "Mol ↔ Gram",
@@ -393,6 +403,9 @@ elif st.session_state.menu_selected == "🔄 Konversi Satuan":
 
 # --- FITUR REGRESI LINIER ---
 elif st.session_state.menu_selected == "📈 Regresi Linier":
+    if st.button("← Kembali ke Beranda"):
+       st.session_state.menu_selected = "🏠 Home"
+       st.rerun()
     st.title("📈 Kalkulator Regresi Linier")
     st.write("Hitung slope, intercept, persamaan garis regresi, dan tampilkan grafik.")
 
