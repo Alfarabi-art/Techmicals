@@ -45,10 +45,11 @@ if st.session_state.show_sidebar:
         st.session_state.menu_selected = menu
 
 # Ambil menu yang dipilih
-menu_selected = st.session_state.menu_selected
+menu = st.session_state.menu_selected
 
 # --- Card Home ---
-if st.session_state.menu_selected == "🏠 Home":
+if menu == "🏠 Home":
+    tampilkan_beranda()
     st.markdown("<h2 style='text-align:center;'>Klik salah satu fitur di bawah:</h2>", unsafe_allow_html=True)
 
     fitur = [
@@ -102,7 +103,8 @@ if st.session_state.menu_selected == "📖 About":
         st.markdown("<div class='feature-card'><h4>👩‍🔬 Widya Aulia Putri</h4><p>NIM - 2460534</p></div>", unsafe_allow_html=True)
 
 # --- FITUR REAKSI KIMIA ---
-elif st.session_state.menu_selected == "⚗ Reaksi Kimia":
+elif menu == "⚗ Reaksi Kimia":
+    reaksi_kimia()
     st.title("⚗ Setarakan Reaksi Kimia")
     equation = st.text_input("Masukkan persamaan reaksi:", "H2 + O2 -> H2O")
     if st.button("Setarakan"):
