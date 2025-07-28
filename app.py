@@ -85,9 +85,16 @@ if selected == "🏠 Home":
     </div>
     """, unsafe_allow_html=True)
 
-    if st.button("⚗ Mulai Hitung Sekarang", key="start", help="Klik untuk memulai fitur", use_container_width=True):
-        st.session_state.show_sidebar = True
-        st.session_state.menu_selected = "⚗ Reaksi Kimia"
+    st.session_state.show_sidebar = True
+                st.rerun()
+
+        st.components.v1.html("""
+            <script>
+            const sidebar = parent.document.querySelector('[data-testid="stSidebar"]');
+            if(sidebar){ sidebar.style.display = "block"; }
+            window.scrollTo(0, 0);
+            </script>
+        """, height=0)
     
         # FIX: Paksa scroll ke atas & sidebar muncul
         st.components.v1.html("""
