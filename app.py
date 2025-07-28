@@ -57,7 +57,7 @@ if st.session_state.menu_selected == "Home":
         ("Stoikiometri", "🧪 Hitung mol, massa, volume."),
         ("Konsentrasi Larutan", "🧫 Hitung molaritas dan lainnya."),
         ("pH dan pOH", "💧 Hitung pH/pOH dari konsentrasi."),
-        ("Tabel Periodik", "🧬 Informasi unsur lengkap."),
+        ("Konversi Satuan", "🧬 Hitung Konversi Satuan."),
         ("Regresi Linier", "📈 Hitung regresi dan grafik.")
     ]
 
