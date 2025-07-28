@@ -66,47 +66,26 @@ if selected == "🏠 Home":
 
     st.markdown("<h4 style='text-align:center;'>Klik salah satu fitur di bawah:</h4>", unsafe_allow_html=True)
 
-components.html(f"""
-    <div class="grid-container">
-        <div class="feature-card clickable" onclick="setFeature('⚗ Reaksi Kimia')">
-            <h3>&#x2697; Reaksi Kimia</h3>
-            <p>Setarakan reaksi dengan cepat dan akurat.</p>
-        </div>
-        <div class="feature-card clickable" onclick="setFeature('🧪 Stoikiometri')">
-            <h3>&#x1F9EA; Stoikiometri</h3>
-            <p>Hitung mol, massa molar, dan lainnya.</p>
-        </div>
-        <div class="feature-card clickable" onclick="setFeature('🧫 Konsentrasi Larutan')">
-            <h3>&#x1F4C8; Konsentrasi Larutan</h3>
-            <p>Hitung dan konversi konsentrasi larutan.</p>
-        </div>
-        <div class="feature-card clickable" onclick="setFeature('💧 pH dan pOH')">
-            <h3>&#x1F4A7; pH dan pOH</h3>
-            <p>Hitung pH dan pOH larutan.</p>
-        </div>
-        <div class="feature-card clickable" onclick="setFeature('🧬 Tabel Periodik')">
-            <h3>&#x1F9EC; Tabel Periodik</h3>
-            <p>Lihat data unsur periodik.</p>
-        </div>
-        <div class="feature-card clickable" onclick="setFeature('📈 Regresi Linier')">
-            <h3>&#x1F4C8; Regresi Linier</h3>
-            <p>Tampilkan grafik regresi data.</p>
-        </div>
-    </div>
+# Buat layout grid responsif pakai kolom
+cols = st.columns(3)
 
-    <script>
-        function setFeature(feature) {{
-            const doc = parent.document;
-            const input = doc.createElement("input");
-            input.type = "text";
-            input.name = "feature";
-            input.value = feature;
-            input.style.display = "none";
-            doc.body.appendChild(input);
-            input.dispatchEvent(new Event('change'));
-        }}
-    </script>
-""", height=600)
+fitur = [
+    ("⚗ Reaksi Kimia", "Setarakan reaksi dengan cepat dan akurat."),
+    ("🧪 Stoikiometri", "Hitung mol, massa molar, dan lainnya."),
+    ("🧫 Konsentrasi Larutan", "Hitung dan konversi konsentrasi larutan."),
+    ("💧 pH dan pOH", "Hitung pH dan pOH larutan."),
+    ("🧬 Tabel Periodik", "Lihat data unsur periodik."),
+    ("📈 Regresi Linier", "Tampilkan grafik regresi data.")
+]
+
+# Tampilkan tombol fitur sebagai card
+for i, (label, desc) in enumerate(fitur):
+    with cols[i % 3]:
+        if st.button(label, key=label, use_container_width=True):
+            st.session_state.menu_selected = label
+            st.session_state.show_sidebar = True
+            st.experimental_rerun()
+        st.caption(desc)
 
 # Tangkap fitur dari komponen HTML (jika ada)
 feature = st.query_params.get("feature")
