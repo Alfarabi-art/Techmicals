@@ -10,6 +10,7 @@ import re
 import math
 from sklearn.linear_model import LinearRegression
 from io import BytesIO
+import streamlit.components.v1 as components
 
 # Load custom CSS
 css_file = Path(__file__).parent / "style.css"
@@ -63,34 +64,56 @@ if selected == "🏠 Home":
         🚀 Hitung reaksi, mol, konsentrasi, hingga regresi linier dengan mudah.</p>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
+    st.markdown("<h4 style='text-align:center;'>Klik salah satu fitur di bawah:</h4>", unsafe_allow_html=True)
+
+components.html(f"""
     <div class="grid-container">
-        <div class="feature-card">
+        <div class="feature-card clickable" onclick="setFeature('⚗ Reaksi Kimia')">
             <h3>&#x2697; Reaksi Kimia</h3>
             <p>Setarakan reaksi dengan cepat dan akurat.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card clickable" onclick="setFeature('🧪 Stoikiometri')">
             <h3>&#x1F9EA; Stoikiometri</h3>
             <p>Hitung mol, massa molar, dan lainnya.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card clickable" onclick="setFeature('🧫 Konsentrasi Larutan')">
             <h3>&#x1F4C8; Konsentrasi Larutan</h3>
             <p>Hitung dan konversi konsentrasi larutan.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card clickable" onclick="setFeature('💧 pH dan pOH')">
             <h3>&#x1F4A7; pH dan pOH</h3>
             <p>Hitung pH dan pOH larutan.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card clickable" onclick="setFeature('🧬 Tabel Periodik')">
             <h3>&#x1F9EC; Tabel Periodik</h3>
             <p>Lihat data unsur periodik.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card clickable" onclick="setFeature('📈 Regresi Linier')">
             <h3>&#x1F4C8; Regresi Linier</h3>
             <p>Tampilkan grafik regresi data.</p>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+
+    <script>
+        function setFeature(feature) {{
+            const doc = parent.document;
+            const input = doc.createElement("input");
+            input.type = "text";
+            input.name = "feature";
+            input.value = feature;
+            input.style.display = "none";
+            doc.body.appendChild(input);
+            input.dispatchEvent(new Event('change'));
+        }}
+    </script>
+""", height=600)
+
+# Tangkap fitur dari komponen HTML (jika ada)
+feature = st.query_params.get("feature")
+if feature:
+    st.session_state.menu_selected = feature[0]
+    st.session_state.show_sidebar = True
+    st.rerun()  # Rerun untuk mengubah tampilan sesuai fitur
 
     if st.button("⚗ Mulai Hitung Sekarang", key="start", help="Klik untuk memulai fitur", use_container_width=True):
         st.session_state.show_sidebar = True
